@@ -13,9 +13,16 @@ function recurse1(){
 #Основная программа
 read -p "Введите путь до каталога: " str1
 
+while [ "$str1" == "?" ]
+do
+    echo "Необходимо указать полный пусть, например, </home/matwey> . Если путь не будет указан, будет взят шаблонный путь путь."
+    read -p "Введите путь до каталога: " str1
+done;
+
 #Проверка на пустоту
-if ["$str1" -eq ""]; then
-    str1="/home/matvey/Unik/"
+if  [ ! -d "$str1" ]; then
+    str1="/home/matvey/Unik"
 fi
 
 recurse1  $str1
+
