@@ -112,29 +112,3 @@ public:
 
 };
 
-
-
-int main(){
-    try {
-        LList q;
-        q.appendEnd(1);
-        q.appendEnd(2);
-        q.appendEnd(3);
-        q.appendEnd(4);
-        q.appendEnd(5);
-        q.print_list();
-        Node * a = q.findNode(3);
-        q.insertPrev(a, 10);
-        q.print_list();
-    }
-    catch (int declaration) {
-        switch (declaration) {
-            case -1:
-                cout << "Не найдено число" << endl;
-            case -2:
-                cout << "в find_next - последний элемент" << endl;
-
-        }
-
-    }
-}
