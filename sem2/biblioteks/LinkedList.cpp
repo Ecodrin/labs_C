@@ -1,17 +1,21 @@
 #include <iostream>
 
+
+typedef int Data;
 using namespace std;
 
-struct Node{
-    int val;
-    Node * next;
-};
 
+
+struct Node{
+    Data val;
+    Node * next;
+    Node(Data v = 0, Node * x = nullptr): val(v), next(x){};
+};
 
 class LList{
 public:
+    friend Node;
     Node * head;
-
     LList(Node * p = nullptr): head(p) {};
 
     ~LList(){
@@ -24,7 +28,7 @@ public:
         head = nullptr;
     }
 
-    void appendEnd(int a){
+    void appendEnd(Data a){
         Node * q = new Node;
         q->val = a;
         q->next = nullptr;
@@ -58,7 +62,7 @@ public:
         }
     }
 
-    Node * findNode(int val){
+    Node * findNode(Data val){
         Node * new_head = head;
         while(new_head->next != nullptr && new_head->val != val){
             new_head = new_head->next;
@@ -92,14 +96,14 @@ public:
         throw -1;
     }
 
-    void insertNext(Node *p, int val){
+    void insertNext(Node *p, Data val){
         Node * q = new Node;
         q->val = val;
         q->next = p->next;
         p->next = q;
     }
 
-    void insertPrev(Node * ptn, int val){
+    void insertPrev(Node * ptn, Data val){
         Node * a = findPrev(ptn);
         insertNext(a, val);
     }
@@ -109,6 +113,66 @@ public:
         a->next = ptn->next;
         delete ptn;
     }
+    
+    void swap(Node * prev, Node * next){
+        int x = prev->val;
+        prev->val = next->val;
+        next->val = x;
+        
+    }
+    
+    void appendStart(Data x){
+        Node * new_el = new Node(x, head->next);
+        head = new_el;
+    }
+
+    void operator+=(int x){
+        Node * q = new Node;
+        q->val = x;
+        q->next = nullptr;
+        Node * new_head = head;
+        if(head == nullptr)
+            head = q;
+        else{
+            while(new_head->next != nullptr){
+                new_head = new_head->next;
+            }
+            new_head->next = q;
+        }
+    }
+    LList& operator+(int x){
+        Node * q = new Node;
+        q->val = x;
+        q->next = nullptr;
+        Node * new_head = head;
+        if(head == nullptr)
+            head = q;
+        else{
+            while(new_head->next != nullptr){
+                new_head = new_head->next;
+            }
+            new_head->next = q;
+        }
+        return *this;
+    }
 
 };
 
+
+int main(){
+    LList list;
+    for(int i = 0; i < 10; i++){
+        list += i;
+    }
+
+    Node * ptn;
+
+    list.print_list();
+    list.appendStart(12);
+    Node * p = list.findNode(4);
+    Node * n = list.findNode(6);
+    list.swap(p, n);
+    cout << "-----------------------------------" << endl;
+    list.print_list();
+    
+}
