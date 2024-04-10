@@ -1,8 +1,5 @@
-#include "stack.h"
+#include <iostream>
 
-
-#ifndef LABA23_TREE_H
-#define LABA23_TREE_H
 typedef int Data;
 struct Node{
     Data val;
@@ -24,16 +21,10 @@ struct Node{
 class Tree{
 
 private:
-    void bypass(Node * rt, Stack * a){
-        if(rt == nullptr) return;
-        int d = el_depth(root, rt->val);
-        push_stack(a[d-1], rt->val);
-        bypass(rt->son, a);
-        bypass(rt->brother, a);
-    }
+
 public:
-    Node * root;
-    Tree(int v){
+    Node * root = nullptr;
+    Tree(int v=0){
         root = new Node(v);
     };
     ~Tree(){
@@ -108,8 +99,8 @@ public:
         if(rt == nullptr){
             return 0;
         }
-        int a = max_el(rt->son);
-        int b = max_el(rt->brother);
+        Data a = max_el(rt->son);
+        Data b = max_el(rt->brother);
         a = std::max(a, b);
         return std::max(rt->val, a);
     }
@@ -132,21 +123,13 @@ public:
     }
 
 
-    void print(){ ///??????????????????????????
-        int depth = max_depth(root);
-        Stack  a[depth];
-        for(int i = 0; i < depth; ++i){
-            new_stack(a[i], 1);
-        }
-        bypass(root, a);
-        for(int i = 0; i < depth; ++i){
-            while(!stack_is_empty(a[i])){
-                std::cout << pull_stack(a[i]) << " ";
-            }
-            std::cout << std::endl;
-        }
+    void print(Node * rt){ ///??????????????????????????
+        if(rt == nullptr)return;
+        int d = el_depth(root, rt->val);
+        for(int i = 0; i < d - 1; ++i)
+            std::cout << "-";
+        std::cout << rt->val << std::endl;
+        print(rt->son);
+        print(rt->brother);
     }
-
 };
-
-#endif
