@@ -8,7 +8,7 @@
 
 
 bool is_alpha(char c){
-    return (c >= 'a' and c <= 'z') or (c >= 0 and c <= 9);
+    return (c >= 'a' and c <= 'z') or (c >= '0' and c <= '9');
 }
 
 bool is_operation(char c){

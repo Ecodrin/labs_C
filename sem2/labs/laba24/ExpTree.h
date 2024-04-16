@@ -48,7 +48,6 @@ public:
 
             print_exp(rt->right);
             std::cout << rt->val;
-
             print_exp(rt->left);
             std::cout << ')';
         }
@@ -64,7 +63,8 @@ public:
     bool is_simple(Node * rt){
         if(rt == nullptr) return true;
         if(rt->val == '/' and (rt->left->val == '/' or rt->right->val == '/')) return false;
-        return true;
+
+        return std::min(is_simple(rt->left), is_simple(rt->right));
     }
     void simple(Node * rt){
         if(rt == nullptr){
@@ -83,7 +83,6 @@ public:
         }
         simple(rt->left);
         simple(rt->right);
-
     }
 
 
