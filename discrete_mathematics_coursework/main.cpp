@@ -130,5 +130,10 @@ int main(int argc, char * argv[]){
         out << i;
         out << L" red" << std::endl;
     }
+    std::wstring text = L"<Text> \nHinges in order: \n";
+    for(int el: sh){
+        text += std::to_wstring(el) + L"\n";
+    }
+    out << text;
     out.close();
 }
