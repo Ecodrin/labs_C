@@ -15,8 +15,8 @@ int c = 0, k = 0;
 int n;
 
 
-void input_matrix(int c, char * v[]){
-    std::ifstream in(v[1]);
+void input_matrix(int count, char * arg[]){
+    std::ifstream in(arg[1]);
     in >> n;
     for(int i = 0; i < n; ++i){
         vi q;
@@ -94,6 +94,49 @@ void bc_tree(graph&tree){
 }
 
 
+void output(int count, char * arg[], graph & tree){
+    std::wofstream out;
+    out.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
+    out.open(arg[2]);
+    out << tree.size() << L'\n';
+    for(std::vector<int>::size_type i = 0; i < tree.size(); ++i){
+        for(std::vector<int>::size_type j = 0;j < tree[i].size(); ++j){
+            out << tree[i][j] << " ";
+        }
+        out << L'\n';
+    }
+    // std::cout << c << " " << k << " " << n << std::endl;
+
+    /*
+    Зеленые вершины - шарниры
+    Красные - блоки
+    
+    */
+    std::wstring text = L"<Text>\nШарниры:\nЗеленые вершины - шарниры\nКрасные - блоки\n";
+    int i = 0;
+    for(int el : sh){
+        text += std::to_wstring(i) + L": " + std::to_wstring(el - 1) + L'\n';
+        i += 1;
+    }
+    text += L"Блоки:\n";
+    for(std::vector<int>::size_type j = 1; j < b.size(); ++j){
+        text += std::to_wstring(i) + L" = ";
+        for(int el: b[j]){
+            text += std::to_wstring(el - 1) +  L", ";
+        }
+        text += L'\n';
+        i += 1;
+    }
+    out << text;
+    std::wstring colors = L"<Vertex_Colors>\n";
+    out << colors;
+    for(std::vector<int>::size_type i = tree.size() - k; i < tree.size(); ++i){
+        out << i << L" red" << L'\n';
+    }
+    out.close();
+}
+
+
 
 int main(int argc, char * argv[]){
     input_matrix(argc, argv);
@@ -107,33 +150,5 @@ int main(int argc, char * argv[]){
     }
     graph tree(b.size() + sh.size() - 1, vi(b.size() + sh.size() - 1));
     bc_tree(tree);
-    std::wofstream out;
-    // out.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
-    out.open(argv[2]);
-    out << tree.size() << std::endl;
-    for(std::vector<int>::size_type i = 0; i < tree.size(); ++i){
-        for(std::vector<int>::size_type j = 0;j < tree[i].size(); ++j){
-            out << tree[i][j] << " ";
-        }
-        out << std::endl;
-    }
-    // std::cout << c << " " << k << " " << n << std::endl;
-
-    /*
-    Зеленые вершины - шарниры
-    Красные - блоки
-    
-    */
-    std::wstring colors = L"<Vertex_Colors>\n";
-    out << colors;
-    for(std::vector<int>::size_type i = tree.size() - k; i < tree.size(); ++i){
-        out << i;
-        out << L" red" << std::endl;
-    }
-    std::wstring text = L"<Text> \nHinges in order: \n";
-    for(int el: sh){
-        text += std::to_wstring(el) + L"\n";
-    }
-    out << text;
-    out.close();
+    output(argc, argv, tree);
 }
