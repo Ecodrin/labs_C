@@ -1,32 +1,29 @@
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <bits/stdc++.h>
 
 
 using vi = std::vector<int>;
 using graph = std::vector<std::vector<int>>;
 
-graph a = {{}};
-graph b = {{}};
-std::set<int> sh;
-std::stack<int> s;
-int c = 0, k = 0;
-int n;
+graph input_graph = {{}};
+graph output_blocks = {{}};
+std::set<int> hinges;
+std::stack<int> stack;
+int c = 0, count_blocks = 0;
+int len_input_graph;
 
 
 void input_matrix(int count, char * arg[]){
     std::ifstream in(arg[1]);
-    in >> n;
-    for(int i = 0; i < n; ++i){
+    in >> len_input_graph;
+    for(int i = 0; i < len_input_graph; ++i){
         vi q;
-        a.push_back(q);
+        input_graph.push_back(q);
 
-        for(int j = 0; j < n;++j){
+        for(int j = 0; j < len_input_graph;++j){
             int x;
             in >> x;
             if(x){
-                a[i + 1].push_back(j + 1);
+                input_graph[i + 1].push_back(j + 1);
             }
         }
     }
@@ -34,42 +31,42 @@ void input_matrix(int count, char * arg[]){
 }
 
 void newblock(int &y, int &x){
-    k += 1;
+    count_blocks += 1;
     std::vector<int> q(0);
-    b.push_back(q);
-    b[k].push_back(x);
-    int z;
+    output_blocks.push_back(q);
+    output_blocks[count_blocks].push_back(x);
+    int el;
     do{
-        z = s.top();
-        s.pop();
-        if(std::find(b[k].begin(), b[k].end(), z) == std::end(b[k])){
-            b[k].push_back(z);
+        el = stack.top();
+        stack.pop();
+        if(std::find(output_blocks[count_blocks].begin(), output_blocks[count_blocks].end(), el) == std::end(output_blocks[count_blocks])){
+            output_blocks[count_blocks].push_back(el);
         }
-    }while(z != y);
+    }while(el != y);
 
 }
 
 
-void Blocks(vi &dnum , vi&low,  int &x){
+void Blocks(vi & dnum , vi&low,  int &x){
     c += 1;
     dnum[x] = c;
     low[x] = c;
-    s.push(x);
-    for(int y : a[x]){
+    stack.push(x);
+    for(int y : input_graph[x]){
         if(dnum[y] == 0){
             Blocks(dnum, low,  y);
             low[x] = std::min(low[x], low[y]);
             if (low[y] == dnum[x]){
                 newblock(y, x);
                 //std::cout << "|" << dnum[x] << " " << x << "|\n";
-                if(x != 1) sh.insert(x);
+                if(x != 1) hinges.insert(x);
                 else{
                     int sum = 0;
-                    for(std::vector<int>::size_type i = 0; i < a[0].size(); ++i){
-                        sum += a[0][i];
+                    for(std::vector<int>::size_type i = 0; i < input_graph[0].size(); ++i){
+                        sum += input_graph[0][i];
                     }
                     if (sum == 1){
-                        sh.insert(x);
+                        hinges.insert(x);
                     }
                 }
             }
@@ -81,15 +78,15 @@ void Blocks(vi &dnum , vi&low,  int &x){
 }
 
 void bc_tree(graph&tree){
-    int ii = 0;
-    for(int i: sh){
-        for(std::vector<int>::size_type j = 1; j < b.size(); ++j){
-            if(std::find(b[j].begin(), b[j].end(), i) != b[j].end()){
-                tree[ii][sh.size() + j - 1] = 1;
+    int index_hinge = 0;
+    for(int i: hinges){
+        for(std::vector<int>::size_type j = 1; j  < output_blocks.size(); ++j){
+            if(std::find(output_blocks[j].begin(), output_blocks[j].end(), i) != output_blocks[j].end()){
+                tree[index_hinge][hinges.size() + j - 1] = 1;
                 // std::cout << i << std::endl;
             }
         }
-        ++ii;
+        ++index_hinge;
     }
 }
 
@@ -114,14 +111,14 @@ void output(int count, char * arg[], graph & tree){
     */
     std::wstring text = L"<Text>\nШарниры:\nЗеленые вершины - шарниры\nКрасные - блоки\n";
     int i = 0;
-    for(int el : sh){
+    for(int el : hinges){
         text += std::to_wstring(i) + L": " + std::to_wstring(el - 1) + L'\n';
         i += 1;
     }
     text += L"Блоки:\n";
-    for(std::vector<int>::size_type j = 1; j < b.size(); ++j){
+    for(std::vector<int>::size_type j = 1; j < output_blocks.size(); ++j){
         text += std::to_wstring(i) + L" = ";
-        for(int el: b[j]){
+        for(int el: output_blocks[j]){
             text += std::to_wstring(el - 1) +  L", ";
         }
         text += L'\n';
@@ -130,7 +127,7 @@ void output(int count, char * arg[], graph & tree){
     out << text;
     std::wstring colors = L"<Vertex_Colors>\n";
     out << colors;
-    for(std::vector<int>::size_type i = tree.size() - k; i < tree.size(); ++i){
+    for(std::vector<int>::size_type i = tree.size() - count_blocks; i < tree.size(); ++i){
         out << i << L" red" << L'\n';
     }
     out.close();
@@ -141,14 +138,14 @@ void output(int count, char * arg[], graph & tree){
 int main(int argc, char * argv[]){
     input_matrix(argc, argv);
 
-    vi dnum(n + 1, 0);
-    vi low(n + 1, 0);
-    for (int i = 1; i <= n;++i){
+    vi dnum(len_input_graph + 1, 0);
+    vi low(len_input_graph + 1, 0);
+    for (int i = 1; i <= len_input_graph;++i){
         if(dnum[i] == 0){
             Blocks(dnum, low, i);
         }
     }
-    graph tree(b.size() + sh.size() - 1, vi(b.size() + sh.size() - 1));
+    graph tree(output_blocks.size() + hinges.size() - 1, vi(output_blocks.size() + hinges.size() - 1));
     bc_tree(tree);
     output(argc, argv, tree);
 }

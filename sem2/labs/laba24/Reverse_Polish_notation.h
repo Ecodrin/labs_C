@@ -2,7 +2,7 @@
 #include "stack.h"
 
 #define pr4(c) (c == '^')
-#define pr3(c) (c == '*' or c == '/')
+#define pr3(c) (c == '/' or c == '*')
 #define pr2(c) (c == '+' or c == '-')
 #define pr1(c) (c == '(' or c == ')')
 
@@ -19,11 +19,11 @@ bool is_skobka(char c){
     return c == ')' or c == '(';
 }
 
-bool priorety(Stack & stack, char symbol){
+bool priority(Stack & stack, char symbol){
     if(stack_is_empty(stack))
         return true;
     char c = stack_top(stack);
-    if(pr4(c) and !pr4((symbol)))
+    if(pr4(c) and !pr4((symbol)) or(c == '/' and symbol == '*'))
         return false;
     if(pr3(c) and !pr3(symbol) and !pr4((symbol)))
         return false;
@@ -32,7 +32,7 @@ bool priorety(Stack & stack, char symbol){
     return true;
 }
 
-void opz(char * result){
+void to_reverse_polish_notation(char * result){
     char symbol;
     int i = 0;
     Stack stack = new_stack(1);
@@ -46,7 +46,7 @@ void opz(char * result){
                 push_stack(stack, symbol);
             }
             else{
-                while (!priorety(stack, symbol)){
+                while (!priority(stack, symbol)){
                     result[i] = pull_stack(stack);
                     i += 1;
                 }
