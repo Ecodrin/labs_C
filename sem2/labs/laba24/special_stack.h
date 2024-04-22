@@ -101,3 +101,4 @@ void resize(SpecialStack & s, int l){
 
 
 #endif //LABA24_SPECIAL_SpecialStack_H
+

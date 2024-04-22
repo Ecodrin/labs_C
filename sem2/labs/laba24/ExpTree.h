@@ -2,6 +2,9 @@
 #include "special_stack.h"
 #include <iostream>
 
+#ifndef LABA24_EXPTREE_H
+#define LABA24_EXPTREE_H
+
 
 class Tree{
 public:
@@ -15,7 +18,7 @@ public:
     void print(Node * rt){
         if(rt == nullptr) return;
         print(rt->left);
-        int d = depht(root, rt);
+        int d = depth(root, rt);
         for(int i = 0; i < d; ++i){
             std::cout << "==";
         }
@@ -23,10 +26,10 @@ public:
         print(rt->right);
     }
 
-    int depht(Node * rt, Node * our, int k=0){
+    int depth(Node * rt, Node * our, int k=0){
         if(rt == nullptr) return -1000;
         if(rt == our) return k;
-        return std::max(depht(rt->left, our, k + 1), depht(rt->right, our, k + 1));
+        return std::max(depth(rt->left, our, k + 1), depth(rt->right, our, k + 1));
     }
     void add(char operation, SpecialStack & specialstack) {
         Node * r = pull_SpecialStack(specialstack);
@@ -88,10 +91,9 @@ public:
 
 };
 
-
 void add_tree_exr(Tree & tree){
     char result[100];
-    opz(result);
+    to_reverse_polish_notation(result);
     std::cout << "Обратная польская запись: " << result << std::endl;
     SpecialStack specialstack = new_SpecialStack(1);
     for(int i = 0; result[i] != '\0'; ++i){
@@ -106,4 +108,4 @@ void add_tree_exr(Tree & tree){
     tree.root = pull_SpecialStack(specialstack);
     delete_SpecialStack(specialstack);
 }
-
+#endif

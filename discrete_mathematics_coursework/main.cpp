@@ -83,6 +83,8 @@ void bc_tree(graph&tree){
         for(std::vector<int>::size_type j = 1; j  < output_blocks.size(); ++j){
             if(std::find(output_blocks[j].begin(), output_blocks[j].end(), i) != output_blocks[j].end()){
                 tree[index_hinge][hinges.size() + j - 1] = 1;
+                tree[hinges.size() + j - 1][index_hinge] = 1;
+                
                 // std::cout << i << std::endl;
             }
         }
@@ -94,7 +96,7 @@ void bc_tree(graph&tree){
 void output(int count, char * arg[], graph & tree){
     std::wofstream out;
     out.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
-    out.open(arg[2]);
+    out.open(arg[1]);
     out << tree.size() << L'\n';
     for(std::vector<int>::size_type i = 0; i < tree.size(); ++i){
         for(std::vector<int>::size_type j = 0;j < tree[i].size(); ++j){
@@ -109,7 +111,7 @@ void output(int count, char * arg[], graph & tree){
     Красные - блоки
     
     */
-    std::wstring text = L"<Text>\nШарниры:\nЗеленые вершины - шарниры\nКрасные - блоки\n";
+    std::wstring text = L"<Text>\nЗеленые вершины - шарниры\nКрасные - блоки\nШарниры:\n";
     int i = 0;
     for(int el : hinges){
         text += std::to_wstring(i) + L": " + std::to_wstring(el - 1) + L'\n';

@@ -1,7 +1,8 @@
+
+#ifndef LABA24_STACK_H
+#define LABA24_STACK_H
+
 #include <iostream>
-
-using namespace std;
-
 
 struct Stack{
     int len;
@@ -79,3 +80,6 @@ void resize(Stack & s, int l){
     delete_Stack(s);
     s = res;
 }
+
+#endif //LABA24_STACK_H
+
