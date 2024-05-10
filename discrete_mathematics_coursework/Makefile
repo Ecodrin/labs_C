@@ -1,12 +1,9 @@
+all:
+	g++ -o main.exe main.cpp
+	for number in 1 2 3 4 5 6 7 8 ; do \
+  		./main.exe test$$number.txt answer$$number.txt ; \
+  	done
+	rm main.exe
 
-
-test_1:
-	g++ main.cpp
-	./a.out test1 answer
-	rm ./a.out
-
-test_2:
-	g++ main.cpp
-	./a.out < test2
-	rm ./a.out
-
+del:
+	rm answer*.txt

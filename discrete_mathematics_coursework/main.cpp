@@ -60,15 +60,7 @@ void Blocks(vi & dnum , vi&low,  int &x){
                 newblock(y, x);
                 //std::cout << "|" << dnum[x] << " " << x << "|\n";
                 if(x != 1) hinges.insert(x);
-                else{
-                    int sum = 0;
-                    for(std::vector<int>::size_type i = 0; i < input_graph[0].size(); ++i){
-                        sum += input_graph[0][i];
-                    }
-                    if (sum == 1){
-                        hinges.insert(x);
-                    }
-                }
+
             }
         }
         else{
@@ -80,13 +72,18 @@ void Blocks(vi & dnum , vi&low,  int &x){
 void bc_tree(graph&tree){
     int index_hinge = 0;
     for(int i: hinges){
-        for(std::vector<int>::size_type j = 1; j  < output_blocks.size(); ++j){
+        for(std::vector<int>::size_type j = 1; j < output_blocks.size(); ++j){
             if(std::find(output_blocks[j].begin(), output_blocks[j].end(), i) != output_blocks[j].end()){
                 tree[index_hinge][hinges.size() + j - 1] = 1;
                 tree[hinges.size() + j - 1][index_hinge] = 1;
-                
-                // std::cout << i << std::endl;
+                std::cout << j << '\n';
             }
+
+            for(int g = 0 ;g < output_blocks[j].size(); ++g){
+                std::cout << output_blocks[j][g] << ' ';
+            }
+            std::cout << '\n';
+
         }
         ++index_hinge;
     }
@@ -96,8 +93,8 @@ void bc_tree(graph&tree){
 void output(int count, char * arg[], graph & tree){
     std::wofstream out;
     out.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
-    out.open(arg[1]);
-    out << tree.size() << L'\n';
+    out.open(arg[2]);
+    out << std::to_wstring(tree.size()) + L'\n';
     for(std::vector<int>::size_type i = 0; i < tree.size(); ++i){
         for(std::vector<int>::size_type j = 0;j < tree[i].size(); ++j){
             out << tree[i][j] << " ";
@@ -109,7 +106,7 @@ void output(int count, char * arg[], graph & tree){
     /*
     Зеленые вершины - шарниры
     Красные - блоки
-    
+
     */
     std::wstring text = L"<Text>\nЗеленые вершины - шарниры\nКрасные - блоки\nШарниры:\n";
     int i = 0;
@@ -146,6 +143,14 @@ int main(int argc, char * argv[]){
         if(dnum[i] == 0){
             Blocks(dnum, low, i);
         }
+    }
+    int sum = 0;
+    for(int i = 1; i <output_blocks.size(); ++i){
+        if (std::find(output_blocks[i].begin(), output_blocks[i].end(), 1) != std::end(output_blocks[i]))
+            sum += 1;
+    }
+    if(sum > 1){
+        hinges.insert(1);
     }
     graph tree(output_blocks.size() + hinges.size() - 1, vi(output_blocks.size() + hinges.size() - 1));
     bc_tree(tree);
