@@ -139,7 +139,28 @@ int HandlerOptI(char ** paths, int output){
 	return 0;
 }
 int HandlerOptS(char ** paths, int output){
-	
+	FILE * input_file;
+	FILE * output_file;
+	int mistake = open_files(paths, output, &input_file, &output_file);
+	if(mistake > 0) return mistake;
+	int count_not_letter = 0;
+	char input_char;
+	while(fscanf(input_file, "%c", &input_char) != EOF){
+		if(input_char == '\n'){
+			fprintf(output_file, "Подходящий символов: %d\n", count_not_letter + 1);
+			count_not_letter = 0;
+		} else if((input_char > 'z' || input_char < 'a') 
+					&& (input_char > 'Z' || input_char < 'A') 
+					&& (input_char > '9' || input_char < '0') && input_char != ' '){
+			count_not_letter += 1;
+		}
+	}
+	if(count_not_letter != 0){
+		fprintf(output_file, "Подходящий символов: %d\n", count_not_letter);
+	}
+	fclose(input_file);
+	fclose(output_file);
+	return 0;
 }
 int HandlerOptA(char ** paths, int output){
 
