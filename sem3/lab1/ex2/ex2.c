@@ -61,6 +61,18 @@ double calculate_simple_iteration(double(*func)(double x), double(*func_eqvivale
     return value;
 }
 
+// Общий метод произведения
+double calculate_product(double(*func)(int), double product, double last_product, double eps, int first_k){
+    int k = first_k;
+
+    while(fabs(product - last_product) >= eps){
+        last_product = product;
+        product = func(last_product);
+        k += 1;
+    }
+    return product;
+}
+
 // Вычисление предела e
 void limit_e(int* n, double* value){
     *value = (1 + 1.0 / *n);
@@ -134,4 +146,59 @@ double simple_it_pi(double x){
 
 double calculate_pi_simple_iteration(double eps){
     return calculate_simple_iteration(simple_it_pi, eqv_simple_it_pi, 1, 5, 0.5, eps);
+}
+
+void ln2_limit(int * n, double * value){
+    *value = *n * (pow(2, 1.0 / *n) - 1); 
+    *n *= 5;
+}
+
+double calculate_ln2_limit(double eps){
+    return calculate_limit(ln2_limit, 0, 0, eps, 1);
+}
+
+double ln2_seq(int n){
+    return (((n - 1) % 2 == 0) ? 1.0 : -1.0) / (n);
+}
+
+double calculate_ln2_sequence(double eps){
+    return calculate_sequence(ln2_seq, 0, eps, 1);
+}
+
+double func_ln2_dech(double x){
+    return pow(calculate_e_dichotomy(0.0001), x) - 2;
+}
+
+double calculate_ln2_dech(double eps){
+    return calculate_dichotomy(func_ln2_dech, 0, 2, eps);
+}
+
+
+void sqrt2_limit(int * n, double * value){
+    *value = -0.5;
+
+    for(int i = 1; i <=*n; ++i){
+        *value = *value - *value * *value / 2.0 + 1.0;
+    }
+    *n += 1;
+}
+
+double calculate_sqrt2_limit(double eps){
+    return calculate_limit(sqrt2_limit, 0, -0.5, eps, 1);
+}   
+
+double sqrt2_product(int k){
+    return pow(2, pow(2, -k));
+}
+
+double calculate_sqrt2_product(double eps){
+    return calculate_product(sqrt2_product, 0, -1, eps, 2);
+}
+
+double sqrt2_dech(double x){
+    return x * x - 2;
+}
+
+double calculate_sqrt2_dech(double eps){
+    return calculate_dichotomy(sqrt2_dech, 0, 4, eps);
 }
