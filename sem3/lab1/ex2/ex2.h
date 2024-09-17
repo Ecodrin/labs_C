@@ -37,7 +37,10 @@ void ln2_limit(int *n, double *value);
 // Функции для вычисления sqrt2
 double calculate_sqrt2_limit(double eps);
 double calculate_sqrt2_product(double eps);
+double calculate_sqrt2_dech(double eps);
 void sqrt2_limit(int *n, double *value);
 double calculate_sqrt2_product(double eps);
+
+double CharToDouble(char *string);
 
 #endif

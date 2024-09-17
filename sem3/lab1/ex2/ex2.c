@@ -11,6 +11,28 @@ double fac(int num) {
 	return f;
 }
 
+double CharToDouble(char *string) {
+	int k = -1;
+	int fl = 0;
+	fl = 0;
+	double number = 0;
+	for (int j = 0; string[j] != '\0'; ++j) {
+		if (string[j] == '-') fl = 1;
+		if (string[j] >= '0' && string[j] <= '9') {
+			number *= 10;
+			number += (string[j] - '0');
+			if (k != -1) k += 1;
+		} else if (string[j] == '.')
+			k = 0;
+	}
+	for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
+	k = -1;
+	if (fl) number *= -1;
+	// putchar('\n');
+	// printf("%f\n", number);
+	return number;
+}
+
 // Общий метод поиска предeла
 double calculate_limit(void (*func)(int *, double *), double value, double last_value, double eps, int first_n) {
 	int i = first_n;
@@ -107,6 +129,8 @@ void lim_pi(int *n, double *value) {
 
 	// printf("%f\n", *value);
 	*n += 1;
+	// *value = pow(pow(2, *n) * fac(*n), 4) / (*n * fac(*n * 2) * fac(*n * 2));
+	// *n += 1;
 }
 
 double calculate_pi_limit(double eps) { return calculate_limit(lim_pi, 0, 0, eps, 1); }

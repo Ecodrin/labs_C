@@ -22,27 +22,31 @@ int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
 			default:
 				return 1;
 		}
-		int k = -1;
-		int fl = 0;
-		for (int i = 0; i < count_numbers; ++i) {
-			fl = 0;
-			for (int j = 0; argv[i + 2][j] != '\0'; ++j) {
-				if (argv[i + 2][j] == '-') fl = 1;
-				if (argv[i + 2][j] >= '0' && argv[i + 2][j] <= '9') {
-					numbers[i] *= 10;
-					numbers[i] += (argv[i + 2][j] - '0');
-					if (k != -1) k += 1;
-				} else if (argv[i + 2][j] == '.')
-					k = 0;
-			}
-			for (int k_null = 0; k_null < k; ++k_null) numbers[i] /= 10.0;
-			k = -1;
-			if (fl) numbers[i] *= -1;
-			// putchar('\n');
-			// printf("%f\n", numbers[i]);
-		}
+		CharToDouble(argv, numbers, count_numbers);
 	}
 	return 0;
+}
+
+void CharToDouble(char ** argv, double * numbers, int count_numbers){
+	int k = -1;
+	int fl = 0;
+	for (int i = 0; i < count_numbers; ++i) {
+		fl = 0;
+		for (int j = 0; argv[i + 2][j] != '\0'; ++j) {
+			if (argv[i + 2][j] == '-') fl = 1;
+			if (argv[i + 2][j] >= '0' && argv[i + 2][j] <= '9') {
+				numbers[i] *= 10;
+				numbers[i] += (argv[i + 2][j] - '0');
+				if (k != -1) k += 1;
+			} else if (argv[i + 2][j] == '.')
+				k = 0;
+		}
+		for (int k_null = 0; k_null < k; ++k_null) numbers[i] /= 10.0;
+		k = -1;
+		if (fl) numbers[i] *= -1;
+		// putchar('\n');
+		// printf("%f\n", numbers[i]);
+	}
 }
 
 int compare_values(double a, double b, double eps) {
