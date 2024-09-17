@@ -84,15 +84,15 @@ int SizeString(char* string) {
 void From10to16(int number, char* result) {
 	char tmp[100];
 	int index = 0;
-
+	int based16 = 16;
 	while (number > 0) {
-		if (number % 16 < 10) {
-			tmp[index] = '0' + number % 16;
+		if (number % based16 < 10) {
+			tmp[index] = '0' + number % based16;
 		} else {
-			tmp[index] = 'A' + (number % 16 - 10);
+			tmp[index] = 'A' + (number % based16 - 10);
 		}
 		index++;
-		number /= 16;
+		number /= based16;
 	}
 	for (int i = 0; i < index; i++) {
 		result[i] = tmp[index - 1 - i];
@@ -128,7 +128,7 @@ void HandlerOptA(int number) { printf("%d\n", (1 + number) / 2 * number); }
 
 void HandlerOptF(int number) {
 	int size = 1, next = 0, f;
-	IntVector* fac = create_int_vector(1);
+	IntVector* fac = create_int_vector(size);
 	push_end(fac, 1);
 	for (int i = 2; i <= number; ++i) {
 		for (int j = 0; j < size; ++j) {
@@ -137,10 +137,11 @@ void HandlerOptF(int number) {
 			next = f / 10;
 		}
 		while (next > 0) {
-			push_end(fac, f / 10);
+			push_end(fac, next % 10);
 			size += 1;
 			next /= 10;
 		}
+
 	}
 	for (int i = size - 1; i >= 0; --i) {
 		printf("%d", get(fac, i));

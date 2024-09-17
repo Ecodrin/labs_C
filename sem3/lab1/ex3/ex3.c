@@ -1,9 +1,8 @@
 #include "ex3.h"
 
 int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
-	if (argc != 6 && argc != 4) {
+	if(argc < 2)
 		return 1;
-	}
 	int count_numbers;
 	if (argv[1][0] == '/' || argv[1][0] == '-') {
 		switch (argv[1][1]) {
@@ -22,6 +21,10 @@ int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
 			default:
 				return 1;
 		}
+		if(count_numbers != argc - 2){
+			printf("Неверное количество аргументов\n");
+			return 1;
+		}	
 		CharToDouble(argv, numbers, count_numbers);
 	}
 	return 0;
@@ -73,6 +76,7 @@ void solving_quadratic_equations(double a, double b, double c, double eps) {
 void HandlerOptQ(double* numbers) {
 	double eps = numbers[0];
 	double a = numbers[1], b = numbers[2], c = numbers[3];
+	// printf("%f %f %f\n", a, b, c);
 	if (compare_values(a, b, eps) != 0 && compare_values(b, c, eps) != 0) {
 		solving_quadratic_equations(a, b, c, eps);
 		solving_quadratic_equations(a, c, b, eps);
@@ -110,7 +114,7 @@ void HandlerOptT(double* numbers) {
 		if (compare_values(numbers[i], minc, eps) == 2) minc = numbers[i];
 	}
 	double b = numbers[1] + numbers[2] + numbers[3] - minc - maxc;
-	if (compare_values(minc + b, maxc, eps) == 1)
+	if (compare_values(minc * minc + b * b, maxc * maxc , eps) == 0)
 		printf("Треугольник со сторонами %f %f %f  может существовать\n", minc, maxc, b);
 	else
 		printf("Треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);
