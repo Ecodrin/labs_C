@@ -46,7 +46,7 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 	return 0;
 }
 
-void HandlerOptH(int number) {
+void HandlerOptH(const int number) {
 	int fl = 0;
 	for (int i = 1; i <= 100; ++i) {
 		if (!(i % number)) {
@@ -59,7 +59,7 @@ void HandlerOptH(int number) {
 	}
 }
 
-void HandlerOptP(int number) {
+void HandlerOptP(const int number) {
 	int flag = 1;
 	for (int i = 2; i <= sqrt(number); ++i) {
 		if (!(number % i)) {
@@ -74,17 +74,16 @@ void HandlerOptP(int number) {
 	}
 }
 
-int SizeString(char* string) {
+int SizeString(const char* string) {
 	int i = 0;
-	for (; string[i] != '\0'; ++i)
-		;
+	for (; string[i] != '\0'; ++i);
 	return i;
 }
 
 void From10to16(int number, char* result) {
 	char tmp[100];
 	int index = 0;
-	int based16 = 16;
+	const int based16 = 16;
 	while (number > 0) {
 		if (number % based16 < 10) {
 			tmp[index] = '0' + number % based16;
@@ -100,7 +99,7 @@ void From10to16(int number, char* result) {
 	result[index] = '\0';
 }
 
-void HandlerOptS(int number) {
+void HandlerOptS(const int number) {
 	char result[100];
 	From10to16(number, result);
 	for (int i = 0; result[i] != '\0'; ++i) {
@@ -109,7 +108,7 @@ void HandlerOptS(int number) {
 	putchar('\n');
 }
 
-void HandlerOptE(int number) {
+void HandlerOptE(const int number) {
 	if (number > 10) {
 		printf("The power of the numbers should not exceed 10");
 		return;
@@ -124,28 +123,28 @@ void HandlerOptE(int number) {
 	}
 }
 
-void HandlerOptA(int number) { printf("%d\n", (1 + number) / 2 * number); }
+void HandlerOptA(const int number) { printf("%d\n", (1 + number) / 2 * number); }
 
 void HandlerOptF(int number) {
 	int size = 1, next = 0, f;
-	IntVector* fac = create_int_vector(size);
-	push_end(fac, 1);
+	CharVector* fac = create_char_vector(size);
+	push_end(fac, 1 + '0');
 	for (int i = 2; i <= number; ++i) {
 		for (int j = 0; j < size; ++j) {
-			f = get(fac, j) * i + next;
-			at(fac, j, f % 10);
+			f = ((get(fac, j) - '0') * i + next);
+			at(fac, j, f % 10 + '0');
 			next = f / 10;
 		}
 		while (next > 0) {
-			push_end(fac, next % 10);
+			push_end(fac, next % 10 + '0');
 			size += 1;
 			next /= 10;
 		}
-
+		// print_vector(fac);
 	}
 	for (int i = size - 1; i >= 0; --i) {
-		printf("%d", get(fac, i));
+		printf("%c", get(fac, i));
 	}
 	printf("\n");
-	destroy_int_vector(fac);
+	destroy_char_vector(fac);
 }
