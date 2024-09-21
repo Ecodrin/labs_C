@@ -13,6 +13,9 @@ int main(int argc, char ** argv){
     case 2:    
         printf("Eps < 0\n");
         return 1;
+    case 3:
+        printf("Incorrect options\n");
+        return 1;
     default:
         break;
     }

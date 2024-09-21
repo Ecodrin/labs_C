@@ -7,12 +7,12 @@ typedef struct IntVector {
 	int* arr;
 } IntVector;
 
-IntVector* create_int_vector(int size);
-void push_end(IntVector* vector, int new_element);
-int get(IntVector* vector, int index);
+IntVector * create_int_vector(int capacity);
+int push_end_intvector(IntVector* vector, int new_element);
+int get_intvector(IntVector* vector, int index);
 void destroy_int_vector(IntVector* vector);
-void at(IntVector* vector, int index, int new_element);
-int vector_size(IntVector* vector);
-void print_vector(IntVector* vector);
+void at_intvector(IntVector* vector, int index, int new_element);
+int size_intvector(IntVector* vector);
+void print_intvector(IntVector* vector);
 
 #endif

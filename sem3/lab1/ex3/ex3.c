@@ -25,24 +25,29 @@ int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
 			printf("Неверное количество аргументов\n");
 			return 1;
 		}	
-		CharToDouble(argv, numbers, count_numbers);
+		if(CharToDouble(argv, numbers, count_numbers)){
+			return 1;
+		}
 	}
 	return 0;
 }
 
-void CharToDouble(char ** argv, double * numbers, int count_numbers){
+int CharToDouble(char ** argv, double * numbers, int count_numbers){
 	int k = -1;
 	int fl = 0;
 	for (int i = 0; i < count_numbers; ++i) {
 		fl = 0;
 		for (int j = 0; argv[i + 2][j] != '\0'; ++j) {
 			if (argv[i + 2][j] == '-') fl = 1;
-			if (argv[i + 2][j] >= '0' && argv[i + 2][j] <= '9') {
+			else if (argv[i + 2][j] >= '0' && argv[i + 2][j] <= '9') {
 				numbers[i] *= 10;
 				numbers[i] += (argv[i + 2][j] - '0');
 				if (k != -1) k += 1;
 			} else if (argv[i + 2][j] == '.')
 				k = 0;
+			else{
+				return 1;
+			}
 		}
 		for (int k_null = 0; k_null < k; ++k_null) numbers[i] /= 10.0;
 		k = -1;
@@ -50,6 +55,7 @@ void CharToDouble(char ** argv, double * numbers, int count_numbers){
 		// putchar('\n');
 		// printf("%f\n", numbers[i]);
 	}
+	return 0;
 }
 
 int compare_values(const double a, const double b, const double eps) {
@@ -129,5 +135,5 @@ void HandlerOptT(const double* numbers) {
 	if (compare_values(minc * minc + b * b, maxc * maxc , eps) == 0)
 		printf("Прямоугольный треугольник со сторонами %f %f %f  может существовать\n", minc, maxc, b);
 	else
-		printf(т"Прямоугольный треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);
+		printf("Прямоугольный треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);
 }

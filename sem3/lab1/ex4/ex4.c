@@ -59,7 +59,7 @@ void copy_output_path(char* a, char* c) {
 
 int open_files(char** paths, int output, FILE** input_file, FILE** output_file) {
 	*input_file = fopen(paths[0], "r");
-	if (!input_file) return 1;
+	if (!(*input_file)) return 1;
 	if (output == 0)
 		*output_file = fopen(paths[1], "w");
 	else {
@@ -78,8 +78,8 @@ int HandlerOptD(char** paths, int output) {
 	int mistake = open_files(paths, output, &input_file, &output_file);
 	if (mistake > 0) return mistake;
 	char input_char;
-	while (fscanf(input_file, "%c", &input_char) != EOF) {
-		if (input_char <= '0' || input_char >= '9') fprintf(output_file, "%c", input_char);
+	while ((input_char = getc(input_file)) != EOF) {
+		if (input_char < '0' || input_char > '9') fprintf(output_file, "%c", input_char);
 	}
 	fclose(input_file);
 	fclose(output_file);
@@ -90,41 +90,19 @@ int HandlerOptI(char** paths, int output) {
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);
 	if (mistake > 0) return mistake;
-	int alphabet[52];
-	for (int i = 0; i < 52; ++i) {
-		alphabet[i] = 0;
-	}
+	int count = 0;
 	char input_char, fl = 0;
-	while (fscanf(input_file, "%c", &input_char) != EOF) {
-		if (input_char == '\n') {
-			for (int i = 0; i < 26; ++i) {
-				fprintf(output_file, "%c: %d\t", i + 'a', alphabet[i]);
-				alphabet[i] = 0;
-			}
-			for (int i = 0; i < 26; ++i) {
-				fprintf(output_file, "%c: %d\t", i + 'A', alphabet[i + 26]);
-				alphabet[26 + i] = 0;
-			}
-			fprintf(output_file, "\n");
-			fl = 1;
-		} else if (input_char >= 'a' && input_char <= 'z')
-			alphabet[input_char - 'a'] += 1;
-		else if (input_char >= 'A' && input_char <= 'Z')
-			alphabet[input_char - 'A' + 26] += 1;
-		else
-			fl = 0;
+	while ((input_char = getc(input_file)) != EOF) {
+		if((input_char >= 'a' && input_char <= 'z') || (input_char >= 'A' && input_char <= 'Z')){
+			count += 1;
+		}
+		if(input_char == '\n'){
+			fprintf(output_file, "Букв латинского алфавита: %d\n", count);
+			count = 0;
+		}
 	}
-	// Проверяем на последнюю строку
-	if (!fl) {
-		for (int i = 0; i < 26; ++i) {
-			fprintf(output_file, "%c: %d\t", i + 'a', alphabet[i]);
-			alphabet[i] = 0;
-		}
-		for (int i = 0; i < 26; ++i) {
-			fprintf(output_file, "%c: %d\t", i + 'A', alphabet[i + 26]);
-			alphabet[26 + i] = 0;
-		}
-		fprintf(output_file, "\n");
+	if(count){
+		fprintf(output_file, "Букв латинского алфавита: %d\n", count);
 	}
 	fclose(input_file);
 	fclose(output_file);
@@ -137,7 +115,7 @@ int HandlerOptS(char** paths, int output) {
 	if (mistake > 0) return mistake;
 	int count_not_letter = 0;
 	char input_char;
-	while (fscanf(input_file, "%c", &input_char) != EOF) {
+	while ((input_char = getc(input_file)) != EOF) {
 		if (input_char == '\n') {
 			fprintf(output_file, "Подходящих символов: %d\n", count_not_letter + 1);
 			count_not_letter = 0;
@@ -146,20 +124,20 @@ int HandlerOptS(char** paths, int output) {
 			count_not_letter += 1;
 		}
 	}
-	if (count_not_letter != 0) {
-		fprintf(output_file, "Подходящих символов: %d\n", count_not_letter);
-	}
+	fprintf(output_file, "Подходящих символов: %d\n", count_not_letter);
 	fclose(input_file);
 	fclose(output_file);
 	return 0;
 }
+
+
 int HandlerOptA(char** paths, int output) {
 	FILE* input_file;
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);
 	if (mistake > 0) return mistake;
 	char input_char;
-	while (fscanf(input_file, "%c", &input_char) != EOF) {
+	while ((input_char = getc(input_file)) != EOF) {
 		if (input_char < '0' || input_char > '9') {
 			fprintf(output_file, "%x", input_char);
 		} else {

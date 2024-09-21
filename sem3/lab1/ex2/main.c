@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 	}
 	double eps = CharToDouble(argv[1]);
 	if(eps < 0){
-		printf("Точность не того знака\n");
+		printf("Точность записана неверно\n");
 		return 1;
 	}
 

@@ -3,7 +3,7 @@
 
 int main(int argc, char ** argv){
     kOpts opt = 0;
-	int (*handlers[6])(char **) = {HandlerOptR};
+	int (*handlers[6])(char **) = {HandlerOptR, HandlerOptA};
 
 	if (GetOpts(argc, argv, &opt)) {
 		printf("%s", "Incorrect option\n");

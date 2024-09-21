@@ -5,7 +5,7 @@ int get_value(int argc, char **argv, double *eps, double *x) {
 	*eps = CharToDouble(argv[1]);
 	// printf("%f\n", eps);
 	if (*eps < 0) {
-		printf("Точность должна быть положительной\n");
+		printf("Точность введена неверно\n");
 		return 2;
 	}
 	return 0;
@@ -26,12 +26,15 @@ double CharToDouble(char *string) {
 	double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
 		if (string[j] == '-') fl = 1;
-		if (string[j] >= '0' && string[j] <= '9') {
+		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
 		} else if (string[j] == '.')
 			k = 0;
+		else{
+			return -1;
+		}
 	}
 	for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
 	k = -1;

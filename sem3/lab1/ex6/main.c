@@ -11,7 +11,7 @@ int main(int argc, char ** argv){
         printf("Incorrect count work args\n");
         return 1;
     case 2:    
-        printf("Eps < 0\n");
+        printf("Mistake in Eps\n");
         return 1;
     default:
         break;

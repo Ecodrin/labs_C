@@ -19,12 +19,15 @@ long double CharToDouble(char *string) {
 	for (int j = 0; string[j] != '\0'; ++j) {
 		// printf("%c\n", string[j]);
 		if (string[j] == '-') fl = 1;
-		if (string[j] >= '0' && string[j] <= '9') {
+		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
 		} else if (string[j] == '.')
 			k = 0;
+		else{
+			return -1;
+		}
 	}
 	for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
 	k = -1;
