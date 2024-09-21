@@ -17,6 +17,7 @@ long double CharToDouble(char *string) {
 	fl = 0;
 	long double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
+		// printf("%c\n", string[j]);
 		if (string[j] == '-') fl = 1;
 		if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
@@ -80,7 +81,7 @@ long double calculate_simple_iteration(long double (*func)(long double x), long 
                                   long double a, long double b, long double lambda, long double eps) {
 	long double last_value = (a + b) / 2;
 	long double value = func_eqvivalent(last_value, lambda);
-	while (fabsl(value - last_value) >= eps) {
+	while (fabsl(value - last_value) >= eps / 10000) {
 		last_value = value;
 		value = func_eqvivalent(last_value, lambda);
 		// printf("%Lf %Lf\n", last_value, value);

@@ -4,6 +4,10 @@ int get_value(int argc, char ** argv, double * eps, double *x){
     if(argc != 3)
         return 1;
     *eps = CharToDouble(argv[1]);
+	if(*eps < 0){
+		printf("Точность должна быть положительной\n");
+		return 2;
+	}
     *x = CharToDouble(argv[2]);
 	return 0;
 }
@@ -92,15 +96,14 @@ double sum_c(double eps, double x){
 
 
 double sum_d(double eps, double x){
-	double sum = 0.0, last_sum = -1, value = 1.0 / 2;
+	double sum = 1.0, last_sum = -1, value = 1.0;
 	int k = 1;
 	while(fabs(sum - last_sum) >= eps){
 		last_sum = sum;
-		value *= (k % 2 == 0 ? -1.0 : 1.0) * value;
+		value *= -x * x * (2.0 * k - 1.0) / (2.0 * k); 
 		sum += value;
-		value *= (2.0 * k + 1) / (2.0 * k + 2);
 		// printf("%f %f\n", sum, value);
-		k += 1;	
+		k += 1;
 	}
 	return sum;
 }

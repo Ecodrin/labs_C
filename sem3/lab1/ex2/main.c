@@ -8,6 +8,10 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	double eps = CharToDouble(argv[1]);
+	if(eps < 0){
+		printf("Точность не того знака\n");
+		return 1;
+	}
 
 // 27182818284 5904523536 0287471352 6624977572 4709369995
 	printf("limit: %.15Lf\n", calculate_e_limit(eps));
@@ -29,8 +33,8 @@ int main(int argc, char** argv) {
 	printf("product: %.15Lf\n", calculate_sqrt2_product(eps));
 	printf("dech: %.15Lf\n\n", calculate_sqrt2_dech(eps));
 
-	printf("limit: %.15Lf\n", calculate_gamma_limit(eps));
-	printf("seq: %.15Lf\n", calculate_gamma_seq(eps));
+	// printf("limit: %.15Lf\n", calculate_gamma_limit(eps));
+	// printf("seq: %.15Lf\n", calculate_gamma_seq(eps));
 
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "ex5.h"
+#include "ex6.h"
 
 
 int main(int argc, char ** argv){
@@ -16,8 +16,8 @@ int main(int argc, char ** argv){
     default:
         break;
     }
-    printf("Сумма a: %f\n", sum_a(eps, x));
-    printf("Сумма b: %f\n", sum_b(eps, x));
-    printf("Сумма c: %f\n", sum_c(eps, x));
-    printf("Сумма d: %f\n", sum_d(eps, x));
+    printf("Интеграл a: %f\n", integral_a(eps));
+    printf("Интеграл b: %f\n", integral_b(eps));
+    printf("Интеграл c: %f\n", integral_c(eps));
+    printf("Интеграл d: %f\n", integral_d(eps));
 }

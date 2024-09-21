@@ -81,22 +81,23 @@ int SizeString(const char* string) {
 }
 
 void From10to16(int number, char* result) {
-	char tmp[100];
+	CharVector * tmp = create_char_vector(1);
 	int index = 0;
 	const int based16 = 16;
 	while (number > 0) {
 		if (number % based16 < 10) {
-			tmp[index] = '0' + number % based16;
+			push_end(tmp, '0' + number % based16);
 		} else {
-			tmp[index] = 'A' + (number % based16 - 10);
+			push_end(tmp, 'A' + (number % based16 - 10));
 		}
 		index++;
 		number /= based16;
 	}
-	for (int i = 0; i < index; i++) {
-		result[i] = tmp[index - 1 - i];
+	for (int i = vector_size(tmp) - 1; i >= 0; i--) {
+		result[i] = get(tmp, i);
 	}
 	result[index] = '\0';
+	destroy_char_vector(tmp);
 }
 
 void HandlerOptS(const int number) {
