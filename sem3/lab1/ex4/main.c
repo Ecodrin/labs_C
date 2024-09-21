@@ -5,7 +5,7 @@
 int main(int argc, char** argv) {
 	kOpts opt = 0;
 	char* paths[2];
-	int output_flag = 0;
+	int output_flag = 1;
 	int (*handlers[4])(char** paths, int output_flag) = {HandlerOptD, HandlerOptI, HandlerOptS, HandlerOptA};
 
 	if (GetOpts(argc, argv, &opt, paths, &output_flag)) {

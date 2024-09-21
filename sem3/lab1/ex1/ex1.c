@@ -80,8 +80,9 @@ int SizeString(const char* string) {
 	return i;
 }
 
-void From10to16(int number, char* result) {
+void From10to16(int number, CharVector *result) {
 	CharVector * tmp = create_char_vector(1);
+	
 	int index = 0;
 	const int based16 = 16;
 	while (number > 0) {
@@ -94,19 +95,19 @@ void From10to16(int number, char* result) {
 		number /= based16;
 	}
 	for (int i = vector_size(tmp) - 1; i >= 0; i--) {
-		result[i] = get(tmp, i);
+		push_end(result, get(tmp, i));
 	}
-	result[index] = '\0';
 	destroy_char_vector(tmp);
 }
 
 void HandlerOptS(const int number) {
-	char result[100];
+	CharVector *result = create_char_vector(1);
 	From10to16(number, result);
-	for (int i = 0; result[i] != '\0'; ++i) {
-		printf("%c ", result[i]);
+	for (int i = 0; i < vector_size(result); ++i) {
+		printf("%c ", get(result, i));
 	}
 	putchar('\n');
+	destroy_char_vector(result);
 }
 
 void HandlerOptE(const int number) {

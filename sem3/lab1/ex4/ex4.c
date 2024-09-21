@@ -4,35 +4,37 @@ int GetOpts(int argc, char** argv, kOpts* option, char** paths, int* output_flag
 	if (argc != 3 && argc != 4) {
 		return 1;
 	}
-	for (int i = 1; i <= 2; ++i) {
-		const char* procceding_option = argv[i];
-		if (procceding_option[0] == '/' || procceding_option[0] == '-') {
-			char flag = procceding_option[1];
-			if (procceding_option[1] == 'n') {
-				*output_flag = 1;
-				flag = procceding_option[2];
-			}
-			switch (flag) {
-				case 'd':
-					*option = OPT_D;
-					break;
-				case 'i':
-					*option = OPT_I;
-					break;
-				case 's':
-					*option = OPT_S;
-					break;
-				case 'a':
-					*option = OPT_A;
-					break;
-				default:
-					return 1;
-					break;
-			}
+	const char* procceding_option = argv[1];
+	if (procceding_option[0] == '/' || procceding_option[0] == '-') {
+		char flag = procceding_option[1];
+		if (procceding_option[1] == 'n') {
+			*output_flag = 0;
+			flag = procceding_option[2];
 		}
-		paths[0] = argv[2];
-		if (!(*output_flag)) paths[1] = argv[3];
+		switch (flag) {
+			case 'd':
+				*option = OPT_D;
+				break;
+			case 'i':
+				*option = OPT_I;
+				break;
+			case 's':
+				*option = OPT_S;
+				break;
+			case 'a':
+				*option = OPT_A;
+				break;
+			default:
+				return 1;
+				break;
+		}
 	}
+	paths[0] = argv[2];
+	if (!(*output_flag)) {
+		if(argc != 4) return 1;
+		paths[1] = argv[3];
+	};
+	if(*output_flag && argc != 3) return 1;
 	// printf("%s %s %d\n", paths[0], paths[1], *output_flag);
 	return 0;
 }

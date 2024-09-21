@@ -2,13 +2,11 @@
 #ifndef LAB1_EX6_EX6_H
 #define LAB1_EX6_EX6_H
 
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
-
-int get_value(int argc, char ** argv, double * eps, double * x);
+int get_value(int argc, char **argv, double *eps, double *x);
 double CharToDouble(char *string);
-
 
 double integral_a(double eps);
 double integral_b(double eps);

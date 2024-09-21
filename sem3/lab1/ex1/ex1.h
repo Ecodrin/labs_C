@@ -13,7 +13,7 @@ int GetOpts(int argc, char **argv, kOpts *option, int *number);
 void HandlerOptH(const int number);
 void HandlerOptP(const int number);
 int SizeString(const char *string);
-void From10to16(const int number, char *result);
+void From10to16(const int number, CharVector *result);
 void HandlerOptS(const int number);
 void HandlerOptE(const int number);
 void HandlerOptA(const int number);

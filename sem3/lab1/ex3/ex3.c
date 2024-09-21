@@ -127,7 +127,7 @@ void HandlerOptT(const double* numbers) {
 	}
 	double b = numbers[1] + numbers[2] + numbers[3] - minc - maxc;
 	if (compare_values(minc * minc + b * b, maxc * maxc , eps) == 0)
-		printf("Треугольник со сторонами %f %f %f  может существовать\n", minc, maxc, b);
+		printf("Прямоугольный треугольник со сторонами %f %f %f  может существовать\n", minc, maxc, b);
 	else
-		printf("Треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);
+		printf(т"Прямоугольный треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);
 }

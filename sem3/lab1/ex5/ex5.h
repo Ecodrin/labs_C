@@ -2,13 +2,11 @@
 #ifndef LAB1_EX5_EX5_H
 #define LAB1_EX5_EX5_H
 
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
-
-int get_value(int argc, char ** argv, double * eps, double * x);
+int get_value(int argc, char **argv, double *eps, double *x);
 double CharToDouble(char *string);
-
 
 double sum_a(double eps, double x);
 double sum_b(double eps, double x);
