@@ -23,64 +23,53 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 	return 0;
 }
 
-char* buffer_scan(FILE* f) {
-	fseek(f, 0, SEEK_END);
-	long int size = ftell(f);
-	rewind(f);
-	char* buffer = malloc(sizeof(char) * size + 1);
-	if (buffer == NULL) {
-		printf("Ошибка выделения памяти для считывания файла\n");
-		return NULL;
-	};
-	size_t result = fread(buffer, sizeof(char), size + 1, f);
-	buffer[size] = '\0';
-	return buffer;
-}
+
 
 int HandlerOptR(char** paths) {
-	FILE* f1 = fopen(paths[2], "r");
-	FILE* f2 = fopen(paths[3], "r");
-	if (!f1 || !f2) {
+	FILE * f1 = fopen(paths[2], "r");
+	FILE * f2 = fopen(paths[3], "r");
+	if(!f1 || !f2){
 		return 1;
 	}
-	FILE* f3 = fopen(paths[4], "w");
-	if (!f3) {
+	FILE * f3 = fopen(paths[4], "w");
+	if(!f3)
 		return 2;
-	}
-	char* string1 = buffer_scan(f1);
-	;
-	char* string2 = buffer_scan(f2);
-	int i = 0, j = 0;
-	for (; string1[i] != '\0' || string2[j] != '\0';) {
-		while (string1[i] != '\0') {
-			if (string1[i] != '\n' && string1[i] != '\t' && string1[i] != ' ') {
-				putc(string1[i], f3);
-				// printf("%c\n", string1[i]);
-				i += 1;
-				break;
-			}
-			i += 1;
+
+	fseek(f1, 0, SEEK_END);
+	long int size1 = ftell(f1);
+	rewind(f1);
+	char * buffer1 = malloc(sizeof(char) * size1);
+	if(!buffer1) return 4;
+
+	fseek(f2, 0, SEEK_END);
+	long int size2 = ftell(f2);
+	rewind(f2);
+	char * buffer2 = malloc(sizeof(char) * size2);
+	if(!buffer2) return 4;
+
+	int error1, error2;
+	error1 = fscanf(f1, "%s", buffer1);
+	error2 = fscanf(f2, "%s", buffer2);
+	while(error1 != EOF || error2 != EOF){
+		if(error1 != EOF){
+			fprintf(f3, "%s ", buffer1);
 		}
-		while (string2[j] != '\0') {
-			if (string2[j] != ' ' && string2[j] != '\n' && string2[j] != '\t') {
-				putc(string2[j], f3);
-				// printf("%c\n", string2[j]);
-				j += 1;
-				break;
-			}
-			j += 1;
+		if(error2 != EOF){
+			fprintf(f3, "%s ", buffer2);
 		}
+		error1 = fscanf(f1, "%s", buffer1);
+		error2 = fscanf(f2, "%s", buffer2);
 	}
+	
+	free(buffer1);
+	free(buffer2);
 	fclose(f1);
 	fclose(f2);
 	fclose(f3);
-	free(string1);
-	free(string2);
-	return 0;
 }
 
 void From10to(int number, char* result, int based) {
-	char tmp[100];
+	char tmp[8];
 	int index = 0;
 	while (number > 0) {
 		tmp[index] = '0' + number % based;
@@ -90,6 +79,7 @@ void From10to(int number, char* result, int based) {
 	for (int i = 0; i <= index; i++) {
 		result[i] = tmp[index - i - 1];
 	}
+	result[index] = '\0';
 }
 
 int HandlerOptA(char** paths) {
@@ -97,18 +87,52 @@ int HandlerOptA(char** paths) {
 	if(!f1){
 		return 1;
 	}
-	FILE *f2 = fopen(paths[3], "w");
-	if(!f2){
-		return 2;
-	}
-	char *string1 = buffer_scan(f1);
 
-	for(int i = 0; string1[i] != '\0'; ++i){
+	FILE * f2 = fopen(paths[3], "w");
+	if(!f2)
+		return 2;
+	fseek(f1, 0, SEEK_END);
+	long int size1 = ftell(f1);
+	rewind(f1);
+	char * buffer1 = malloc(sizeof(char) * size1);
+	if(!buffer1) return 4;
+	int error;
+	int i = 0;
+	while((error = fscanf(f1, "%s", buffer1)) != EOF){
 		if(i % 10 == 9){
-			
+			for(int j = 0; buffer1[j] != '\0'; ++j){
+				if(buffer1[j] >= 'A' && buffer1[j] <= 'Z')
+					buffer1[j] = 'a' + (buffer1[j] - 'A');
+			}
+			for(int j = 0; buffer1[j] != '\0';++j){
+				char result[100];
+				From10to(buffer1[j], result, 4);
+				fprintf(f2, "%s", result);
+			}
+			fputc(' ', f2);
 		}
+		else if(i % 2 == 1){
+			for(int j = 0; buffer1[j] != '\0'; ++j){
+				if(buffer1[j] >= 'A' && buffer1[j] <= 'Z')
+					buffer1[j] = 'a' + (buffer1[j] - 'A');
+			}
+			fprintf(f2, "%s ", buffer1);
+		}
+		else if(i % 5 == 4){
+			for(int j = 0; buffer1[j] != '\0';++j){
+				char result[8];
+				From10to(buffer1[j], result, 8);
+				fprintf(f2, "%s", result);
+			}
+			fputc(' ', f2);
+		}
+		else{
+			fprintf(f2, "%s ", buffer1);
+		}
+		i += 1;
 	}
-	free(string1);
+
 	fclose(f1);
 	fclose(f2);
+	free(buffer1);
 }

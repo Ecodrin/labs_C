@@ -78,7 +78,7 @@ double sum_c(double eps, double x) {
 	double last_sum = 0.0;
 	double value = 1.0;
 	int n = 1;
-	if (x >= 1) {
+	if (fabs(x) >= 1.0) {
 		printf("Ряд c не сходится\n");
 		return -1;
 	} else {
@@ -96,7 +96,7 @@ double sum_c(double eps, double x) {
 }
 
 double sum_d(double eps, double x) {
-	double sum = 1.0, last_sum = -1, value = 1.0;
+	double sum = 0.0, last_sum = -1, value = 1.0;
 	int k = 1;
 	while (fabs(value) >= eps) {
 		last_sum = sum;
