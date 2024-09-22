@@ -1,11 +1,11 @@
 
 FLAGS=-Wall -Wextra -g -c
 FLAGSMAIN = -Wall -Wextra -g
-COMP = gcc
+COMP = clang
 
 
-ex7: main.c
-	$(COMP) ex7.c -c 
-	$(COMP) main.c ex7.o -lm -o ex7.exe
+ex8: main.c
+	$(COMP) ex8.c -c 
+	$(COMP) main.c ex8.o -lm -o ex8.exe
 #   Меняем флаги и пути внизу
-	rm ex7.o
+	rm ex8.o

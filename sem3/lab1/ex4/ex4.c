@@ -79,7 +79,8 @@ int HandlerOptD(char** paths, int output) {
 	if (mistake > 0) return mistake;
 	char input_char;
 	while ((input_char = getc(input_file)) != EOF) {
-		if (input_char < '0' || input_char > '9') fprintf(output_file, "%c", input_char);
+		if (input_char < '0' || input_char > '9') fputc(input_char, output_file);
+		else fputc(' ', output_file);
 	}
 	fclose(input_file);
 	fclose(output_file);
@@ -135,7 +136,10 @@ void From10to(int number, char* result, int based) {
 	char tmp[8];
 	int index = 0;
 	while (number > 0) {
-		tmp[index] = '0' + number % based;
+		if (number % based < 10)
+			tmp[index] = '0' + number % based;
+		else	
+			tmp[index] = 'A' + (number % based - 10);
 		index++;
 		number /= based;
 	}
@@ -155,6 +159,7 @@ int HandlerOptA(char** paths, int output) {
 		if (input_char < '0' || input_char > '9') {
 			char result[8];
 			From10to(input_char, result, 16);
+			// printf("%s\n", result);
 			fprintf(output_file, "%s", result);
 		} else {
 			fprintf(output_file, "%c", input_char);
