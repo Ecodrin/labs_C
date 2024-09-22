@@ -131,6 +131,28 @@ void HandlerOptA(const int number) { printf("%d\n", (1 + number) / 2 * number); 
 
 void HandlerOptF(int number) {
 	IntVector * fac = create_int_vector(1);
-	
+	push_end_intvector(fac, 1);
+	long int f = 0;
+	for(int i = 2; i <= number; ++i){
+		for(int j = 0;j < size_intvector(fac); ++j){
+			f = (get_intvector(fac, j) * i + f);
+			printf("%d %d %ld\n", get_intvector(fac, j), i, f);
+			at_intvector(fac, j, f % 10000);
+			f = f / 10000;
+		}
+
+		while(f > 0){
+			push_end_intvector(fac, f % 10000);
+			f /= 10000;
+		}
+		// print_intvector(fac);
+	}
+
+
+	printf("%d", get_intvector(fac, size_intvector(fac) - 1));	
+	for(int i = size_intvector(fac) - 2; i >= 0;--i){
+		printf("%04d", get_intvector(fac, i));
+	}
+	putc('\n', stdout);
 	destroy_int_vector(fac);
 }
