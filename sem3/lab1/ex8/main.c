@@ -20,6 +20,9 @@ int main(int argc, char ** argv){
     case 3:
         printf("Memory allocation error\n");
 		return 1;
+    case 4:
+        printf("Нераспознанный символ\n");
+        return 1;
     default:
         break;
     }

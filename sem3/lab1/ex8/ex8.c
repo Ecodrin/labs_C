@@ -40,15 +40,17 @@ int to_numeral_system(char ** argv){
 	char* buffer = malloc(sizeof(char) * size1);
 	if (!buffer) return 4;
     int error;
-    printf("%ld\n", FromXTo10("32", 16));
     while((error = fscanf(f1, "%s", buffer)) != EOF){
         int max_num_s = 2;
         for(int i = 0; buffer[i] != '\0'; ++i){
+            // printf("%c %d\n", buffer[i], sequence_number(buffer[i]));
             if(sequence_number(buffer[i]) > max_num_s){
                 max_num_s = sequence_number(buffer[i]);
             }
         }
         max_num_s += 1;
+        if(max_num_s > 36 || max_num_s < 2) 
+            return 4;
         fprintf(f2, "Число %s. Минимальная cc = %d. Число в 10сс = %ld\n", buffer, max_num_s, FromXTo10(buffer, max_num_s));
     }
 
