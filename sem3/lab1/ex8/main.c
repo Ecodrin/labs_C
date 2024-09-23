@@ -21,7 +21,7 @@ int main(int argc, char ** argv){
         printf("Memory allocation error\n");
 		return 1;
     case 4:
-        printf("Нераспознанный символ\n");
+        printf("An unrecognized character\n");
         return 1;
     default:
         break;

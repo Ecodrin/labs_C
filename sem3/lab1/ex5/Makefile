@@ -1,11 +1,10 @@
 
 FLAGS=-Wall -Wextra -g -c
 FLAGSMAIN = -Wall -Wextra -g
-COMP = clang
+COMP = gcc
 
 
 ex5: main.c
-	$(COMP) ex5.c -c
-	$(COMP) main.c ex5.o -lm -o ex5.exe
-	./ex5.exe 0.001 1  > test
+	$(COMP) ex5.c $(FLAGS)
+	$(COMP) main.c ex5.o -lm -o ex5.exe $(FLAGSMAIN)
 	rm ex5.o

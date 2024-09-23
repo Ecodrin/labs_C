@@ -136,7 +136,7 @@ void HandlerOptF(int number) {
 	for(int i = 2; i <= number; ++i){
 		for(int j = 0;j < size_intvector(fac); ++j){
 			f = (get_intvector(fac, j) * i + f);
-			printf("%d %d %ld\n", get_intvector(fac, j), i, f);
+			// printf("%d %d %ld\n", get_intvector(fac, j), i, f);
 			at_intvector(fac, j, f % 10000);
 			f = f / 10000;
 		}

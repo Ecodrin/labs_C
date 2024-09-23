@@ -5,8 +5,11 @@
 
 CharVector* create_char_vector(int capacity) {
 	CharVector *vector = malloc(sizeof(CharVector));
+	if(!vector){
+		return NULL;
+	}
 	vector->arr = malloc(sizeof(char) * capacity);
-	if (!vector || !vector->arr) {
+	if (!vector->arr) {
 		printf("Ошибка выделения памяти\n");
 		return NULL;
 	}
@@ -26,7 +29,7 @@ int resize_char_vector(CharVector* vector, int new_capacity) {
 
 int push_end_charvector(CharVector* vector, char new_element) {
 	if (vector->size == vector->capacity) {
-		int error = resize_char_vector(vector, vector->size + 10);
+		int error = resize_char_vector(vector, vector->size * 2);
 		if (error) return error;
 	}
 	vector->size += 1;
@@ -39,11 +42,13 @@ int get_charvector(CharVector* vector, int index) {
 	return vector->arr[index];
 }
 
-void at_charvector(CharVector* vector, int index, char new_element) {
+int at_charvector(CharVector* vector, int index, char new_element) {
 	if (index >= vector->capacity) {
 		printf("Incorrect index in function at\n");
+		return 1;
 	}
 	vector->arr[index] = new_element;
+	return 0;
 }
 
 int size_charvector(CharVector* vector) { return vector->size; }

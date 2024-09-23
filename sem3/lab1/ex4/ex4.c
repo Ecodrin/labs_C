@@ -55,6 +55,7 @@ void copy_output_path(char* a, char* c) {
 		c[i] = a[j];
 		i += 1;
 	}
+	c[i] = '\0';
 }
 
 int open_files(char** paths, int output, FILE** input_file, FILE** output_file) {
@@ -96,13 +97,14 @@ int HandlerOptI(char** paths, int output) {
 	while ((input_char = getc(input_file)) != EOF) {
 		if((input_char >= 'a' && input_char <= 'z') || (input_char >= 'A' && input_char <= 'Z')){
 			count += 1;
+			fl = 1;
 		}
 		if(input_char == '\n'){
 			fprintf(output_file, "Букв латинского алфавита: %d\n", count);
 			count = 0;
 		}
 	}
-	if(count){
+	if(fl){
 		fprintf(output_file, "Букв латинского алфавита: %d\n", count);
 	}
 	fclose(input_file);

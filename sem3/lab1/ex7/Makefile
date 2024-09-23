@@ -5,7 +5,7 @@ COMP = gcc
 
 
 ex7: main.c
-	$(COMP) ex7.c -c 
-	$(COMP) main.c ex7.o -lm -o ex7.exe
+	$(COMP) ex7.c $(FLAGS)
+	$(COMP) main.c ex7.o -lm -o ex7.exe $(FLAGSMAIN)
 #   Меняем флаги и пути внизу
 	rm ex7.o

@@ -53,12 +53,12 @@ int HandlerOptR(char** paths) {
 	while (error1 != EOF || error2 != EOF) {
 		if (error1 != EOF) {
 			fprintf(f3, "%s ", buffer1);
+			error1 = fscanf(f1, "%s", buffer1);
 		}
 		if (error2 != EOF) {
 			fprintf(f3, "%s ", buffer2);
+			error2 = fscanf(f2, "%s", buffer2);
 		}
-		error1 = fscanf(f1, "%s", buffer1);
-		error2 = fscanf(f2, "%s", buffer2);
 	}
 
 	free(buffer1);
@@ -66,6 +66,7 @@ int HandlerOptR(char** paths) {
 	fclose(f1);
 	fclose(f2);
 	fclose(f3);
+	return 0;
 }
 
 void From10to(int number, char* result, int based) {
@@ -129,4 +130,5 @@ int HandlerOptA(char** paths) {
 	fclose(f1);
 	fclose(f2);
 	free(buffer1);
+	return 0;
 }
