@@ -22,7 +22,7 @@ int main(int argc, char ** argv){
     switch (error)
     {
     case 1:
-        printf("Ошибка");
+        printf("Error in intvector\n");
         return 1;
     
     default:

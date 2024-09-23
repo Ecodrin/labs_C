@@ -101,7 +101,8 @@ int second_ex(){
             }
         }
         // printf("%d %d\n", get_intvector(a, i), val);
-        push_end_intvector(c, get_intvector(a, i) + val);
+        error = push_end_intvector(c, get_intvector(a, i) + val);
+        if(error) return error;
     }
     print_intvector(c);
     destroy_int_vector(a);
