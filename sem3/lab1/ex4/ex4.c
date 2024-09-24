@@ -68,7 +68,10 @@ int open_files(char** paths, int output, FILE** input_file, FILE** output_file) 
 		copy_output_path(paths[0], output_filename);
 		*output_file = fopen(output_filename, "w");
 	}
-	if (!(*output_file)) return 2;
+	if (!(*output_file)) {
+		fclose(*input_file);
+		return 2;
+	}
 	// printf("%s %s\n", paths[0], paths[1]);
 	return 0;
 }

@@ -112,7 +112,7 @@ void HandlerOptQ(const double* numbers) {
 }
 
 void HandlerOptM(const double* numbers) {
-	if(numbers[0] == 0 || numbers[1] == 0 || fabs(numbers[0] - (int)numbers[0]) < 1e-6 || numbers[1] - (int)numbers[1] != 0){
+	if(numbers[0] == 0 || numbers[1] == 0 || fabs(numbers[0] - (int)numbers[0]) < 1e-6 || fabs(numbers[1] - (int)numbers[1]) < 1e-6){
 		printf("Нужны целые числа\n");
 		return;
 	}

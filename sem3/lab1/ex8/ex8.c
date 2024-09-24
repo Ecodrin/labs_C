@@ -17,13 +17,22 @@ int size_string(char * s){
     return i;
 }
 
-long int FromXTo10(char *original, int based){
-    long int result = 0, powBased = 1;
-    for(int i = size_string(original) - 1, j = 0; i >= 0;--i, ++j){
-        result += powBased * sequence_number(original[i]);
-        powBased *= based;
-    }
-    return result;
+int FromXTo10(char *original, int based, long int *result) {
+	long int powBased = 1;
+	*result = 0;
+	int fl = 0;
+	for (int i = size_string(original) - 1, j = 0; i >= 0; --i, ++j) {
+		if(original[i] == '-')
+			fl = 1;
+		else{
+			if (sequence_number(original[i]) >= based) return 1;
+			*result += powBased * sequence_number(original[i]);
+			powBased *= based;
+		}
+	}
+	if(fl)
+		*result *= -1;
+	return 0;
 }
 
 
@@ -32,8 +41,10 @@ int to_numeral_system(char ** argv){
     if(!f1)
         return 1;
     FILE * f2 = fopen(argv[2], "w");
-    if(!f2)
+    if(!f2){
+        fclose(f1);
         return 2;
+    }
     fseek(f1, 0, SEEK_END);
 	long int size1 = ftell(f1);
 	rewind(f1);
@@ -51,7 +62,11 @@ int to_numeral_system(char ** argv){
         max_num_s += 1;
         if(max_num_s > 36 || max_num_s < 2) 
             return 4;
-        fprintf(f2, "Число %s. Минимальная cc = %d. Число в 10сс = %ld\n", buffer, max_num_s, FromXTo10(buffer, max_num_s));
+        long int number;
+        int error = FromXTo10(buffer, max_num_s, &number);
+        if(error)
+            return 1;
+        fprintf(f2, "Число %s. Минимальная cc = %d. Число в 10сс = %ld\n", buffer, max_num_s, number);
     }
 
 

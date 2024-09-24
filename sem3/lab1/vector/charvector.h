@@ -14,5 +14,6 @@ void destroy_char_vector(CharVector* vector);
 int at_charvector(CharVector* vector, int index, char new_element);
 int size_charvector(CharVector* vector);
 void print_charvector(CharVector* vector);
+void vector_char_clear(CharVector * vector);
 
 #endif

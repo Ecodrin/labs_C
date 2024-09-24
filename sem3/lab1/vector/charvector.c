@@ -66,3 +66,8 @@ void print_charvector(CharVector* vector) {
 
 	putchar('\n');
 }
+
+
+void vector_char_clear(CharVector * vector){
+	vector->size = 0;
+}

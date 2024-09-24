@@ -33,7 +33,11 @@ int HandlerOptR(char** paths) {
 		return 1;
 	}
 	FILE* f3 = fopen(paths[4], "w");
-	if (!f3) return 2;
+	if (!f3) {
+		fclose(f1);
+		fclose(f2);
+		return 2;
+	};
 
 	fseek(f1, 0, SEEK_END);
 	long int size1 = ftell(f1);
