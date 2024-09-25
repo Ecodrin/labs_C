@@ -94,9 +94,10 @@ int ex(){
 	int based, error;
 	error = scanf("%d", &based);
 	if(error != 1 || based < 2 || based > 36) return 4;
-	char number[100], max_number_string[100];
-	long int max_number = 0, numberIn10 =0;
+	char number[100] = "+", max_number_string[100];
+	long int max_number = 0, numberIn10 = 0, fl = 1;
 	while (scanf("%s", number) && !string_cmp(number, "Stop\0")){
+		fl = 0;
 		error = FromXTo10(number, based, &numberIn10);
 		if(error) return 1;
 		if(labs(numberIn10) >= labs(max_number)){
@@ -104,6 +105,9 @@ int ex(){
 			string_copy(number, max_number_string);
 		}	
 	}
+	if(fl)
+		return 5;
+
 	// Печатем само число
 	CharVector * vec = create_char_vector(1);
 	error = FromXToY(max_number_string, vec, based, based);
@@ -113,7 +117,7 @@ int ex(){
 	}
 	print_charvector(vec);
 	putc(' ', stdout);
-	
+
 	// Печаетаем число в 9сс
 	vector_char_clear(vec);
 	error = FromXToY(max_number_string, vec, based, 9);
@@ -173,6 +177,10 @@ int main() {
 			return 1;
 		case 4:
 			printf("Необслуживамая система счисления.\n");
+			return 1;
+
+		case 5:
+			printf("Дана только сс, нужны числа в данной сс\n");
 			return 1;
 		default:
 			break;
