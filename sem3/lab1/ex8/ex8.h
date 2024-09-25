@@ -5,6 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int to_numeral_system(char ** argv);
+int to_numeral_system(char** argv);
 
 #endif

@@ -1,43 +1,55 @@
 #include "ex9.h"
 
-int get_boundaries(int argc, char** argv, int* a, int* b) {
+int get_boundaries(int argc, char** argv, double* a, double* b) {
 	if (argc != 3) return 1;
-	for (int i = 0; i < 2; ++i) {
-		char* procceding_option = argv[i + 1];
-		int number = 0, fl = 0;
-		for (int j = 0; procceding_option[j]; ++j) {
-			if (procceding_option[j] >= '0' && procceding_option[j] <= '9') {
-				number *= 10;
-				number += procceding_option[j] - '0';
-			} else if (procceding_option[j] == '-')
-				fl = 1;
-			else {
-				return 1;
-			}
-		}
-		if (fl) number *= -1;
-		if (i == 0)
-			*a = number;
-		else
-			*b = number;
-	}
+	int error = CharToDouble(argv[1], a);
+	if (error) return 1;
+	error = CharToDouble(argv[2], b);
+	if (error || (*a > *b)) return 1;
 	return 0;
 }
 
-void print_mas(int* mas, int size) {
+int CharToDouble(char* string, double* result) {
+	int k = -1;
+	int fl = 0;
+	fl = 0;
+	double number = 0;
+	for (int j = 0; string[j] != '\0'; ++j) {
+		if (string[j] == '-')
+			fl = 1;
+		else if (string[j] >= '0' && string[j] <= '9') {
+			number *= 10;
+			number += (string[j] - '0');
+			if (k != -1) k += 1;
+		} else if (string[j] == '.')
+			k = 0;
+		else {
+			return 1;
+		}
+	}
+	for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
+	k = -1;
+	if (fl) number *= -1;
+	// putchar('\n');
+	// printf("%f\n", number);
+	*result = number;
+	return 0;
+}
+
+void print_mas(double* mas, int size) {
 	for (int i = 0; i < size; ++i) {
-		printf("%d ", mas[i]);
+		printf("%f ", mas[i]);
 	}
 	putc('\n', stdout);
 }
 
-void swap(int* a, int* b) {
-	int t = *a;
+void swap(double* a, double* b) {
+	double t = *a;
 	*a = *b;
 	*b = t;
 }
 
-int permutation_max_min(int* mas, int size) {
+int permutation_max_min(double* mas, int size) {
 	if (size == 0) return 0;
 	int max_el = mas[0], index_max_el = 0;
 	int min_el = mas[0], index_min_el = 0;
@@ -55,9 +67,9 @@ int permutation_max_min(int* mas, int size) {
 	return 0;
 }
 
-int first_ex(int a, int b, int* mas, int size) {
+int first_ex(double a, double b, double* mas, int size) {
 	for (int i = 0; i < size; ++i) {
-		mas[i] = rand() % (b - a + 1) + a;
+		mas[i] = rand() % (int)(b - a + 1) + a;
 	}
 	print_mas(mas, size);
 	if (permutation_max_min(mas, size)) {

@@ -31,10 +31,10 @@ int GetOpts(int argc, char** argv, kOpts* option, char** paths, int* output_flag
 	}
 	paths[0] = argv[2];
 	if (!(*output_flag)) {
-		if(argc != 4) return 1;
+		if (argc != 4) return 1;
 		paths[1] = argv[3];
 	};
-	if(*output_flag && argc != 3) return 1;
+	if (*output_flag && argc != 3) return 1;
 	// printf("%s %s %d\n", paths[0], paths[1], *output_flag);
 	return 0;
 }
@@ -83,8 +83,10 @@ int HandlerOptD(char** paths, int output) {
 	if (mistake > 0) return mistake;
 	char input_char;
 	while ((input_char = getc(input_file)) != EOF) {
-		if (input_char < '0' || input_char > '9') fputc(input_char, output_file);
-		else fputc(' ', output_file);
+		if (input_char < '0' || input_char > '9')
+			fputc(input_char, output_file);
+		else
+			fputc(' ', output_file);
 	}
 	fclose(input_file);
 	fclose(output_file);
@@ -98,16 +100,16 @@ int HandlerOptI(char** paths, int output) {
 	int count = 0;
 	char input_char, fl = 0;
 	while ((input_char = getc(input_file)) != EOF) {
-		if((input_char >= 'a' && input_char <= 'z') || (input_char >= 'A' && input_char <= 'Z')){
+		if ((input_char >= 'a' && input_char <= 'z') || (input_char >= 'A' && input_char <= 'Z')) {
 			count += 1;
 			fl = 1;
 		}
-		if(input_char == '\n'){
+		if (input_char == '\n') {
 			fprintf(output_file, "Букв латинского алфавита: %d\n", count);
 			count = 0;
 		}
 	}
-	if(fl){
+	if (fl) {
 		fprintf(output_file, "Букв латинского алфавита: %d\n", count);
 	}
 	fclose(input_file);
@@ -136,14 +138,13 @@ int HandlerOptS(char** paths, int output) {
 	return 0;
 }
 
-
 void From10to(int number, char* result, int based) {
 	char tmp[8];
 	int index = 0;
 	while (number > 0) {
 		if (number % based < 10)
 			tmp[index] = '0' + number % based;
-		else	
+		else
 			tmp[index] = 'A' + (number % based - 10);
 		index++;
 		number /= based;

@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 int get_value(int argc, char **argv, double *eps, double *x);
-double CharToDouble(char *string);
+int CharToDouble(char *string, double *result);
 
 double sum_a(double eps, double x);
 double sum_b(double eps, double x);

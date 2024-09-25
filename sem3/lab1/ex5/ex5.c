@@ -2,13 +2,12 @@
 
 int get_value(int argc, char **argv, double *eps, double *x) {
 	if (argc != 3) return 1;
-	*eps = CharToDouble(argv[1]);
-	if (*eps < 0) {
-		printf("Точность введена неверно\n");
+	int error = CharToDouble(argv[1], eps);
+	if (*eps < 0 || error) {
 		return 2;
 	}
-	*x = CharToDouble(argv[2]);
-	if(*x == -201){
+	error = CharToDouble(argv[2], x);
+	if (error) {
 		return 3;
 	}
 	return 0;
@@ -22,21 +21,22 @@ double fac(int num) {
 	return f;
 }
 
-double CharToDouble(char *string) {
+int CharToDouble(char *string, double *result) {
 	int k = -1;
 	int fl = 0;
 	fl = 0;
 	double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
-		if (string[j] == '-') fl = 1;
+		if (string[j] == '-')
+			fl = 1;
 		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
 		} else if (string[j] == '.')
 			k = 0;
-		else{
-			return -201;
+		else {
+			return 1;
 		}
 	}
 	for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
@@ -44,7 +44,8 @@ double CharToDouble(char *string) {
 	if (fl) number *= -1;
 	// putchar('\n');
 	// printf("%f\n", number);
-	return number;
+	*result = number;
+	return 0;
 }
 
 double sum_a(double eps, double x) {

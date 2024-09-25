@@ -7,11 +7,12 @@
 
 #include "../vector/intvector.h"
 
-int get_boundaries(int argc, char** argv, int* a, int* b);
+int get_boundaries(int argc, char** argv, double* a, double* b);
+int CharToDouble(char *string, double * result);
 
-int first_ex(int a, int b, int* mas, int size);
-int permutation_max_min(int* mas, int size);
-void print_mas(int* mas, int size);
+int first_ex(double a, double b, double* mas, int size);
+int permutation_max_min(double* mas, int size);
+void print_mas(double* mas, int size);
 
 int second_ex();
 

@@ -156,8 +156,6 @@ int ex(){
 		return 1;
 	}
 	print_charvector(vec);
-	putc(' ', stdout);
-	vector_char_clear(vec);
 	destroy_char_vector(vec);
 	putchar('\n');
 	return 0;

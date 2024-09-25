@@ -19,8 +19,7 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 				return 1;
 				break;
 		}
-	}
-	else{
+	} else {
 		return 1;
 	}
 	return 0;
