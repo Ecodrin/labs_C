@@ -1,14 +1,14 @@
 #include "ex8.h"
 
 
-int sequence_number(char c){
-    if(c >= 'A' && c <= 'Z')
-        c = 'a' + c - 'A';
-    if(c >= 'a' && c <= 'z')
+int sequence_number(char c) {
+    if (c >= 'A' && c <= 'Z') c = 'a' + c - 'A';
+    if (c >= 'a' && c <= 'z')
         return c - 'a' + 10;
-    else{
+    else if (c >= '0' && c <= '9')
         return c - '0';
-    }
+    else
+        return -1;
 }
 
 int size_string(char * s){
@@ -25,7 +25,7 @@ int FromXTo10(char *original, int based, long int *result) {
 		if(original[i] == '-')
 			fl = 1;
 		else{
-			if (sequence_number(original[i]) >= based) return 1;
+			if (sequence_number(original[i]) == -1) return 1;
 			*result += powBased * sequence_number(original[i]);
 			powBased *= based;
 		}
@@ -52,12 +52,12 @@ int to_numeral_system(char ** argv){
 	if (!buffer) return 4;
     int error;
     while((error = fscanf(f1, "%s", buffer)) != EOF){
-        int max_num_s = 2;
+        int max_num_s = 1;
         for(int i = 0; buffer[i] != '\0'; ++i){
-            // printf("%c %d\n", buffer[i], sequence_number(buffer[i]));
             if(sequence_number(buffer[i]) > max_num_s){
                 max_num_s = sequence_number(buffer[i]);
             }
+            if(sequence_number(buffer[i]) == -1) return 4;
         }
         max_num_s += 1;
         if(max_num_s > 36 || max_num_s < 2) 
@@ -66,7 +66,10 @@ int to_numeral_system(char ** argv){
         int error = FromXTo10(buffer, max_num_s, &number);
         if(error)
             return 1;
-        fprintf(f2, "Число %s. Минимальная cc = %d. Число в 10сс = %ld\n", buffer, max_num_s, number);
+        if(number == 0)
+            fprintf(f2, "Число 0. Минимальная cc = %d. Число в 10сс = %ld\n", max_num_s, number);
+        else
+            fprintf(f2, "Число %s. Минимальная cc = %d. Число в 10сс = %ld\n", buffer, max_num_s, number);
     }
 
 

@@ -83,6 +83,9 @@ int FromXToY(char *original, CharVector *result, int from_based, int to_based) {
 		error = push_end_charvector(result, get_charvector(tmp, i));
 		if (error) return 3;
 	}
+	if(size_charvector(result) == 0 && number == 0){
+		push_end_charvector(result, '0');
+	}
 	destroy_char_vector(tmp);
 	return 0;
 }
@@ -93,17 +96,15 @@ int ex(){
 	if(error != 1 || based < 2 || based > 36) return 4;
 	char number[100], max_numer_string[100];
 	long int max_number = 0, numberIn10 =0;
-	while (scanf("%s", number) && !string_cmp(number, "Stop\0"))
-	{
+	while (scanf("%s", number) && !string_cmp(number, "Stop\0")){
 		error = FromXTo10(number, based, &numberIn10);
 		if(error) return 1;
-		if(labs(numberIn10) > labs(max_number)){
+		if(labs(numberIn10) >= labs(max_number)){
 			max_number = numberIn10;
 			string_copy(number, max_numer_string);
 		}	
 	}
 	CharVector * vec = create_char_vector(1);
-	printf("%s ", max_numer_string);
 	error = FromXToY(max_numer_string, vec, based, 9);
 	if(error){
 		destroy_char_vector(vec);
