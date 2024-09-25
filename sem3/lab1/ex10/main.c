@@ -94,18 +94,19 @@ int ex(){
 	int based, error;
 	error = scanf("%d", &based);
 	if(error != 1 || based < 2 || based > 36) return 4;
-	char number[100], max_numer_string[100];
+	char number[100], max_number_string[100];
 	long int max_number = 0, numberIn10 =0;
 	while (scanf("%s", number) && !string_cmp(number, "Stop\0")){
 		error = FromXTo10(number, based, &numberIn10);
 		if(error) return 1;
 		if(labs(numberIn10) >= labs(max_number)){
 			max_number = numberIn10;
-			string_copy(number, max_numer_string);
+			string_copy(number, max_number_string);
 		}	
 	}
+	// Печатем само число
 	CharVector * vec = create_char_vector(1);
-	error = FromXToY(max_numer_string, vec, based, 9);
+	error = FromXToY(max_number_string, vec, based, based);
 	if(error){
 		destroy_char_vector(vec);
 		return 1;
@@ -113,8 +114,9 @@ int ex(){
 	print_charvector(vec);
 	putc(' ', stdout);
 	
+	// Печаетаем число в 9сс
 	vector_char_clear(vec);
-	error = FromXToY(max_numer_string, vec, based, 18);
+	error = FromXToY(max_number_string, vec, based, 9);
 	if(error){
 		destroy_char_vector(vec);
 		return 1;
@@ -122,7 +124,9 @@ int ex(){
 	print_charvector(vec);
 	putc(' ', stdout);
 	vector_char_clear(vec);
-	error = FromXToY(max_numer_string, vec, based, 27);
+
+	// Печатаем число в 18сс
+	error = FromXToY(max_number_string, vec, based, 18);
 	if(error){
 		destroy_char_vector(vec);
 		return 1;
@@ -130,7 +134,19 @@ int ex(){
 	print_charvector(vec);
 	putc(' ', stdout);
 	vector_char_clear(vec);
-	error = FromXToY(max_numer_string, vec, based, 36);
+
+	// Печатаем число в 27сс
+	error = FromXToY(max_number_string, vec, based, 27);
+	if(error){
+		destroy_char_vector(vec);
+		return 1;
+	}
+	print_charvector(vec);
+	putc(' ', stdout);
+	vector_char_clear(vec);
+
+	// Печатаем число в 36сс
+	error = FromXToY(max_number_string, vec, based, 36);
 	if(error){
 		destroy_char_vector(vec);
 		return 1;
