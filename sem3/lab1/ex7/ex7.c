@@ -5,7 +5,7 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 		return 1;
 	}
 	const char* procceding_option = argv[1];
-	if (procceding_option[0] == '/' || procceding_option[0] == '-') {
+	if ((procceding_option[0] == '/' || procceding_option[0] == '-') && SizeString(procceding_option) == 2) {
 		switch (procceding_option[1]) {
 			case 'r':
 				*option = OPT_R;
@@ -23,6 +23,12 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 		return 1;
 	}
 	return 0;
+}
+
+int SizeString(const char* string) {
+	int i = 0;
+	for (; string[i] != '\0'; ++i);
+	return i;
 }
 
 int HandlerOptR(char** paths) {

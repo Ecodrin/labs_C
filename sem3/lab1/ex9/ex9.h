@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <math.h>
 
 #include "../vector/intvector.h"
 

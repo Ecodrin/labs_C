@@ -11,6 +11,8 @@ int GetOpts(int argc, char** argv, kOpts* option, char** paths, int* output_flag
 			*output_flag = 0;
 			flag = procceding_option[2];
 		}
+		if((!(*output_flag) && SizeString(procceding_option) != 3) || (*output_flag && SizeString(procceding_option) != 2) )
+			return 1;
 		switch (flag) {
 			case 'd':
 				*option = OPT_D;
@@ -56,6 +58,12 @@ void copy_output_path(char* a, char* c) {
 		i += 1;
 	}
 	c[i] = '\0';
+}
+
+int SizeString(const char* string) {
+	int i = 0;
+	for (; string[i] != '\0'; ++i);
+	return i;
 }
 
 int open_files(char** paths, int output, FILE** input_file, FILE** output_file) {

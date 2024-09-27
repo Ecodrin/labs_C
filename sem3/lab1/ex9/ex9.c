@@ -21,7 +21,7 @@ int CharToDouble(char* string, double* result) {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
-		} else if (string[j] == '.')
+		} else if (string[j] == '.' && k == -1)
 			k = 0;
 		else {
 			return 1;
@@ -51,8 +51,10 @@ void swap(double* a, double* b) {
 
 int permutation_max_min(double* mas, int size) {
 	if (size == 0) return 0;
-	int max_el = mas[0], index_max_el = 0;
-	int min_el = mas[0], index_min_el = 0;
+	double max_el = mas[0];
+	int index_max_el = 0;
+	double min_el = mas[0];
+	int index_min_el = 0;
 	for (int i = 0; i < size; ++i) {
 		if (mas[i] > max_el) {
 			max_el = mas[i];
@@ -69,7 +71,7 @@ int permutation_max_min(double* mas, int size) {
 
 int first_ex(double a, double b, double* mas, int size) {
 	for (int i = 0; i < size; ++i) {
-		mas[i] = rand() % (int)(b - a + 1) + a;
+		mas[i] = (double)(rand()) / RAND_MAX * (b - a) + a;
 	}
 	print_mas(mas, size);
 	if (permutation_max_min(mas, size)) {

@@ -15,4 +15,7 @@ int HandlerOptI(char** paths, int output);
 int HandlerOptS(char** paths, int output);
 int HandlerOptA(char** paths, int output);
 
+int SizeString(const char* string);
+
+
 #endif

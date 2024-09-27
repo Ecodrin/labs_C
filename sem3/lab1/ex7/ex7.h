@@ -11,4 +11,6 @@ int GetOpts(int argc, char** argv, kOpts* option);
 
 int HandlerOptR(char** paths);
 int HandlerOptA(char** paths);
+
+int SizeString(const char* string);
 #endif

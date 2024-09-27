@@ -8,7 +8,7 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 	int fl = 0;
 	for (int i = 1; i <= 2; ++i) {
 		const char* procceding_option = argv[i];
-		if ((procceding_option[0] == '/' || procceding_option[0] == '-') && fl == 0) {
+		if ((procceding_option[0] == '/' || procceding_option[0] == '-') && fl == 0 &&  SizeString(procceding_option) == 2) {
 			fl = 1;
 			switch (procceding_option[1]) {
 				case 'h':
@@ -34,14 +34,17 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 					break;
 			}
 		} else {
+			int sign = 1;
 			for (int j = 0; procceding_option[j]; ++j) {
-				if (procceding_option[j] >= '0' && procceding_option[j] <= '9') {
+				if(procceding_option[j] == '-' && sign == 1) sign = -1;
+				else if (procceding_option[j] >= '0' && procceding_option[j] <= '9') {
 					*number *= 10;
 					*number += procceding_option[j] - '0';
 				} else {
 					return 1;
 				}
 			}
+			*number *= sign;
 		}
 	}
 	return 0;
@@ -50,7 +53,7 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 void HandlerOptH(const int number) {
 	int fl = 0;
 	for (int i = 1; i <= 100; ++i) {
-		if (!(i % number)) {
+		if (!(i % abs(number))) {
 			fl = 1;
 			printf("%d\n", i);
 		}
@@ -62,8 +65,8 @@ void HandlerOptH(const int number) {
 
 void HandlerOptP(const int number) {
 	int flag = 1;
-	for (int i = 2; i <= sqrt(number); ++i) {
-		if (!(number % i)) {
+	for (int i = 2; i <= sqrt(abs(number)); ++i) {
+		if (!(abs(number) % i)) {
 			flag = 0;
 		}
 	}
@@ -71,7 +74,7 @@ void HandlerOptP(const int number) {
 	if (flag) {
 		printf("%d is simple.\n", number);
 	} else {
-		printf("%d is not simple. %s", number, (number != 1) ? "It is composite number.\n" : "\n");
+		printf("%d is not simple. %s", number, (abs(number) != 1) ? "It is composite number.\n" : "\n");
 	}
 }
 
@@ -83,8 +86,12 @@ int SizeString(const char* string) {
 
 void From10to16(int number, CharVector* result) {
 	CharVector* tmp = create_char_vector(1);
-	int index = 0;
+	int index = 0, fl = 0;
 	const int based16 = 16;
+	if(number < 0){
+		number *= -1;
+		fl = 1;
+	}
 	while (number > 0) {
 		if (number % based16 < 10) {
 			push_end_charvector(tmp, '0' + number % based16);
@@ -94,6 +101,9 @@ void From10to16(int number, CharVector* result) {
 		// printf("%d\n",size_charvector(tmp));
 		index++;
 		number /= based16;
+	}
+	if(fl){
+		push_end_charvector(result, '-');
 	}
 	for (int i = size_charvector(tmp) - 1; i >= 0; i--) {
 		push_end_charvector(result, get_charvector(tmp, i));
@@ -113,8 +123,8 @@ void HandlerOptS(const int number) {
 }
 
 void HandlerOptE(const int number) {
-	if (number > 10) {
-		printf("The power of the numbers should not exceed 10");
+	if (number > 10 || number < 0) {
+		printf("The power of the numbers should not exceed 10 and the power should be more then 0\n");
 		return;
 	}
 	for (int i = 1; i <= 10; ++i) {
@@ -130,6 +140,11 @@ void HandlerOptE(const int number) {
 void HandlerOptA(const int number) { printf("%d\n", (1 + number) / 2 * number); }
 
 void HandlerOptF(int number) {
+	if(number < 0){
+		printf("Number should be more than 0\n");
+		return;
+	}
+		
 	IntVector * fac = create_int_vector(1);
 	push_end_intvector(fac, 1);
 	long int f = 0;

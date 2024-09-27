@@ -33,7 +33,7 @@ int CharToDouble(char *string, double *result) {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
-		} else if (string[j] == '.')
+		} else if (string[j] == '.' && k == -1)
 			k = 0;
 		else {
 			return 1;
@@ -81,7 +81,7 @@ double sum_c(double eps, double x) {
 	int n = 1;
 	if (fabs(x) >= 1.0) {
 		printf("Ряд c не сходится\n");
-		return -1;
+		return 1;
 	} else {
 		while (fabs(sum - last_sum) >= eps) {
 			last_sum = sum;

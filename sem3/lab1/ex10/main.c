@@ -116,7 +116,6 @@ int ex(){
 		return 1;
 	}
 	print_charvector(vec);
-	putc(' ', stdout);
 
 	// Печаетаем число в 9сс
 	vector_char_clear(vec);
@@ -126,7 +125,6 @@ int ex(){
 		return 1;
 	}
 	print_charvector(vec);
-	putc(' ', stdout);
 	vector_char_clear(vec);
 
 	// Печатаем число в 18сс
@@ -136,7 +134,6 @@ int ex(){
 		return 1;
 	}
 	print_charvector(vec);
-	putc(' ', stdout);
 	vector_char_clear(vec);
 
 	// Печатаем число в 27сс
@@ -146,7 +143,6 @@ int ex(){
 		return 1;
 	}
 	print_charvector(vec);
-	putc(' ', stdout);
 	vector_char_clear(vec);
 
 	// Печатаем число в 36сс
