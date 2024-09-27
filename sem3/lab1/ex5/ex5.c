@@ -27,7 +27,7 @@ int CharToDouble(char *string, double *result) {
 	fl = 0;
 	double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
-		if (string[j] == '-')
+		if (string[j] == '-' && fl == 0)
 			fl = 1;
 		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
