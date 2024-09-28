@@ -17,7 +17,6 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 				break;
 			default:
 				return 1;
-				break;
 		}
 	} else {
 		return 1;
@@ -27,7 +26,8 @@ int GetOpts(int argc, char** argv, kOpts* option) {
 
 int SizeString(const char* string) {
 	int i = 0;
-	for (; string[i] != '\0'; ++i);
+	for (; string[i] != '\0'; ++i)
+		;
 	return i;
 }
 
@@ -113,7 +113,7 @@ int HandlerOptA(char** paths) {
 				if (buffer1[j] >= 'A' && buffer1[j] <= 'Z') buffer1[j] = 'a' + (buffer1[j] - 'A');
 			}
 			for (int j = 0; buffer1[j] != '\0'; ++j) {
-				char result[100];
+				char result[16];
 				From10to(buffer1[j], result, 4);
 				fprintf(f2, "%s", result);
 			}
@@ -125,7 +125,7 @@ int HandlerOptA(char** paths) {
 			fprintf(f2, "%s ", buffer1);
 		} else if (i % 5 == 4) {
 			for (int j = 0; buffer1[j] != '\0'; ++j) {
-				char result[8];
+				char result[16]; // Максимум 8 бит
 				From10to(buffer1[j], result, 8);
 				fprintf(f2, "%s", result);
 			}

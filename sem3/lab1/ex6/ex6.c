@@ -25,14 +25,15 @@ double CharToDouble(char *string) {
 	fl = 0;
 	double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
-		if (string[j] == '-') fl = 1;
+		if (string[j] == '-')
+			fl = 1;
 		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
 		} else if (string[j] == '.')
 			k = 0;
-		else{
+		else {
 			return -1;
 		}
 	}

@@ -63,8 +63,6 @@ void print_charvector(CharVector* vector) {
 		printf("%c ", vector->arr[i]);
 	}
 	putchar('\n');
-
-	putchar('\n');
 }
 
 

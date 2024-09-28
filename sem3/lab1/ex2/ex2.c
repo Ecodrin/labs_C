@@ -18,14 +18,15 @@ long double CharToDouble(char *string) {
 	long double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
 		// printf("%c\n", string[j]);
-		if (string[j] == '-') fl = 1;
+		if (string[j] == '-')
+			fl = 1;
 		else if (string[j] >= '0' && string[j] <= '9') {
 			number *= 10;
 			number += (string[j] - '0');
 			if (k != -1) k += 1;
 		} else if (string[j] == '.')
 			k = 0;
-		else{
+		else {
 			return -1;
 		}
 	}
@@ -38,11 +39,12 @@ long double CharToDouble(char *string) {
 }
 
 // Общий метод поиска предeла
-long double calculate_limit(void (*func)(int *, long double *), long double value, long double last_value, long double eps, int first_n) {
+long double calculate_limit(void (*func)(int *, long double *), long double value, long double last_value,
+                            long double eps, int first_n) {
 	int i = first_n;
 	do {
 		last_value = value;
-		// Ищем предел для конкретного значения 
+		// Ищем предел для конкретного значения
 		func(&i, &value);
 		// printf("value: %Lf last value: %Lf\n", value, last_value);
 	} while (fabsl(value - last_value) >= eps);
@@ -66,11 +68,10 @@ long double calculate_sequence(long double (*func)(int n), long double value, lo
 // Общий метод дихотомии
 long double calculate_dichotomy(long double (*func)(long double x), long double a, long double b, long double eps) {
 	long double c = (a + b) / 2;
-	while(fabsl(func(c)) >= eps){
-		if(func(c) > 0){
+	while (fabsl(func(c)) >= eps) {
+		if (func(c) > 0) {
 			b = c;
-		}
-		else{
+		} else {
 			a = c;
 		}
 		c = (a + b) / 2;
@@ -80,8 +81,9 @@ long double calculate_dichotomy(long double (*func)(long double x), long double 
 }
 
 // Общий метод итерации
-long double calculate_simple_iteration(long double (*func)(long double x), long double (*func_eqvivalent)(long double x, long double lambda),
-                                  long double a, long double b, long double lambda, long double eps) {
+long double calculate_simple_iteration(long double (*func)(long double x),
+                                       long double (*func_eqvivalent)(long double x, long double lambda), long double a,
+                                       long double b, long double lambda, long double eps) {
 	long double last_value = (a + b) / 2;
 	long double value = func_eqvivalent(last_value, lambda);
 	while (fabsl(value - last_value) >= eps / 10000) {
@@ -93,7 +95,8 @@ long double calculate_simple_iteration(long double (*func)(long double x), long 
 }
 
 // Общий метод произведения
-long double calculate_product(long double (*func)(int), long double product, long double last_product, long double eps, int first_k) {
+long double calculate_product(long double (*func)(int), long double product, long double last_product, long double eps,
+                              int first_k) {
 	int k = first_k;
 
 	while (fabsl(product - last_product) >= eps) {
@@ -124,10 +127,9 @@ long double e_sequence(int n) { return 1.0 / fac(n); }
 
 long double calculate_e_sequence(long double eps) { return calculate_sequence(e_sequence, 0, eps, 0); }
 
-
-void to_simple_numbers(long int *a, long int *b){
-	for(int i = 2; i <= *a; ++i){
-		if(*a % i == 0 && *b % i == 0){
+void to_simple_numbers(long int *a, long int *b) {
+	for (int i = 2; i <= *a; ++i) {
+		if (*a % i == 0 && *b % i == 0) {
 			*a /= i;
 			*b /= i;
 			i -= 1;
@@ -137,11 +139,11 @@ void to_simple_numbers(long int *a, long int *b){
 
 void lim_pi(int *n, long double *value) {
 	// printf("до: %Lf %d\n", *value);
-	*value *= 4.0 * (*n) /((2*(*n) - 1) * (2*(*n) - 1));
+	*value *= 4.0 * (*n) / ((2 * (*n) - 1) * (2 * (*n) - 1));
 	// printf("после: %Lf\n", *value);
-	
+
 	*value *= (long double)(*n - 1);
-	
+
 	// printf("%d %d %Lf\n", 16 * (*n)* (*n)* (*n), (2 * (*n) * (2*(*n) - 1) * 2 * (*n) * (2*(*n) - 1)), *value);
 	*n += 1;
 }
@@ -194,30 +196,24 @@ long double sqrt2_dech(long double x) { return x * x - 2; }
 
 long double calculate_sqrt2_dech(long double eps) { return calculate_dichotomy(sqrt2_dech, 0, 4, eps); }
 
-
-void gamma_limit(int * n, long double * value){
+void gamma_limit(int *n, long double *value) {
 	*value = 0;
 	// printf("%Lf\n", *value);
-	for(int i = 1; i <= *n;++i){
-		*value += log(fac(i)) * ((i % 2 == 0) ? 1 : -1) / i * fac(*n) / fac(i) / fac(*n - i); 
+	for (int i = 1; i <= *n; ++i) {
+		*value += log(fac(i)) * ((i % 2 == 0) ? 1 : -1) / i * fac(*n) / fac(i) / fac(*n - i);
 		// printf("%Lf\n", log(fac(i)) * ((i % 2 == 0) ? 1 : -1) / i * fac(*n) / fac(i) / fac(*n - i));
 	}
 
 	*n += 2;
 }
 
-long double calculate_gamma_limit(long double eps){
-	return calculate_limit(gamma_limit, 2, 1, eps, 2);
-} 
+long double calculate_gamma_limit(long double eps) { return calculate_limit(gamma_limit, 2, 1, eps, 2); }
 
-long double gamma_seq(int n){
+long double gamma_seq(int n) {
 	// printf("%Lf\n", 1.0 / ((floor(sqrt(n))) * floor(sqrt(n))) - 1.0 / (long double)n);
-	return 1.0 / ((floor(sqrt(n))) * floor(sqrt(n))) - 1.0 / (long double)n; 
+	return 1.0 / ((floor(sqrt(n))) * floor(sqrt(n))) - 1.0 / (long double)n;
 }
 
-long double calculate_gamma_seq(long double eps){
-	return calculate_sequence(gamma_seq, -calculate_pi_sequence(eps) *calculate_pi_sequence(eps) / 6, eps, 2);
-} 
-
-
-
+long double calculate_gamma_seq(long double eps) {
+	return calculate_sequence(gamma_seq, -calculate_pi_sequence(eps) * calculate_pi_sequence(eps) / 6, eps, 2);
+}

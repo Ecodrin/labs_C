@@ -8,7 +8,8 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 	int fl = 0;
 	for (int i = 1; i <= 2; ++i) {
 		const char* procceding_option = argv[i];
-		if ((procceding_option[0] == '/' || procceding_option[0] == '-') && fl == 0 &&  SizeString(procceding_option) == 2) {
+		if ((procceding_option[0] == '/' || procceding_option[0] == '-') && fl == 0 &&
+		    SizeString(procceding_option) == 2) {
 			fl = 1;
 			switch (procceding_option[1]) {
 				case 'h':
@@ -36,7 +37,8 @@ int GetOpts(int argc, char** argv, kOpts* option, int* number) {
 		} else {
 			int sign = 1;
 			for (int j = 0; procceding_option[j]; ++j) {
-				if(procceding_option[j] == '-' && sign == 1) sign = -1;
+				if (procceding_option[j] == '-' && sign == 1)
+					sign = -1;
 				else if (procceding_option[j] >= '0' && procceding_option[j] <= '9') {
 					*number *= 10;
 					*number += procceding_option[j] - '0';
@@ -80,7 +82,8 @@ void HandlerOptP(const int number) {
 
 int SizeString(const char* string) {
 	int i = 0;
-	for (; string[i] != '\0'; ++i);
+	for (; string[i] != '\0'; ++i)
+		;
 	return i;
 }
 
@@ -88,7 +91,7 @@ void From10to16(int number, CharVector* result) {
 	CharVector* tmp = create_char_vector(1);
 	int index = 0, fl = 0;
 	const int based16 = 16;
-	if(number < 0){
+	if (number < 0) {
 		number *= -1;
 		fl = 1;
 	}
@@ -102,7 +105,7 @@ void From10to16(int number, CharVector* result) {
 		index++;
 		number /= based16;
 	}
-	if(fl){
+	if (fl) {
 		push_end_charvector(result, '-');
 	}
 	for (int i = size_charvector(tmp) - 1; i >= 0; i--) {
@@ -140,32 +143,31 @@ void HandlerOptE(const int number) {
 void HandlerOptA(const int number) { printf("%d\n", (1 + number) / 2 * number); }
 
 void HandlerOptF(int number) {
-	if(number < 0){
+	if (number < 0) {
 		printf("Number should be more than 0\n");
 		return;
 	}
-		
-	IntVector * fac = create_int_vector(1);
+
+	IntVector* fac = create_int_vector(1);
 	push_end_intvector(fac, 1);
 	long int f = 0;
-	for(int i = 2; i <= number; ++i){
-		for(int j = 0;j < size_intvector(fac); ++j){
+	for (int i = 2; i <= number; ++i) {
+		for (int j = 0; j < size_intvector(fac); ++j) {
 			f = (get_intvector(fac, j) * i + f);
 			// printf("%d %d %ld\n", get_intvector(fac, j), i, f);
 			at_intvector(fac, j, f % 10000);
 			f = f / 10000;
 		}
 
-		while(f > 0){
+		while (f > 0) {
 			push_end_intvector(fac, f % 10000);
 			f /= 10000;
 		}
 		// print_intvector(fac);
 	}
 
-
-	printf("%d", get_intvector(fac, size_intvector(fac) - 1));	
-	for(int i = size_intvector(fac) - 2; i >= 0;--i){
+	printf("%d", get_intvector(fac, size_intvector(fac) - 1));
+	for (int i = size_intvector(fac) - 2; i >= 0; --i) {
 		printf("%04d", get_intvector(fac, i));
 	}
 	putc('\n', stdout);

@@ -11,7 +11,8 @@ int GetOpts(int argc, char** argv, kOpts* option, char** paths, int* output_flag
 			*output_flag = 0;
 			flag = procceding_option[2];
 		}
-		if((!(*output_flag) && SizeString(procceding_option) != 3) || (*output_flag && SizeString(procceding_option) != 2) )
+		if ((!(*output_flag) && SizeString(procceding_option) != 3) ||
+		    (*output_flag && SizeString(procceding_option) != 2))
 			return 1;
 		switch (flag) {
 			case 'd':
@@ -62,7 +63,8 @@ void copy_output_path(char* a, char* c) {
 
 int SizeString(const char* string) {
 	int i = 0;
-	for (; string[i] != '\0'; ++i);
+	for (; string[i] != '\0'; ++i)
+		;
 	return i;
 }
 
@@ -72,7 +74,7 @@ int open_files(char** paths, int output, FILE** input_file, FILE** output_file) 
 	if (output == 0)
 		*output_file = fopen(paths[1], "w");
 	else {
-		char output_filename[100];
+		char output_filename[256];
 		copy_output_path(paths[0], output_filename);
 		*output_file = fopen(output_filename, "w");
 	}
@@ -81,6 +83,13 @@ int open_files(char** paths, int output, FILE** input_file, FILE** output_file) 
 		return 2;
 	}
 	// printf("%s %s\n", paths[0], paths[1]);
+	return 0;
+}
+
+int print_result(IntVector * vector, char*string, FILE * f){
+	for(int i = 0; i < size_intvector(vector); ++i){
+		fprintf(f, "%s %d\n", string, get_intvector(vector, i));
+	}
 	return 0;
 }
 
@@ -100,7 +109,10 @@ int HandlerOptD(char** paths, int output) {
 	fclose(output_file);
 	return 0;
 }
+
+
 int HandlerOptI(char** paths, int output) {
+	IntVector * result = create_int_vector(1);
 	FILE* input_file;
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);
@@ -113,18 +125,21 @@ int HandlerOptI(char** paths, int output) {
 			fl = 1;
 		}
 		if (input_char == '\n') {
-			fprintf(output_file, "Букв латинского алфавита: %d\n", count);
+			push_end_intvector(result, count);
 			count = 0;
 		}
 	}
 	if (fl) {
-		fprintf(output_file, "Букв латинского алфавита: %d\n", count);
+		push_end_intvector(result, count);
 	}
+	print_result(result, "Букв латинского алфавита:", output_file);
 	fclose(input_file);
 	fclose(output_file);
+	destroy_int_vector(result);
 	return 0;
 }
 int HandlerOptS(char** paths, int output) {
+	IntVector * result = create_int_vector(1);
 	FILE* input_file;
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);
@@ -133,21 +148,24 @@ int HandlerOptS(char** paths, int output) {
 	char input_char;
 	while ((input_char = getc(input_file)) != EOF) {
 		if (input_char == '\n') {
-			fprintf(output_file, "Подходящих символов: %d\n", count_not_letter + 1);
+			push_end_intvector(result, count_not_letter + 1);
 			count_not_letter = 0;
 		} else if ((input_char > 'z' || input_char < 'a') && (input_char > 'Z' || input_char < 'A') &&
 		           (input_char > '9' || input_char < '0') && input_char != ' ') {
 			count_not_letter += 1;
 		}
 	}
-	fprintf(output_file, "Подходящих символов: %d\n", count_not_letter);
+
+	push_end_intvector(result, count_not_letter + 1);
+	print_result(result, "Подходящих символов:", output_file);
 	fclose(input_file);
 	fclose(output_file);
+	destroy_int_vector(result);
 	return 0;
 }
 
 void From10to(int number, char* result, int based) {
-	char tmp[8];
+	char tmp[16];
 	int index = 0;
 	while (number > 0) {
 		if (number % based < 10)
@@ -171,7 +189,7 @@ int HandlerOptA(char** paths, int output) {
 	char input_char;
 	while ((input_char = getc(input_file)) != EOF) {
 		if (input_char < '0' || input_char > '9') {
-			char result[8];
+			char result[16];
 			From10to(input_char, result, 16);
 			// printf("%s\n", result);
 			fprintf(output_file, "%s", result);

@@ -1,0 +1,105 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.28"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "lab1",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "t1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t1-Debug-240ce37b71c4fd205055.json",
+					"name" : "t1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t10::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t10-Debug-15c1cc92c2d6a37b4609.json",
+					"name" : "t10",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t2-Debug-ce8e448fde39b0e3516d.json",
+					"name" : "t2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t4::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t4-Debug-e2d8ea60fe5489be18fc.json",
+					"name" : "t4",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t7::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t7-Debug-a02ec836bdf12a256170.json",
+					"name" : "t7",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "t9::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-t9-Debug-46b3ecdf1fd7d9088c66.json",
+					"name" : "t9",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug",
+		"source" : "/home/matvey/Unik/labs_C/sem3/lab1"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

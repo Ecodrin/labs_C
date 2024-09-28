@@ -39,20 +39,17 @@ int size_string(char *s) {
 }
 
 int FromXTo10(char *original, int based, long int *result) {
-	long int powBased = 1;
 	*result = 0;
 	int fl = 0;
-	for (int i = size_string(original) - 1, j = 0; i >= 0; --i, ++j) {
-		if(original[i] == '-')
+	for (int i = 0; i < size_string(original); ++i) {
+		if (original[i] == '-')
 			fl = 1;
-		else{
-			if (sequence_number(original[i]) >= based || sequence_number(original[i]) == -1) return 1;
-			*result += powBased * sequence_number(original[i]);
-			powBased *= based;
+		else {
+			if (sequence_number(original[i]) == -1 || sequence_number(original[i]) >= based) return 1;
+			*result = (*result) * based + sequence_number(original[i]);
 		}
 	}
-	if(fl)
-		*result *= -1;
+	if (fl) *result *= -1;
 	return 0;
 }
 

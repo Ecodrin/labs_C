@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
 		case 4:
 			printf("An unrecognized character\n");
 			return 1;
+		case 5:
+			printf("Error\n");
 		default:
 			break;
 	}

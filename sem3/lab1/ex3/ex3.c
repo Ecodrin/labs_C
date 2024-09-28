@@ -1,8 +1,7 @@
 #include "ex3.h"
 
 int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
-	if(argc < 2)
-		return 1;
+	if (argc < 2) return 1;
 	int count_numbers;
 	if (argv[1][0] == '/' || argv[1][0] == '-') {
 		switch (argv[1][1]) {
@@ -21,31 +20,32 @@ int GetOpts(int argc, char** argv, kOpts* option, double* numbers) {
 			default:
 				return 1;
 		}
-		if(count_numbers != argc - 2){
+		if (count_numbers != argc - 2) {
 			printf("Неверное количество аргументов\n");
 			return 1;
-		}	
-		if(CharToDouble(argv, numbers, count_numbers)){
+		}
+		if (CharToDouble(argv, numbers, count_numbers)) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-int CharToDouble(char ** argv, double * numbers, int count_numbers){
+int CharToDouble(char** argv, double* numbers, int count_numbers) {
 	int k = -1;
 	int fl = 0;
 	for (int i = 0; i < count_numbers; ++i) {
 		fl = 0;
 		for (int j = 0; argv[i + 2][j] != '\0'; ++j) {
-			if (argv[i + 2][j] == '-') fl = 1;
+			if (argv[i + 2][j] == '-')
+				fl = 1;
 			else if (argv[i + 2][j] >= '0' && argv[i + 2][j] <= '9') {
 				numbers[i] *= 10;
 				numbers[i] += (argv[i + 2][j] - '0');
 				if (k != -1) k += 1;
 			} else if (argv[i + 2][j] == '.')
 				k = 0;
-			else{
+			else {
 				return 1;
 			}
 		}
@@ -66,11 +66,10 @@ int compare_values(const double a, const double b, const double eps) {
 
 void solving_quadratic_equations(const double a, const double b, const double c, const double eps) {
 	double discriminant, x1, x2;
-	if(compare_values(a, 0.0, eps) == 0 && compare_values(b, 0.0, eps) == 0 && compare_values(c, 0.0, eps) == 0){
+	if (compare_values(a, 0.0, eps) == 0 && compare_values(b, 0.0, eps) == 0 && compare_values(c, 0.0, eps) == 0) {
 		printf("Уравнение %f*x^2 + %f*x + %f == 0 имеет бесконечное кол-во решений.\n", a, b, c);
 		return;
-	}
-	else if(compare_values(a, 0.0, eps) == 0){
+	} else if (compare_values(a, 0.0, eps) == 0) {
 		printf("Уравнение %f*x^2 + %f*x + %f == 0 имеет одно решение: %f\n", a, b, c, -c / b);
 		return;
 	}
@@ -112,7 +111,8 @@ void HandlerOptQ(const double* numbers) {
 }
 
 void HandlerOptM(const double* numbers) {
-	if(numbers[0] == 0 || numbers[1] == 0 || fabs(numbers[0] - (int)numbers[0]) < 1e-6 || fabs(numbers[1] - (int)numbers[1]) < 1e-6){
+	if (numbers[0] == 0 || numbers[1] == 0 || fabs(numbers[0] - (int)numbers[0]) < 1e-6 ||
+	    fabs(numbers[1] - (int)numbers[1]) < 1e-6) {
 		printf("Нужны целые числа\n");
 		return;
 	}
@@ -132,7 +132,7 @@ void HandlerOptT(const double* numbers) {
 		if (compare_values(numbers[i], minc, eps) == 2) minc = numbers[i];
 	}
 	double b = numbers[1] + numbers[2] + numbers[3] - minc - maxc;
-	if (compare_values(minc * minc + b * b, maxc * maxc , eps) == 0)
+	if (compare_values(minc * minc + b * b, maxc * maxc, eps) == 0)
 		printf("Прямоугольный треугольник со сторонами %f %f %f  может существовать\n", minc, maxc, b);
 	else
 		printf("Прямоугольный треугольник со сторонами %f %f %f  не может существовать\n", minc, maxc, b);

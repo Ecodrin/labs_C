@@ -4,12 +4,15 @@
 #include <math.h>
 
 // Общие методы поиска предела/ряда/метода дихотомии/простой итерации/произведения
-long double calculate_limit(void (*func)(int *, long double *), long double value, long double last_value, long double eps, int first_n);
+long double calculate_limit(void (*func)(int *, long double *), long double value, long double last_value,
+                            long double eps, int first_n);
 long double calculate_sequence(long double (*func)(int n), long double value, long double eps, int n);
 long double calculate_dichotomy(long double (*func)(long double x), long double a, long double b, long double eps);
-long double calculate_simple_iteration(long double (*func)(long double x), long double (*func_eqvivalent)(long double x, long double lambda),
-                                  long double a, long double b, long double lambda, long double eps);
-long double calculate_product(long double (*func)(int), long double product, long double last_product, long double eps, int first_k);
+long double calculate_simple_iteration(long double (*func)(long double x),
+                                       long double (*func_eqvivalent)(long double x, long double lambda), long double a,
+                                       long double b, long double lambda, long double eps);
+long double calculate_product(long double (*func)(int), long double product, long double last_product, long double eps,
+                              int first_k);
 
 // Функции длят вычисления e
 long double calculate_e_limit(long double eps);
@@ -42,7 +45,6 @@ void sqrt2_limit(int *n, long double *value);
 long double calculate_sqrt2_product(long double eps);
 
 long double CharToDouble(char *string);
-
 
 // Фунции для вычисления гамма
 long double calculate_gamma_limit(long double eps);
