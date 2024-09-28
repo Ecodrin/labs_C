@@ -35,26 +35,26 @@ int HandlerOptR(char** paths) {
 	FILE* f1 = fopen(paths[2], "r");
 	FILE* f2 = fopen(paths[3], "r");
 	if (!f1 || !f2) {
-		return 1;
+		return INPUT_FILE_ERROR;
 	}
 	FILE* f3 = fopen(paths[4], "w");
 	if (!f3) {
 		fclose(f1);
 		fclose(f2);
-		return 2;
+		return OUTPUT_FILE_ERROR;
 	};
 
 	fseek(f1, 0, SEEK_END);
 	long int size1 = ftell(f1);
 	rewind(f1);
-	char* buffer1 = malloc(sizeof(char) * size1);
-	if (!buffer1) return 4;
+	char* buffer1 = (char*)malloc(sizeof(char) * size1);
+	if (!buffer1) return MEMORY_ERROR;
 
 	fseek(f2, 0, SEEK_END);
 	long int size2 = ftell(f2);
 	rewind(f2);
-	char* buffer2 = malloc(sizeof(char) * size2);
-	if (!buffer2) return 4;
+	char* buffer2 = (char*)malloc(sizeof(char) * size2);
+	if (!buffer2) return MEMORY_ERROR;
 
 	int error1, error2;
 	error1 = fscanf(f1, "%s", buffer1);
@@ -95,16 +95,16 @@ void From10to(int number, char* result, int based) {
 int HandlerOptA(char** paths) {
 	FILE* f1 = fopen(paths[2], "r");
 	if (!f1) {
-		return 1;
+		return INPUT_FILE_ERROR;
 	}
 
 	FILE* f2 = fopen(paths[3], "w");
-	if (!f2) return 2;
+	if (!f2) return OUTPUT_FILE_ERROR;
 	fseek(f1, 0, SEEK_END);
 	long int size1 = ftell(f1);
 	rewind(f1);
-	char* buffer1 = malloc(sizeof(char) * size1);
-	if (!buffer1) return 4;
+	char* buffer1 = (char*)malloc(sizeof(char) * size1);
+	if (!buffer1) return MEMORY_ERROR;
 	int error;
 	int i = 0;
 	while ((error = fscanf(f1, "%s", buffer1)) != EOF) {
@@ -125,7 +125,7 @@ int HandlerOptA(char** paths) {
 			fprintf(f2, "%s ", buffer1);
 		} else if (i % 5 == 4) {
 			for (int j = 0; buffer1[j] != '\0'; ++j) {
-				char result[16]; // Максимум 8 бит
+				char result[16];  // Максимум 8 бит
 				From10to(buffer1[j], result, 8);
 				fprintf(f2, "%s", result);
 			}

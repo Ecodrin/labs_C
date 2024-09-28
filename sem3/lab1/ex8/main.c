@@ -8,20 +8,18 @@ int main(int argc, char** argv) {
 
 	int error = to_numeral_system(argv);
 	switch (error) {
-		case 1:
+		case INPUT_FILE_ERROR:
 			printf("Input file didn't open\n");
 			return 1;
-		case 2:
+		case OUTPUT_FILE_ERROR:
 			printf("Output file fifn't open\n");
 			return 1;
-		case 3:
+		case MEMORY_ERROR:
 			printf("Memory allocation error\n");
 			return 1;
-		case 4:
+		case UNRECOGNIZED_CHARACTER_ERROR:
 			printf("An unrecognized character\n");
 			return 1;
-		case 5:
-			printf("Error\n");
 		default:
 			break;
 	}

@@ -4,12 +4,12 @@
 #include <stdlib.h>
 
 IntVector* create_int_vector(int capacity) {
-	IntVector * vector = malloc(sizeof(IntVector));
+	IntVector * vector = (IntVector*)malloc(sizeof(IntVector));
 	if (!vector) {
 		printf("Ошибка выделения памяти\n");
 		return NULL;
 	}
-	vector->arr = malloc(sizeof(int) * capacity);
+	vector->arr = (int*)malloc(sizeof(int) * capacity);
 	if (!(vector->arr)) {
 		printf("Ошибка выделения памяти\n");
 		return NULL;
@@ -20,7 +20,7 @@ IntVector* create_int_vector(int capacity) {
 }
 
 int resize_int_vector(IntVector* vector, int new_capacity) {
-	vector->arr = realloc(vector->arr, sizeof(int) * new_capacity);
+	vector->arr = (int*)realloc(vector->arr, sizeof(int) * new_capacity);
 	if (!(vector->arr)) {
 		printf("Ошибка выделения памяти\n");
 		return 1;

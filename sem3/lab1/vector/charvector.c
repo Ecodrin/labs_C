@@ -4,11 +4,11 @@
 #include <stdlib.h>
 
 CharVector* create_char_vector(int capacity) {
-	CharVector *vector = malloc(sizeof(CharVector));
+	CharVector *vector = (CharVector*)malloc(sizeof(CharVector));
 	if(!vector){
 		return NULL;
 	}
-	vector->arr = malloc(sizeof(char) * capacity);
+	vector->arr = (char*)malloc(sizeof(char) * capacity);
 	if (!vector->arr) {
 		printf("Ошибка выделения памяти\n");
 		return NULL;
@@ -19,7 +19,7 @@ CharVector* create_char_vector(int capacity) {
 }
 
 int resize_char_vector(CharVector* vector, int new_capacity) {
-	vector->arr = realloc(vector->arr, sizeof(char) * new_capacity);
+	vector->arr = (char*)realloc(vector->arr, sizeof(char) * new_capacity);
 	if (!vector->arr) {
 		return 1;
 	}

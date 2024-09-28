@@ -1,7 +1,9 @@
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t1.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t2.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t4.dir
+/home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t5.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t7.dir
+/home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t8.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t9.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/t10.dir
 /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug/CMakeFiles/edit_cache.dir

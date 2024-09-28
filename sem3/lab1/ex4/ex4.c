@@ -102,8 +102,6 @@ int HandlerOptD(char** paths, int output) {
 	while ((input_char = getc(input_file)) != EOF) {
 		if (input_char < '0' || input_char > '9')
 			fputc(input_char, output_file);
-		else
-			fputc(' ', output_file);
 	}
 	fclose(input_file);
 	fclose(output_file);

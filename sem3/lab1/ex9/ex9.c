@@ -9,10 +9,10 @@ int get_boundaries(int argc, char** argv, double* a, double* b) {
 	return 0;
 }
 
-int CharToDouble(char* string, double* result) {
+
+int CharToDouble(const char* string, double* result) {
 	int k = -1;
 	int fl = 0;
-	fl = 0;
 	double number = 0;
 	for (int j = 0; string[j] != '\0'; ++j) {
 		if (string[j] == '-' && fl == 0)
@@ -87,14 +87,14 @@ int second_ex() {
 	IntVector* b;
 	IntVector* c;
 	a = create_int_vector(rand() % (10000 - 10 + 1) + 10);
-	if (!a) return 1;
+	if (!a) return ERROR_IN_VECTOR;
 	int error;
 	for (int i = 0; i < a->capacity; ++i) {
 		error = push_end_intvector(a, rand() % 2001 - 1000);
 		if (error) return error;
 	}
 	b = create_int_vector(rand() % (10000 - 10 + 1) + 10);
-	if (!b) return 1;
+	if (!b) return ERROR_IN_VECTOR;
 	for (int i = 0; i < b->capacity; ++i) {
 		error = push_end_intvector(b, rand() % 2001 - 1000);
 		if (error) return error;
@@ -102,7 +102,7 @@ int second_ex() {
 	print_intvector(a);
 	print_intvector(b);
 	c = create_int_vector(1);
-	if (!c) return 1;
+	if (!c) return ERROR_IN_VECTOR;
 
 	for (int i = 0; i < size_intvector(a); ++i) {
 		int val = -2000;
@@ -113,7 +113,7 @@ int second_ex() {
 		}
 		// printf("%d %d\n", get_intvector(a, i), val);
 		error = push_end_intvector(c, get_intvector(a, i) + val);
-		if (error) return error;
+		if (error) return ERROR_IN_VECTOR;
 	}
 	print_intvector(c);
 	destroy_int_vector(a);

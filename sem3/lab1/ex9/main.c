@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
 	error = second_ex();
 	switch (error) {
-		case 1:
+		case ERROR_IN_VECTOR:
 			printf("Error in intvector\n");
 			return 1;
 

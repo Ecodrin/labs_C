@@ -21,9 +21,9 @@ int FromXTo10(char *original, int based, long int *result) {
 	*result = 0;
 	int fl = 0;
 	for (int i = 0; i < size_string(original); ++i) {
-		if (original[i] == '-')
+		if (original[i] == '-') {
 			fl = 1;
-		else {
+		} else {
 			if (sequence_number(original[i]) == -1) return 1;
 			*result = (*result) * based + sequence_number(original[i]);
 		}
@@ -31,6 +31,7 @@ int FromXTo10(char *original, int based, long int *result) {
 	if (fl) *result *= -1;
 	return 0;
 }
+
 
 void print_result(char *buffer, int max_num_s, long int number, FILE *output_file) {
 	int fl = 0;
@@ -48,20 +49,21 @@ void print_result(char *buffer, int max_num_s, long int number, FILE *output_fil
 
 int to_numeral_system(char **argv) {
 	FILE *f1 = fopen(argv[1], "r");
-	if (!f1) return 1;
+	if (!f1) return INPUT_FILE_ERROR;
 	FILE *f2 = fopen(argv[2], "w");
 	if (!f2) {
 		fclose(f1);
-		return 2;
+		return OUTPUT_FILE_ERROR;
 	}
 	fseek(f1, 0, SEEK_END);
 	long int size1 = ftell(f1);
 	rewind(f1);
-	char *buffer = malloc(sizeof(char) * size1);
-	if (!buffer) return 4;
-	int error;
+	char *buffer = (char*)malloc(sizeof(char) * size1);
+	if (!buffer) return MEMORY_ERROR;
+	int error, fl = 0;
 	while ((error = fscanf(f1, "%s", buffer)) != EOF) {
 		int max_num_s = 1;
+		fl = 0;
 		for (int i = 0; buffer[i] != '\0'; ++i) {
 			if (sequence_number(buffer[i]) > max_num_s) {
 				max_num_s = sequence_number(buffer[i]);
@@ -70,15 +72,19 @@ int to_numeral_system(char **argv) {
 				fclose(f1);
 				fclose(f2);
 				free(buffer);
-				return 4;
+				return UNRECOGNIZED_CHARACTER_ERROR;
 			};
+			if (buffer[i] == '-' && !fl && i == 0)
+				fl = 1;
+			else if (buffer[i] == '-')
+				return UNRECOGNIZED_CHARACTER_ERROR;
 		}
 		max_num_s += 1;
 		if (max_num_s > 36 || max_num_s < 2) {
 			fclose(f1);
 			fclose(f2);
 			free(buffer);
-			return 4;
+			return UNRECOGNIZED_CHARACTER_ERROR;
 		}
 		long int number;
 		int error = FromXTo10(buffer, max_num_s, &number);
@@ -86,7 +92,7 @@ int to_numeral_system(char **argv) {
 			fclose(f1);
 			fclose(f2);
 			free(buffer);
-			return 5;
+			return UNRECOGNIZED_CHARACTER_ERROR;
 		}
 		print_result(buffer, max_num_s, number, f2);
 	}

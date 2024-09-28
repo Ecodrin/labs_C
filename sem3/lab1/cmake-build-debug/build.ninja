@@ -175,6 +175,46 @@ build t4: C_EXECUTABLE_LINKER__t4_Debug CMakeFiles/t4.dir/ex4/main.c.o CMakeFile
   TARGET_PDB = t4.dbg
 
 # =============================================================================
+# Object build statements for EXECUTABLE target t5
+
+
+#############################################
+# Order-only phony target for t5
+
+build cmake_object_order_depends_target_t5: phony || CMakeFiles/t5.dir
+
+build CMakeFiles/t5.dir/ex5/main.c.o: C_COMPILER__t5_unscanned_Debug /home/matvey/Unik/labs_C/sem3/lab1/ex5/main.c || cmake_object_order_depends_target_t5
+  DEP_FILE = CMakeFiles/t5.dir/ex5/main.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I/home/matvey/Unik/labs_C/sem3/lab1/ex1
+  OBJECT_DIR = CMakeFiles/t5.dir
+  OBJECT_FILE_DIR = CMakeFiles/t5.dir/ex5
+
+build CMakeFiles/t5.dir/ex5/ex5.c.o: C_COMPILER__t5_unscanned_Debug /home/matvey/Unik/labs_C/sem3/lab1/ex5/ex5.c || cmake_object_order_depends_target_t5
+  DEP_FILE = CMakeFiles/t5.dir/ex5/ex5.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I/home/matvey/Unik/labs_C/sem3/lab1/ex1
+  OBJECT_DIR = CMakeFiles/t5.dir
+  OBJECT_FILE_DIR = CMakeFiles/t5.dir/ex5
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target t5
+
+
+#############################################
+# Link the executable t5
+
+build t5: C_EXECUTABLE_LINKER__t5_Debug CMakeFiles/t5.dir/ex5/main.c.o CMakeFiles/t5.dir/ex5/ex5.c.o
+  FLAGS = -g
+  LINK_LIBRARIES = -lm
+  OBJECT_DIR = CMakeFiles/t5.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = t5
+  TARGET_PDB = t5.dbg
+
+# =============================================================================
 # Object build statements for EXECUTABLE target t7
 
 
@@ -213,6 +253,45 @@ build t7: C_EXECUTABLE_LINKER__t7_Debug CMakeFiles/t7.dir/ex7/main.c.o CMakeFile
   PRE_LINK = :
   TARGET_FILE = t7
   TARGET_PDB = t7.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target t8
+
+
+#############################################
+# Order-only phony target for t8
+
+build cmake_object_order_depends_target_t8: phony || CMakeFiles/t8.dir
+
+build CMakeFiles/t8.dir/ex8/main.c.o: C_COMPILER__t8_unscanned_Debug /home/matvey/Unik/labs_C/sem3/lab1/ex8/main.c || cmake_object_order_depends_target_t8
+  DEP_FILE = CMakeFiles/t8.dir/ex8/main.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I/home/matvey/Unik/labs_C/sem3/lab1/ex1
+  OBJECT_DIR = CMakeFiles/t8.dir
+  OBJECT_FILE_DIR = CMakeFiles/t8.dir/ex8
+
+build CMakeFiles/t8.dir/ex8/ex8.c.o: C_COMPILER__t8_unscanned_Debug /home/matvey/Unik/labs_C/sem3/lab1/ex8/ex8.c || cmake_object_order_depends_target_t8
+  DEP_FILE = CMakeFiles/t8.dir/ex8/ex8.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I/home/matvey/Unik/labs_C/sem3/lab1/ex1
+  OBJECT_DIR = CMakeFiles/t8.dir
+  OBJECT_FILE_DIR = CMakeFiles/t8.dir/ex8
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target t8
+
+
+#############################################
+# Link the executable t8
+
+build t8: C_EXECUTABLE_LINKER__t8_Debug CMakeFiles/t8.dir/ex8/main.c.o CMakeFiles/t8.dir/ex8/ex8.c.o
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles/t8.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = t8
+  TARGET_PDB = t8.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target t9
@@ -284,6 +363,13 @@ build CMakeFiles/t10.dir/vector/charvector.c.o: C_COMPILER__t10_unscanned_Debug 
   OBJECT_DIR = CMakeFiles/t10.dir
   OBJECT_FILE_DIR = CMakeFiles/t10.dir/vector
 
+build CMakeFiles/t10.dir/ex10/ex10.c.o: C_COMPILER__t10_unscanned_Debug /home/matvey/Unik/labs_C/sem3/lab1/ex10/ex10.c || cmake_object_order_depends_target_t10
+  DEP_FILE = CMakeFiles/t10.dir/ex10/ex10.c.o.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I/home/matvey/Unik/labs_C/sem3/lab1/ex1
+  OBJECT_DIR = CMakeFiles/t10.dir
+  OBJECT_FILE_DIR = CMakeFiles/t10.dir/ex10
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target t10
@@ -292,7 +378,7 @@ build CMakeFiles/t10.dir/vector/charvector.c.o: C_COMPILER__t10_unscanned_Debug 
 #############################################
 # Link the executable t10
 
-build t10: C_EXECUTABLE_LINKER__t10_Debug CMakeFiles/t10.dir/ex10/main.c.o CMakeFiles/t10.dir/vector/charvector.c.o
+build t10: C_EXECUTABLE_LINKER__t10_Debug CMakeFiles/t10.dir/ex10/main.c.o CMakeFiles/t10.dir/vector/charvector.c.o CMakeFiles/t10.dir/ex10/ex10.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/t10.dir
   POST_BUILD = :
@@ -334,7 +420,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /home/matvey/Unik/labs_C/sem3/lab1/cmake-build-debug
 
-build all: phony t1 t2 t4 t7 t9 t10
+build all: phony t1 t2 t4 t5 t7 t8 t9 t10
 
 # =============================================================================
 # Built-in targets
