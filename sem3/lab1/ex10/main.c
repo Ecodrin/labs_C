@@ -1,7 +1,5 @@
 #include "ex10.h"
 
-
-
 int main() {
 	int error = ex();
 	switch (error) {

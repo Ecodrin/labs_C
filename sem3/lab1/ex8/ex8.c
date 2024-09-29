@@ -55,46 +55,58 @@ int to_numeral_system(char **argv) {
 		fclose(f1);
 		return OUTPUT_FILE_ERROR;
 	}
-	fseek(f1, 0, SEEK_END);
-	long int size1 = ftell(f1);
-	rewind(f1);
-	char *buffer = (char*)malloc(sizeof(char) * size1);
-	if (!buffer) return MEMORY_ERROR;
-	int error, fl = 0;
-	while ((error = fscanf(f1, "%s", buffer)) != EOF) {
-		int max_num_s = 1;
-		fl = 0;
-		for (int i = 0; buffer[i] != '\0'; ++i) {
-			if (sequence_number(buffer[i]) > max_num_s) {
-				max_num_s = sequence_number(buffer[i]);
+	int i = 0, size = 10;
+	char * buffer = (char *)malloc(sizeof(char) * size);
+	char c, last_c = ' ', end = 0;
+	while(last_c != EOF){
+		end = (c = getc(f1));
+		if(c != ' ' && c != '\n' && c != '\t' && c !='\0' && c != EOF){
+			if(i == size - 2){
+				buffer = (char*)realloc(buffer, size * 2);
+				if(!buffer) return MEMORY_ERROR;
+				size *= 2;
 			}
-			if (sequence_number(buffer[i]) == -1 && buffer[i] != '-') {
+			buffer[i] = c;
+			++i;
+		}
+		else if((last_c != ' ' && last_c != '\n' && last_c != '\t' && last_c !='\0') || (end == EOF)){
+			int max_num_s = 1;
+			int fl = 0;
+			buffer[i] = '\0';
+			for (int i = 0; buffer[i] != '\0'; ++i) {
+				if (sequence_number(buffer[i]) > max_num_s) {
+					max_num_s = sequence_number(buffer[i]);
+				}
+				if ((sequence_number(buffer[i]) == -1 && buffer[i] != '-')) {
+					fclose(f1);
+					fclose(f2);
+					free(buffer);
+					return UNRECOGNIZED_CHARACTER_ERROR;
+				};
+				if (buffer[i] == '-' && !fl && i == 0)
+					fl = 1;
+				else if (buffer[i] == '-')
+					return UNRECOGNIZED_CHARACTER_ERROR;
+			}
+			max_num_s += 1;
+			if (max_num_s > 36 || max_num_s < 2) {
 				fclose(f1);
 				fclose(f2);
 				free(buffer);
 				return UNRECOGNIZED_CHARACTER_ERROR;
-			};
-			if (buffer[i] == '-' && !fl && i == 0)
-				fl = 1;
-			else if (buffer[i] == '-')
+			}
+			long int number;
+			int error = FromXTo10(buffer, max_num_s, &number);
+			if (error) {
+				fclose(f1);
+				fclose(f2);
+				free(buffer);
 				return UNRECOGNIZED_CHARACTER_ERROR;
+			}
+			print_result(buffer, max_num_s, number, f2);
+			i = 0;
 		}
-		max_num_s += 1;
-		if (max_num_s > 36 || max_num_s < 2) {
-			fclose(f1);
-			fclose(f2);
-			free(buffer);
-			return UNRECOGNIZED_CHARACTER_ERROR;
-		}
-		long int number;
-		int error = FromXTo10(buffer, max_num_s, &number);
-		if (error) {
-			fclose(f1);
-			fclose(f2);
-			free(buffer);
-			return UNRECOGNIZED_CHARACTER_ERROR;
-		}
-		print_result(buffer, max_num_s, number, f2);
+		last_c = c;
 	}
 
 	fclose(f1);

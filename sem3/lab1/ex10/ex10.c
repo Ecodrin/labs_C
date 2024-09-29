@@ -1,6 +1,5 @@
 #include "ex10.h"
 
-
 int string_cmp(char *a, char *b) {
 	int i;
 	for (i = 0; a[i] != '\0' && b[i] != '\0'; ++i) {
@@ -43,7 +42,8 @@ int FromXTo10(char *original, int based, long int *result) {
 		if (original[i] == '-')
 			fl = 1;
 		else {
-			if (sequence_number(original[i]) == -1 || sequence_number(original[i]) >= based) return ERROR_NUMERAL_SYSTEM;
+			if (sequence_number(original[i]) == -1 || sequence_number(original[i]) >= based)
+				return ERROR_NUMERAL_SYSTEM;
 			*result = (*result) * based + sequence_number(original[i]);
 		}
 	}
