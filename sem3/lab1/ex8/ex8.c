@@ -57,9 +57,9 @@ int to_numeral_system(char **argv) {
 	}
 	int i = 0, size = 10;
 	char * buffer = (char *)malloc(sizeof(char) * size);
-	char c, last_c = ' ', end = 0;
+	char c, last_c = ' ';
 	while(last_c != EOF){
-		end = (c = getc(f1));
+		c = getc(f1);
 		if(c != ' ' && c != '\n' && c != '\t' && c !='\0' && c != EOF){
 			if(i == size - 2){
 				buffer = (char*)realloc(buffer, size * 2);
@@ -69,7 +69,7 @@ int to_numeral_system(char **argv) {
 			buffer[i] = c;
 			++i;
 		}
-		else if((last_c != ' ' && last_c != '\n' && last_c != '\t' && last_c !='\0') || (end == EOF)){
+		else if((last_c != ' ' && last_c != '\n' && last_c != '\t' && last_c !='\0')){
 			int max_num_s = 1;
 			int fl = 0;
 			buffer[i] = '\0';
