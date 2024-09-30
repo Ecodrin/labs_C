@@ -86,8 +86,8 @@ int open_files(char** paths, int output, FILE** input_file, FILE** output_file) 
 	return 0;
 }
 
-int print_result(IntVector * vector, char*string, FILE * f){
-	for(int i = 0; i < size_intvector(vector); ++i){
+int print_result(IntVector* vector, char* string, FILE* f) {
+	for (int i = 0; i < size_intvector(vector); ++i) {
 		fprintf(f, "%s %d\n", string, get_intvector(vector, i));
 	}
 	return 0;
@@ -100,17 +100,15 @@ int HandlerOptD(char** paths, int output) {
 	if (mistake > 0) return mistake;
 	char input_char;
 	while ((input_char = getc(input_file)) != EOF) {
-		if (input_char < '0' || input_char > '9')
-			fputc(input_char, output_file);
+		if (input_char < '0' || input_char > '9') fputc(input_char, output_file);
 	}
 	fclose(input_file);
 	fclose(output_file);
 	return 0;
 }
 
-
 int HandlerOptI(char** paths, int output) {
-	IntVector * result = create_int_vector(1);
+	IntVector* result = create_int_vector(1);
 	FILE* input_file;
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);
@@ -137,7 +135,7 @@ int HandlerOptI(char** paths, int output) {
 	return 0;
 }
 int HandlerOptS(char** paths, int output) {
-	IntVector * result = create_int_vector(1);
+	IntVector* result = create_int_vector(1);
 	FILE* input_file;
 	FILE* output_file;
 	int mistake = open_files(paths, output, &input_file, &output_file);

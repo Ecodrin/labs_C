@@ -32,7 +32,6 @@ int FromXTo10(char *original, int based, long int *result) {
 	return 0;
 }
 
-
 void print_result(char *buffer, int max_num_s, long int number, FILE *output_file) {
 	int fl = 0;
 	for (int i = 0; buffer[i] != '\0'; ++i) {
@@ -56,20 +55,19 @@ int to_numeral_system(char **argv) {
 		return OUTPUT_FILE_ERROR;
 	}
 	int i = 0, size = 10;
-	char * buffer = (char *)malloc(sizeof(char) * size);
+	char *buffer = (char *)malloc(sizeof(char) * size);
 	char c, last_c = ' ';
-	while(last_c != EOF){
+	while (last_c != EOF) {
 		c = getc(f1);
-		if(c != ' ' && c != '\n' && c != '\t' && c !='\0' && c != EOF){
-			if(i == size - 2){
-				buffer = (char*)realloc(buffer, size * 2);
-				if(!buffer) return MEMORY_ERROR;
+		if (c != ' ' && c != '\n' && c != '\t' && c != '\0' && c != EOF) {
+			if (i == size - 2) {
+				buffer = (char *)realloc(buffer, size * 2);
+				if (!buffer) return MEMORY_ERROR;
 				size *= 2;
 			}
 			buffer[i] = c;
 			++i;
-		}
-		else if((last_c != ' ' && last_c != '\n' && last_c != '\t' && last_c !='\0')){
+		} else if ((last_c != ' ' && last_c != '\n' && last_c != '\t' && last_c != '\0')) {
 			int max_num_s = 1;
 			int fl = 0;
 			buffer[i] = '\0';

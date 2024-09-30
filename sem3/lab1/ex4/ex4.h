@@ -5,6 +5,7 @@
 
 #include <math.h>
 #include <stdio.h>
+
 #include "../vector/intvector.h"
 
 typedef enum kOpts { OPT_D, OPT_I, OPT_S, OPT_A } kOpts;

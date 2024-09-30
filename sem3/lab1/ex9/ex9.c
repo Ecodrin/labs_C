@@ -9,7 +9,6 @@ int get_boundaries(int argc, char** argv, double* a, double* b) {
 	return 0;
 }
 
-
 int CharToDouble(const char* string, double* result) {
 	int k = -1;
 	int fl = 0;

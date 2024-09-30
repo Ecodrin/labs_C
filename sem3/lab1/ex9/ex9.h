@@ -2,7 +2,6 @@
 #ifndef LAB1_EX9_EX9_H
 #define LAB1_EX9_EX9_H
 
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

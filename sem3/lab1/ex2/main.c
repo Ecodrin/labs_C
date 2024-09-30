@@ -8,12 +8,12 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 	double eps = CharToDouble(argv[1]);
-	if(eps < 0){
+	if (eps < 0) {
 		printf("Точность записана неверно\n");
 		return 1;
 	}
 
-// 27182818284 5904523536 0287471352 6624977572 4709369995
+	// 27182818284 5904523536 0287471352 6624977572 4709369995
 	printf("limit: %.15Lf\n", calculate_e_limit(eps));
 	printf("sequence: %.15Lf\n", calculate_e_sequence(eps));
 	printf("dech: %.15Lf\n\n", calculate_e_dichotomy(eps));

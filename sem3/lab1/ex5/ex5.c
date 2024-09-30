@@ -99,17 +99,17 @@ double sum_c(double eps, double x) {
 double sum_d(double eps, double x) {
 	double sum = 0.0, last_sum = -1, value = 1.0;
 	int k = 1;
-	if(fabs(x) > 1.0){
+	if (fabs(x) > 1.0) {
 		printf("Ряд c не сходится\n");
 		return 1;
-	}else{
+	} else {
 		while (fabs(sum - last_sum) >= eps) {
-		last_sum = sum;
-		value *= -x * x * (2.0 * k - 1.0) / (2.0 * k);
-		sum += value;
-		// printf("%f %f %f \n", sum, value, -x * x * (2.0 * k - 1.0) / (2.0 * k));
-		k += 1;
-	}
+			last_sum = sum;
+			value *= -x * x * (2.0 * k - 1.0) / (2.0 * k);
+			sum += value;
+			// printf("%f %f %f \n", sum, value, -x * x * (2.0 * k - 1.0) / (2.0 * k));
+			k += 1;
+		}
 	}
 	return sum;
 }
