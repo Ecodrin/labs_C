@@ -64,22 +64,28 @@ int FromXToY(char *original, CharVector *result, int from_based, int to_based) {
 	}
 	while (number > 0) {
 		if (number % to_based < 10) {
-			push_end_charvector(tmp, '0' + number % to_based);
+			error = push_end_charvector(tmp, '0' + number % to_based);
+			if (error) return MEMORY_ERROR;
 		} else {
-			push_end_charvector(tmp, 'A' + (number % to_based - 10));
+			error = push_end_charvector(tmp, 'A' + (number % to_based - 10));
+			if (error) return MEMORY_ERROR;
 		}
 		number /= to_based;
 	}
 	if (fl) {
 		error = push_end_charvector(tmp, '-');
-		if (error) return INDEX_VECTOR_ERROR;
+		if (error) return MEMORY_ERROR;
 	}
 	for (int i = size_charvector(tmp) - 1; i >= 0; i--) {
-		error = push_end_charvector(result, get_charvector(tmp, i));
-		if (error) return INDEX_VECTOR_ERROR;
+		int c;
+		c = get_charvector(tmp, i);
+		if(c == -1) return INDEX_VECTOR_ERROR;
+		error = push_end_charvector(result, (char)c);
+		if (error) return MEMORY_ERROR;
 	}
 	if (size_charvector(result) == 0 && number == 0) {
-		push_end_charvector(result, '0');
+		error = push_end_charvector(result, '0');
+		if (error) return MEMORY_ERROR;
 	}
 	destroy_char_vector(tmp);
 	return 0;
@@ -88,10 +94,10 @@ int FromXToY(char *original, CharVector *result, int from_based, int to_based) {
 int ex() {
 	int based, error;
 	error = scanf("%d", &based);
-	if (error != 1 || based < 2 || based > 36) return 4;
+	if (error != 1 || based < 2 || based > 36) return NOT_SERVICED_NUMERAL_SYSTEM;
 	char number[100] = "+", max_number_string[100];
 	long int max_number = 0, numberIn10 = 0, fl = 1;
-	while (scanf("%s", number) && !string_cmp(number, "Stop\0")) {
+	while (scanf("%s", number) && !string_cmp(number, "Stop")) {
 		fl = 0;
 		error = FromXTo10(number, based, &numberIn10);
 		if (error) return ERROR_NUMERAL_SYSTEM;

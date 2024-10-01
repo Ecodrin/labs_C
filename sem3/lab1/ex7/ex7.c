@@ -31,7 +31,7 @@ int SizeString(const char* string) {
 	return i;
 }
 
-int reading_word(char* buffer, int* index, int* size, FILE* f) {
+int reading_word(char** buffer, int* index, int* size, FILE* f) {
 	*index = 0;
 	char last_c = ' ', c;
 	while (last_c != EOF) {
@@ -39,15 +39,15 @@ int reading_word(char* buffer, int* index, int* size, FILE* f) {
 		if (c == EOF) return 0;
 		if (c != ' ' && c != '\n' && c != '\t' && c != '\0' && c != EOF) {
 			if (*index == *size - 2) {
-				buffer = (char*)realloc(buffer, sizeof(char) * (*size) * 2);
+				*buffer = (char*)realloc(buffer, sizeof(char) * (*size) * 2);
 				*size *= 2;
-				if (!buffer) return MEMORY_ERROR;
+				if (!*buffer) return MEMORY_ERROR;
 			}
-			buffer[*index] = c;
+			(*buffer)[*index] = c;
 			(*index)++;
 			last_c = c;
 		} else {
-			buffer[*index] = '\0';
+			(*buffer)[*index] = '\0';
 			return -1;
 		}
 	}
@@ -69,10 +69,10 @@ int HandlerOptR(char** paths) {
 	char* buffer1 = (char*)malloc(sizeof(char) * size_buffer1);
 	char* buffer2 = (char*)malloc(sizeof(char) * size_buffer2);
 	do {
-		while (reading_word(buffer1, &i1, &size_buffer1, f1) == -1 && i1 == 0)
+		while (reading_word(&buffer1, &i1, &size_buffer1, f1) == -1 && i1 == 0)
 			;
 		if (i1 != 0) fprintf(f3, "%s ", buffer1);
-		while (reading_word(buffer2, &i2, &size_buffer2, f2) == -1 && i2 == 0)
+		while (reading_word(&buffer2, &i2, &size_buffer2, f2) == -1 && i2 == 0)
 			;
 		if (i2 != 0) fprintf(f3, "%s ", buffer2);
 	} while (i1 != 0 || i2 != 0);
@@ -100,7 +100,6 @@ int HandlerOptA(char** paths) {
 	if (!f1) {
 		return INPUT_FILE_ERROR;
 	}
-
 	FILE* f2 = fopen(paths[3], "w");
 	if (!f2) return OUTPUT_FILE_ERROR;
 	int error;
@@ -155,3 +154,4 @@ int HandlerOptA(char** paths) {
 	free(buffer1);
 	return 0;
 }
+
