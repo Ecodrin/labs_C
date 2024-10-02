@@ -18,40 +18,39 @@ CharVector* create_char_vector(int capacity) {
 	return vector;
 }
 
-int resize_char_vector(CharVector* vector, int new_capacity) {
+error_msg resize_char_vector(CharVector* vector, int new_capacity) {
 	vector->arr = (char*)realloc(vector->arr, sizeof(char) * new_capacity);
 	if (!vector->arr) {
-		return 1;
+		return MEMORY_ALLOCATED_ERROR;
 	}
 	vector->capacity = new_capacity;
-	return 0;
+	return NORMAL;
 }
 
-int push_end_charvector(CharVector* vector, char new_element) {
+error_msg push_end_charvector(CharVector* vector, char new_element) {
 	if (vector->size == vector->capacity) {
-		int error = resize_char_vector(vector, vector->size * 2);
+		error_msg error = resize_char_vector(vector, vector->size * 2);
 		if (error) return error;
 	}
 	vector->size += 1;
 	vector->arr[vector->size - 1] = new_element;
-	return 0;
+	return NORMAL;
 }
 
-int get_charvector(CharVector* vector, int index) {
+error_msg get_charvector(CharVector* vector, int index, char * value) {
 	if (index >= vector->capacity) {
-		printf("Incorrect index in function get\n");
-		return -1;
+		return INDEX_VECTOR_ERROR;
 	}
-	return vector->arr[index];
+	*value = vector->arr[index];
+	return NORMAL;
 }
 
-int at_charvector(CharVector* vector, int index, char new_element) {
+error_msg at_charvector(CharVector* vector, int index, char new_element) {
 	if (index >= vector->capacity) {
-		printf("Incorrect index in function at\n");
-		return 1;
+		return INDEX_VECTOR_ERROR;
 	}
 	vector->arr[index] = new_element;
-	return 0;
+	return NORMAL;
 }
 
 int size_charvector(CharVector* vector) { return vector->size; }

@@ -8,6 +8,8 @@ add_executable(ex1
         SystemErrors/errors.h
         ex1/ex1.c
         ex1/ex1.h
-        ex1/main.c)
+        ex1/main.c
+        vector/charvector.h
+        vector/charvector.c)
 
 

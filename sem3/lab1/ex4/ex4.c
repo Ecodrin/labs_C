@@ -87,8 +87,10 @@ int open_files(char** paths, int output, FILE** input_file, FILE** output_file) 
 }
 
 int print_result(IntVector* vector, char* string, FILE* f) {
+	int x;
 	for (int i = 0; i < size_intvector(vector); ++i) {
-		fprintf(f, "%s %d\n", string, get_intvector(vector, i));
+		get_intvector(vector, i, &x);
+		fprintf(f, "%s %d\n", string, x);
 	}
 	return 0;
 }

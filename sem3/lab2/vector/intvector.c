@@ -6,12 +6,10 @@
 IntVector* create_int_vector(int capacity) {
 	IntVector* vector = (IntVector*)malloc(sizeof(IntVector));
 	if (!vector) {
-		printf("Ошибка выделения памяти\n");
 		return NULL;
 	}
 	vector->arr = (int*)malloc(sizeof(int) * capacity);
 	if (!(vector->arr)) {
-		printf("Ошибка выделения памяти\n");
 		return NULL;
 	}
 	vector->size = 0;
@@ -22,39 +20,36 @@ IntVector* create_int_vector(int capacity) {
 int resize_int_vector(IntVector* vector, int new_capacity) {
 	vector->arr = (int*)realloc(vector->arr, sizeof(int) * new_capacity);
 	if (!(vector->arr)) {
-		printf("Ошибка выделения памяти\n");
-		return 1;
+		return MEMORY_ALLOCATED_ERROR;
 	}
 	vector->capacity = new_capacity;
-	return 0;
+	return NORMAL;
 }
 
-int push_end_intvector(IntVector* vector, int new_element) {
+error_msg push_end_intvector(IntVector* vector, int new_element) {
 	if (vector->size == vector->capacity) {
-		int error = resize_int_vector(vector, vector->capacity * 2);
+		error_msg error = resize_int_vector(vector, vector->capacity * 2);
 		if (error) return error;
 	}
 	vector->size += 1;
 	vector->arr[vector->size - 1] = new_element;
-	return 0;
+	return NORMAL;
 }
 
-int get_intvector(IntVector* vector, int index, int* value) {
+error_msg get_intvector(IntVector* vector, int index, int* value) {
 	if (index >= vector->size) {
-		printf("Incorrect index in function get\n");
-		return 1;
+		return INDEX_VECTOR_ERROR;
 	}
 	*value = vector->arr[index];
-	return 0;
+	return NORMAL;
 }
 
-int at_intvector(IntVector* vector, int index, int new_element) {
+error_msg at_intvector(IntVector* vector, int index, int new_element) {
 	if (index >= vector->size) {
-		printf("Incorrect index in function at\n");
-		return 1;
+		return INDEX_VECTOR_ERROR;
 	}
 	vector->arr[index] = new_element;
-	return 0;
+	return NORMAL;
 }
 
 int size_intvector(IntVector* vector) { return vector->size; }

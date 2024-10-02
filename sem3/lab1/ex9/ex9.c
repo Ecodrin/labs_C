@@ -102,16 +102,19 @@ int second_ex() {
 	print_intvector(b);
 	c = create_int_vector(1);
 	if (!c) return ERROR_IN_VECTOR;
-
+	int x, y;
 	for (int i = 0; i < size_intvector(a); ++i) {
 		int val = -2000;
 		for (int j = 0; j < size_intvector(b); ++j) {
-			if (abs(get_intvector(a, i) - val) > abs(get_intvector(a, i) - get_intvector(b, j))) {
-				val = get_intvector(b, j);
+			get_intvector(a, i, &x);
+			get_intvector(b, j, &y);
+			if (abs(x - val) > abs(x- y)) {
+				get_intvector(b, j, &val);
 			}
 		}
 		// printf("%d %d\n", get_intvector(a, i), val);
-		error = push_end_intvector(c, get_intvector(a, i) + val);
+		get_intvector(a, i, &x);
+		error = push_end_intvector(c, x + val);
 		if (error) return ERROR_IN_VECTOR;
 	}
 	print_intvector(c);
