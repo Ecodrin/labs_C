@@ -24,9 +24,6 @@ int print_error(error_msg error){
         case UNRECOGNIZED_CHARACTER_ERROR:
             printf("Unrecognized character\n");
             return 7;
-        case OPTIONS_ERROR:
-            printf("Incorrect options\n");
-            return 8;
         default:
             return 0;
     }

@@ -13,8 +13,7 @@ typedef enum error_msg{
     INDEX_VECTOR_ERROR,
     OVERFLOW_ERROR,
     INCORRECT_OPTIONS_ERROR,
-    UNRECOGNIZED_CHARACTER_ERROR,
-    OPTIONS_ERROR
+    UNRECOGNIZED_CHARACTER_ERROR
 } error_msg;
 
 int print_error(error_msg error);

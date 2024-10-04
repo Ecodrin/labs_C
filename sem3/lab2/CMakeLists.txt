@@ -13,3 +13,11 @@ add_executable(ex1
         vector/charvector.c)
 
 
+add_executable(ex2 ex2/main.c
+        SystemErrors/errors.c
+        SystemErrors/errors.h
+        ex2/ex2.c
+        ex2/ex2.h)
+
+
+target_link_libraries(ex2 m)
