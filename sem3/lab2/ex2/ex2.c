@@ -18,9 +18,15 @@ error_msg geometric_mean(double * result, int n, ...){
 }
 
 double QuitPow(double x, int n){
-	if(n == 0) return 1;
-	if(n == 1) return x;
-	if(n == 2) return x * x;
-	if(n % 2) return x * QuitPow(x, n - 1);
-	return x * x * QuitPow(x, n / 2);
+	switch (n) {
+		case 0:
+			return 1;
+		case 1:
+			return x;
+		case 2:
+			return x * x;
+		default:
+			if(n % 2) return x * QuitPow(x, n - 1);
+			return x * x * QuitPow(x, n / 2);
+	}
 }
