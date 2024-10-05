@@ -20,4 +20,12 @@ add_executable(ex2 ex2/main.c
         ex2/ex2.h)
 
 
+add_executable(ex3 ex3/ex3.c
+        ex3/ex3.h
+        SystemErrors/errors.c
+        SystemErrors/errors.h
+        ex3/main.c
+        vector/intvector.c)
+
 target_link_libraries(ex2 m)
+target_link_libraries(ex3 m)

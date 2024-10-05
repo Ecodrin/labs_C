@@ -5,7 +5,7 @@ int main(){
 
 
 	double a;
-	error_msg error = geometric_mean(&a, 5, 1.2, 3.4, 2.4, 5.3, 3.2);
+	error_msg error = geometric_mean(&a, 5, 1.2, 3.4, 2.4, 5.3, 3.2, 0.0000001);
 	if(error) return print_error(error);
 	printf("Среднее геометрическое: %f\n", a);
 
