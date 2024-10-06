@@ -24,6 +24,9 @@ int print_error(error_msg error){
         case UNRECOGNIZED_CHARACTER_ERROR:
             printf("Unrecognized character\n");
             return 7;
+		case NUMERAL_SYSTEM_ERROR:
+			printf("This numeral system doesn't exist\n");
+			return 8;
         default:
             return 0;
     }

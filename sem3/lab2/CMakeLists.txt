@@ -27,5 +27,13 @@ add_executable(ex3 ex3/ex3.c
         ex3/main.c
         vector/intvector.c)
 
+add_executable(ex4 ex4/main.c
+        SystemErrors/errors.c
+        SystemErrors/errors.h
+        ex4/ex4.c
+        ex4/ex4.h
+        vector/charvector.c
+        vector/charvector.h)
+
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)
