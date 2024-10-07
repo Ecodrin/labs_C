@@ -7,6 +7,7 @@ int SizeString(char *s) {
 	return i;
 }
 
+
 error_msg computeLPSArray(const char *pat, int M, int *lps) {
 	int j = 0;
 	lps[0] = 0;
@@ -92,6 +93,7 @@ error_msg FilesStrStr(int n, char *string, ...) {
 	FILE *f;
 
 	IntVector *pos = create_int_vector(1);
+	if(!pos) return MEMORY_ALLOCATED_ERROR;
 	for (int i = 0; i < n; ++i) {
 		file_name = va_arg(factor, char *);
 		f = fopen(file_name, "r");

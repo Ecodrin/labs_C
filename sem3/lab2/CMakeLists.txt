@@ -33,7 +33,9 @@ add_executable(ex4 ex4/main.c
         ex4/ex4.c
         ex4/ex4.h
         vector/charvector.c
-        vector/charvector.h)
+        vector/charvector.h
+        vector/stringvector.c
+        vector/stringvector.h)
 
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)

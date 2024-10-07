@@ -1,12 +1,5 @@
 #include "ex4.h"
 
-int SizeString(char *s) {
-	int i = 0;
-	for (; s[i] != '\0'; ++i)
-		;
-	return i;
-}
-
 int sequence_number(char c) {
 	if (c >= 'A' && c <= 'Z') c = 'a' + c - 'A';
 	if (c >= 'a' && c <= 'z')
@@ -117,11 +110,121 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 	return NORMAL;
 }
 
-error_msg FindNumbersKarper(int base, int n, ...) {
+error_msg AdditionNumbers(char *a, char *b, char *result, int base) {
+	int next = 0;
+	CharVector *tmp = create_char_vector(1);
+	error_msg error;
+	// Меняем a и b, так чтобы a было больше по размеру
+	if (SizeString(a) < SizeString(b)) {
+		char *c = a;
+		a = b;
+		b = c;
+	}
+	int i = SizeString(a) - 1, j = SizeString(b) - 1;
+	for (; j >= 0; --j) {
+		if (sequence_number(a[i]) == -1 || sequence_number(b[j]) == -1 || sequence_number(a[i]) >= base ||
+		    sequence_number(b[j]) >= base)
+			return UNRECOGNIZED_CHARACTER_ERROR;
+		int f = sequence_number(a[i]) + sequence_number(b[j]) + next;
+		error = push_end_charvector(tmp, back_sequence_number(f % base));
+		next = f / base;
+		--i;
+	}
+	for (; i >= 0; --i) {
+		if (sequence_number(a[i]) == -1 || sequence_number(a[i]) >= base) return UNRECOGNIZED_CHARACTER_ERROR;
+		int f = sequence_number(a[i]) + next;
+		error = push_end_charvector(tmp, back_sequence_number(f % base));
+		if (error) return error;
+		next = f / base;
+	}
+	while (next > 0) {
+		error = push_end_charvector(tmp, back_sequence_number(next % base));
+		if (error) return error;
+		next /= base;
+	}
+	char x;
+	i = 0;
+	for (int k = size_charvector(tmp) - 1; k >= 0; --k) {
+		error = get_charvector(tmp, k, &x);
+		if (error) return error;
+		result[i++] = x;
+	}
+	result[i] = '\0';
+	return NORMAL;
+}
+
+int strcmpInOurCase(char *a, char *b){
+	int i;
+	for (i = 0; a[i] != '\0' && b[i] != '\0'; ++i) {
+		if (sequence_number(a[i]) != sequence_number(b[i]) || sequence_number(b[i]) == -1) return 0;
+	}
+	if (a[i] != b[i]) return 0;
+	return 1;
+}
+
+
+error_msg FindNumbersKarper(StringVector *vec, int base, int n, ...) {
 	if (base < 2 || base > 36) return NUMERAL_SYSTEM_ERROR;
-	char result[100];
-	error_msg error = ProductNumbers("2ADJE", "467KL", result, 24);
-	if (error) return error;
-	printf("%s\n", result);
+	char *tmp;
+	va_list factor;
+	va_start(factor, n);
+	int middle;
+	error_msg error;
+	for (int i = 0; i < n; ++i) {
+		tmp = va_arg(factor, char *);
+		char tmp2[SizeString(tmp) * 2];
+
+		error = ProductNumbers(tmp, tmp, tmp2, base);
+		if (error) return error;
+
+		middle = SizeString(tmp2) / 2;
+		if (SizeString(tmp2) % 2 == 0) {
+			char left_half[middle], right_half[middle];
+			error = strcopy(tmp2, left_half, 0, middle);
+			if (error) {
+				return error;
+			}
+			error = strcopy(tmp2, right_half, middle, SizeString(tmp2));
+			if (error) return error;
+			char addition_half[SizeString(tmp2)];
+			error = AdditionNumbers(left_half, right_half, addition_half, base);
+			if (error) return error;
+			if (strcmpInOurCase(tmp, addition_half)) {
+				error = push_end_string_vector(vec, tmp);
+				if (error) return error;
+			}
+//			printf("%s %s %s %s %s\n", tmp, tmp2, left_half, right_half, addition_half);
+		} else {
+			char left_half[middle + 1], right_half[middle + 1];
+			error = strcopy(tmp2, left_half, 0, middle + 1);
+			if (error) {
+				return error;
+			}
+			error = strcopy(tmp2, right_half, middle + 1, SizeString(tmp2));
+			if (error) return error;
+			char addition_half[SizeString(tmp2)];
+			error = AdditionNumbers(left_half, right_half, addition_half, base);
+			if (error) return error;
+			if (strcmpInOurCase(tmp, addition_half)) {
+				error = push_end_string_vector(vec, tmp);
+				if (error) return error;
+			}
+//			printf("%s %s %s %s %s\n", tmp, tmp2, left_half, right_half, addition_half);
+			error = strcopy(tmp2, left_half, 0, middle);
+			if (error) {
+				return error;
+			}
+			error = strcopy(tmp2, right_half, middle, SizeString(tmp2));
+			if (error) return error;
+			error = AdditionNumbers(left_half, right_half, addition_half, base);
+			if (error) return error;
+			if (strcmpInOurCase(tmp, addition_half)) {
+				error = push_end_string_vector(vec, tmp);
+				if (error) return error;
+			}
+//			printf("%s %s %s %s %s\n", tmp, tmp2, left_half, right_half, addition_half);
+		}
+	}
+	va_end(factor);
 	return NORMAL;
 }

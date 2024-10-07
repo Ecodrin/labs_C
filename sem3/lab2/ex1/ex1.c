@@ -101,7 +101,13 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 	char * old_string = argv[2];
 	int index_new_string = 0;
 	CharVector * letters = create_char_vector(1);
+	if(!letters) {
+		return MEMORY_ALLOCATED_ERROR;
+	}
 	CharVector * others = create_char_vector(1);
+	if(!others){
+		return MEMORY_ALLOCATED_ERROR;
+	}
 	for(int i = 0; i < SizeString(old_string);++i){
 		if(old_string[i] >= '0' && old_string[i] <= '9')
 			(*new_string)[index_new_string++] = old_string[i];
