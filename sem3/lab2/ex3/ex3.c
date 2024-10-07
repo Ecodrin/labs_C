@@ -99,13 +99,19 @@ error_msg FilesStrStr(int n, char *string, ...) {
 		f = fopen(file_name, "r");
 		if (!f) return INPUT_FILE_ERROR;
 		error = KMPSearch(string, f, pos);
-		if (error) return error;
+		if (error) {
+			destroy_int_vector(pos);
+			return error;
+		}
 		error = print_result("Найдено в: ", file_name, pos, f);
-		if (error) return error;
+		if (error) {
+			destroy_int_vector(pos);
+			return error;
+		}
 		pos->size = 0;
 		fclose(f);
 	}
 	va_end(factor);
-	free(pos);
+	destroy_int_vector(pos);
 	return NORMAL;
 }

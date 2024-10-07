@@ -64,20 +64,31 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 		index_tmp = k;
 		for (int j = len2 - 1; j >= 0; --j) {
 			if (sequence_number(a[i]) == -1 || sequence_number(b[j]) == -1 || sequence_number(a[i]) >= base ||
-			    sequence_number(b[j]) >= base)
+			    sequence_number(b[j]) >= base) {
+				destroy_char_vector(tmp);
 				return UNRECOGNIZED_CHARACTER_ERROR;
+			}
 
 			x = sequence_number(a[i]) * sequence_number(b[j]) + next;
 			if (index_tmp < size_charvector(tmp)) {
 				char value;
 				error = get_charvector(tmp, index_tmp, &value);
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 				error = at_charvector(tmp, index_tmp, back_sequence_number((x + sequence_number(value)) % base));
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 				next = (x + sequence_number(value)) / base;
 			} else {
 				error = push_end_charvector(tmp, back_sequence_number(x % base));
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 				next = x / base;
 			}
 			++index_tmp;
@@ -86,12 +97,21 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 			if (index_tmp < size_charvector(tmp)) {
 				char value;
 				error = get_charvector(tmp, index_tmp, &value);
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 				error = at_charvector(tmp, index_tmp, back_sequence_number((next + (value - '0')) % base));
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 			} else {
 				error = push_end_charvector(tmp, back_sequence_number(next % base));
-				if (error) return error;
+				if (error) {
+					destroy_char_vector(tmp);
+					return error;
+				}
 			}
 			++index_tmp;
 			next /= base;
@@ -102,7 +122,10 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 	for (int i = size_charvector(tmp) - 1; i >= 0; --i, ++j) {
 		char c;
 		error = get_charvector(tmp, i, &c);
-		if (error) return error;
+		if (error) {
+			destroy_char_vector(tmp);
+			return error;
+		}
 		result[j] = c;
 	}
 	result[j] = '\0';
@@ -113,6 +136,9 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 error_msg AdditionNumbers(char *a, char *b, char *result, int base) {
 	int next = 0;
 	CharVector *tmp = create_char_vector(1);
+	if(!tmp){
+		return MEMORY_ALLOCATED_ERROR;
+	}
 	error_msg error;
 	// Меняем a и b, так чтобы a было больше по размеру
 	if (SizeString(a) < SizeString(b)) {
@@ -123,10 +149,16 @@ error_msg AdditionNumbers(char *a, char *b, char *result, int base) {
 	int i = SizeString(a) - 1, j = SizeString(b) - 1;
 	for (; j >= 0; --j) {
 		if (sequence_number(a[i]) == -1 || sequence_number(b[j]) == -1 || sequence_number(a[i]) >= base ||
-		    sequence_number(b[j]) >= base)
+		    sequence_number(b[j]) >= base) {
+			destroy_char_vector(tmp);
 			return UNRECOGNIZED_CHARACTER_ERROR;
+		}
 		int f = sequence_number(a[i]) + sequence_number(b[j]) + next;
 		error = push_end_charvector(tmp, back_sequence_number(f % base));
+		if (error) {
+			destroy_char_vector(tmp);
+			return error;
+		}
 		next = f / base;
 		--i;
 	}
@@ -134,22 +166,32 @@ error_msg AdditionNumbers(char *a, char *b, char *result, int base) {
 		if (sequence_number(a[i]) == -1 || sequence_number(a[i]) >= base) return UNRECOGNIZED_CHARACTER_ERROR;
 		int f = sequence_number(a[i]) + next;
 		error = push_end_charvector(tmp, back_sequence_number(f % base));
-		if (error) return error;
+		if (error) {
+			destroy_char_vector(tmp);
+			return error;
+		}
 		next = f / base;
 	}
 	while (next > 0) {
 		error = push_end_charvector(tmp, back_sequence_number(next % base));
-		if (error) return error;
+		if (error) {
+			destroy_char_vector(tmp);
+			return error;
+		}
 		next /= base;
 	}
 	char x;
 	i = 0;
 	for (int k = size_charvector(tmp) - 1; k >= 0; --k) {
 		error = get_charvector(tmp, k, &x);
-		if (error) return error;
+		if (error) {
+			destroy_char_vector(tmp);
+			return error;
+		}
 		result[i++] = x;
 	}
 	result[i] = '\0';
+	destroy_char_vector(tmp);
 	return NORMAL;
 }
 

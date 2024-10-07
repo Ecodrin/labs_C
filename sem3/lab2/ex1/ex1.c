@@ -41,10 +41,11 @@ int SizeString(const char *string) {
 }
 
 error_msg my_strcat(char *a, const char *b){
-	for(int i = SizeString(a), j = 0; j < SizeString(b);++i, ++j){
+	int i = SizeString(a);
+	for(int j = 0; j < SizeString(b);++i, ++j){
 		a[i] = b[j];
 	}
-	a[SizeString(a)] = '\0';
+	a[i] = '\0';
 	return NORMAL;
 }
 
@@ -113,22 +114,34 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 			(*new_string)[index_new_string++] = old_string[i];
 		else if((old_string[i] >= 'a' && old_string[i] <= 'z') || (old_string[i] >= 'A' && old_string[i] <= 'Z')){
 			error = push_end_charvector(letters, old_string[i]);
-			if(error) return error;
+			if (error) {
+				destroy_char_vector(letters);
+				return error;
+			}
 		}
 		else{
 			error = push_end_charvector(others, old_string[i]);
-			if(error) return error;
+			if (error) {
+				destroy_char_vector(others);
+				return error;
+			}
 		}
 	}
 	char x;
 	for(int i = 0; i < size_charvector(letters); ++i){
 		error = get_charvector(letters, i, &x);
-		if(error) return error;
+		if (error) {
+			destroy_char_vector(letters);
+			return error;
+		}
 		(*new_string)[index_new_string++] = x;
 	}
 	for(int i = 0; i < size_charvector(others); ++i){
 		error = get_charvector(others, i, &x);
-		if(error) return error;
+		if (error) {
+			destroy_char_vector(others);
+			return error;
+		}
 		(*new_string)[index_new_string++] = x;
 	}
 	(*new_string)[index_new_string] = '\0';
