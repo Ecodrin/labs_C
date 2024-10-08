@@ -15,7 +15,7 @@ int main() {
 
 	error_msg error;
 	StringVector *vector = create_string_vector(1);
-	error = FindNumbersKarper(vector, 16, 7, "1745E", "13", "23", "7FE00", "80200", "fedacb","85BD9");
+	error = FindNumbersKarper(vector, 16, 7, "0001745E", "13", "23", "7FE00", "80200", "fedacb","85BD9");
 	if (error){
 		destroy_string_vector(vector);
 		return print_error(error);

@@ -204,16 +204,29 @@ int strcmpInOurCase(char *a, char *b){
 	return 1;
 }
 
+void StringWithoutLeadingZeros(const char *a, char *b){
+	int fl = 0, j = 0;
+	for(int i = 0; a[i] != '\0';++i){
+		if(a[i] != '0' || fl == 1){
+			fl = 1;
+			b[j++] = a[i];
+		}
+	}
+	b[j] = '\0';
+}
+
 
 error_msg FindNumbersKarper(StringVector *vec, int base, int n, ...) {
 	if (base < 2 || base > 36) return NUMERAL_SYSTEM_ERROR;
-	char *tmp;
+	char * number;
 	va_list factor;
 	va_start(factor, n);
 	int middle;
 	error_msg error;
 	for (int i = 0; i < n; ++i) {
-		tmp = va_arg(factor, char *);
+		number = va_arg(factor, char *);
+		char tmp[SizeString(number)];
+		StringWithoutLeadingZeros(number, tmp);
 		char tmp2[SizeString(tmp) * 2];
 
 		error = ProductNumbers(tmp, tmp, tmp2, base);
