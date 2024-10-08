@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     else if(pid == 0){
+//        printf("Process 1: %d\n", getpgid(pid));
         close(fd[0]);
         int file = open(filename, O_RDONLY);
         if(file < 0){
@@ -47,6 +48,7 @@ int main(int argc, char **argv) {
         perror("execl");
         exit(EXIT_FAILURE);
     } else{
+//        printf("Process 2: %d\n", getpgid(pid));
         close(fd[1]);
         char buffer[1024];
         ssize_t n;

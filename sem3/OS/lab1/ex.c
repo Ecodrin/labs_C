@@ -17,10 +17,13 @@ int CharToDouble(const char* string, double* result) {
             if (k != -1) k += 1;
         } else if (string[j] == '.' && k == -1)
             k = 0;
-        else {
+        else if(string[j] == '\n')
+            break;
+        else{
             return 1;
         }
     }
+    if(k == 0) return 1;
     for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
     k = -1;
     if (fl) number *= -1;
@@ -57,7 +60,7 @@ int main() {
 
     int32_t written = write(STDOUT_FILENO, output, strlen(output));
     if (written != strlen(output)) {
-        const char msg[] = "error: failed to write to file\n";
+        const char msg[] = "error: failed to write to output\n";
         write(STDERR_FILENO, msg, sizeof(msg));
         exit(EXIT_FAILURE);
     }
