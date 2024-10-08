@@ -116,12 +116,14 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 			error = push_end_charvector(letters, old_string[i]);
 			if (error) {
 				destroy_char_vector(letters);
+				destroy_char_vector(others);
 				return error;
 			}
 		}
 		else{
 			error = push_end_charvector(others, old_string[i]);
 			if (error) {
+				destroy_char_vector(letters);
 				destroy_char_vector(others);
 				return error;
 			}
@@ -132,6 +134,7 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 		error = get_charvector(letters, i, &x);
 		if (error) {
 			destroy_char_vector(letters);
+			destroy_char_vector(others);
 			return error;
 		}
 		(*new_string)[index_new_string++] = x;
@@ -139,6 +142,7 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 	for(int i = 0; i < size_charvector(others); ++i){
 		error = get_charvector(others, i, &x);
 		if (error) {
+			destroy_char_vector(letters);
 			destroy_char_vector(others);
 			return error;
 		}

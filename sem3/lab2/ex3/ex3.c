@@ -34,10 +34,10 @@ error_msg KMPSearch(char *substring, FILE *f, IntVector *vec) {
 
 	int lps[M];
 
-	computeLPSArray(substring, M, lps);
+	error_msg error = computeLPSArray(substring, M, lps);
+	if(error) return error;
 	int i = 0;
 	int j = 0;
-	error_msg error;
 	char c = getc(f);
 	while (!feof(f)) {
 		//		printf("%c", c);
@@ -76,9 +76,9 @@ error_msg print_result(char *string, char *filename, IntVector *vec, FILE *f) {
 				row++;
 				column = 0;
 			}
-			if (i == val) break;
 			++column;
 			++i;
+			if (i == val) break;
 		}
 		printf("%s%s\t%d %d\n", string, filename, row, column);
 	}
