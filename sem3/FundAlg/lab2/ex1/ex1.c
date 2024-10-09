@@ -40,15 +40,14 @@ int SizeString(const char *string) {
 	return i;
 }
 
-error_msg my_strcat(char *a, const char *b){
+error_msg my_strcat(char *a, const char *b) {
 	int i = SizeString(a);
-	for(int j = 0; j < SizeString(b);++i, ++j){
+	for (int j = 0; j < SizeString(b); ++i, ++j) {
 		a[i] = b[j];
 	}
 	a[i] = '\0';
 	return NORMAL;
 }
-
 
 error_msg CharToUInt(const char *string, unsigned int *x) {
 	*x = 0;
@@ -65,62 +64,63 @@ error_msg CharToUInt(const char *string, unsigned int *x) {
 	return 0;
 }
 
-error_msg HandlerOptL(char **argv, int * size) {
+error_msg HandlerOptL(char **argv, int *size) {
 	*size = SizeString(argv[2]);
 	return NORMAL;
 }
-error_msg HandlerOptR(char **argv, char ** new_string) {
-    *new_string = (char *)malloc(sizeof(char) * (SizeString(argv[2]) + 1));
-	if(!*new_string) return MEMORY_ALLOCATED_ERROR;
-	char * old_string = argv[2];
-	for(int i = SizeString(old_string) - 1, j = 0; i >= 0; --i, ++j){
+
+error_msg HandlerOptR(char **argv, char **new_string) {
+	*new_string = (char *)malloc(sizeof(char) * (SizeString(argv[2]) + 1));
+	if (!*new_string) return MEMORY_ALLOCATED_ERROR;
+	char *old_string = argv[2];
+	for (int i = SizeString(old_string) - 1, j = 0; i >= 0; --i, ++j) {
 		(*new_string)[j] = old_string[i];
 	}
 	(*new_string)[SizeString(argv[2])] = '\0';
 	return NORMAL;
 }
-error_msg HandlerOptU(char **argv, char ** new_string) {
+
+error_msg HandlerOptU(char **argv, char **new_string) {
 	*new_string = (char *)malloc(sizeof(char) * (SizeString(argv[2]) + 1));
-	if(!*new_string) return MEMORY_ALLOCATED_ERROR;
-	char * old_string = argv[2];
+	if (!*new_string) return MEMORY_ALLOCATED_ERROR;
+	char *old_string = argv[2];
 	int i;
-	for(i = 0; i < SizeString((old_string));++i){
-		if(i % 2 && old_string[i] >= 'a' && old_string[i] <= 'z'){
+	for (i = 0; i < SizeString((old_string)); ++i) {
+		if (i % 2 && old_string[i] >= 'a' && old_string[i] <= 'z') {
 			(*new_string)[i] = 'A' + old_string[i] - 'a';
-		}
-		else{
+		} else {
 			(*new_string)[i] = old_string[i];
 		}
 	}
 	(*new_string)[i] = '\0';
-    return NORMAL;
+	return NORMAL;
 }
-error_msg HandlerOptN(char **argv, char ** new_string) {
+
+error_msg HandlerOptN(char **argv, char **new_string) {
 	error_msg error;
 	*new_string = (char *)malloc(sizeof(char) * (SizeString(argv[2]) + 1));
-	if(!*new_string) return MEMORY_ALLOCATED_ERROR;
-	char * old_string = argv[2];
+	if (!*new_string) return MEMORY_ALLOCATED_ERROR;
+	char *old_string = argv[2];
 	int index_new_string = 0;
-	CharVector * letters = create_char_vector(1);
-	if(!letters) {
+	CharVector *letters = create_char_vector(1);
+	if (!letters) {
 		return MEMORY_ALLOCATED_ERROR;
 	}
-	CharVector * others = create_char_vector(1);
-	if(!others){
+	CharVector *others = create_char_vector(1);
+	if (!others) {
 		return MEMORY_ALLOCATED_ERROR;
 	}
-	for(int i = 0; i < SizeString(old_string);++i){
-		if(old_string[i] >= '0' && old_string[i] <= '9')
+	for (int i = 0; i < SizeString(old_string); ++i) {
+		if (old_string[i] >= '0' && old_string[i] <= '9')
 			(*new_string)[index_new_string++] = old_string[i];
-		else if((old_string[i] >= 'a' && old_string[i] <= 'z') || (old_string[i] >= 'A' && old_string[i] <= 'Z')){
+		else if ((old_string[i] >= 'a' && old_string[i] <= 'z') || (old_string[i] >= 'A' && old_string[i] <= 'Z')) {
 			error = push_end_charvector(letters, old_string[i]);
 			if (error) {
 				destroy_char_vector(letters);
 				destroy_char_vector(others);
 				return error;
 			}
-		}
-		else{
+		} else {
 			error = push_end_charvector(others, old_string[i]);
 			if (error) {
 				destroy_char_vector(letters);
@@ -130,7 +130,7 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 		}
 	}
 	char x;
-	for(int i = 0; i < size_charvector(letters); ++i){
+	for (int i = 0; i < size_charvector(letters); ++i) {
 		error = get_charvector(letters, i, &x);
 		if (error) {
 			destroy_char_vector(letters);
@@ -139,7 +139,7 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 		}
 		(*new_string)[index_new_string++] = x;
 	}
-	for(int i = 0; i < size_charvector(others); ++i){
+	for (int i = 0; i < size_charvector(others); ++i) {
 		error = get_charvector(others, i, &x);
 		if (error) {
 			destroy_char_vector(letters);
@@ -153,28 +153,29 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 	destroy_char_vector(others);
 	return NORMAL;
 }
-error_msg HandlerOptC(int argc, char **argv, char ** new_string) {
+
+error_msg HandlerOptC(int argc, char **argv, char **new_string) {
 	unsigned int seed;
 	error_msg error = CharToUInt(argv[3], &seed);
-    if(error) return error;
+	if (error) return error;
 	srand(seed);
 	int sum_size = SizeString(argv[2]);
 	// Находим суммарный размер всех строчек
-	for(int i = 4; i < argc; ++i){
+	for (int i = 4; i < argc; ++i) {
 		sum_size += SizeString(argv[i]);
 	}
 	*new_string = (char *)malloc(sum_size + 1);
-	if(!*new_string) return MEMORY_ALLOCATED_ERROR;
+	if (!*new_string) return MEMORY_ALLOCATED_ERROR;
 	(*new_string)[0] = '\0';
-    for(int j = 3; j < argc - 1;++j){
-        argv[j] = argv[j + 1];
-    }
+	for (int j = 3; j < argc - 1; ++j) {
+		argv[j] = argv[j + 1];
+	}
 	int size = argc - 3, random_index;
-	for(int i = 0;i < argc - 3; ++i){
+	for (int i = 0; i < argc - 3; ++i) {
 		random_index = rand() % size + 2;
-		error = my_strcat(*new_string,argv[random_index]);
-		if(error) return error;
-		for(int j = random_index; j < argc - 1;++j){
+		error = my_strcat(*new_string, argv[random_index]);
+		if (error) return error;
+		for (int j = random_index; j < argc - 1; ++j) {
 			argv[j] = argv[j + 1];
 		}
 		--size;
