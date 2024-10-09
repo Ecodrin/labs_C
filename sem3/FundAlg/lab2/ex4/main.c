@@ -20,7 +20,7 @@ int main() {
 		destroy_string_vector(vector);
 		return print_error(error);
 	}
-	print_string_vector(vector);
+	print_string_vector(vector, " ");
 
 	destroy_string_vector(vector);
 
