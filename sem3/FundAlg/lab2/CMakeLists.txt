@@ -25,7 +25,8 @@ add_executable(ex3 ex3/ex3.c
         SystemErrors/errors.c
         SystemErrors/errors.h
         ex3/main.c
-        vector/intvector.c)
+        vector/intvector.c
+        vector/stringvector.c)
 
 add_executable(ex4 ex4/main.c
         SystemErrors/errors.c

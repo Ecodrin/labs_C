@@ -12,6 +12,5 @@ int main(){
 	int n;
 	scanf("%lf %d", &a, &n);
 	printf("%f\n", QuitPow(a, n));
-
 	return NORMAL;
 }

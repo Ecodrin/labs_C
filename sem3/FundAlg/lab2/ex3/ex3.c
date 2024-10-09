@@ -1,13 +1,5 @@
 #include "ex3.h"
 
-int SizeString(char *s) {
-	int i = 0;
-	for (; s[i] != '\0'; ++i)
-		;
-	return i;
-}
-
-
 error_msg computeLPSArray(const char *pat, int M, int *lps) {
 	int j = 0;
 	lps[0] = 0;
@@ -62,7 +54,7 @@ error_msg KMPSearch(char *substring, FILE *f, IntVector *vec) {
 	return NORMAL;
 }
 
-error_msg print_result(char *string, char *filename, IntVector *vec, FILE *f) {
+error_msg print_result(StringVector *result, char *string, char *filename, IntVector *vec, FILE *f) {
 	rewind(f);
 	int i = 0, column = 1, row = 1, val;
 	char c;
@@ -80,12 +72,17 @@ error_msg print_result(char *string, char *filename, IntVector *vec, FILE *f) {
 			++i;
 			if (i == val) break;
 		}
-		printf("%s%s\t%d %d\n", string, filename, row, column);
+		char msg[1000];
+		sprintf(msg, "%s%s\t%d %d\n", string, filename, row, column);
+		error = push_end_string_vector(result, msg);
+		if(error){
+			return error;
+		}
 	}
 	return NORMAL;
 }
 
-error_msg FilesStrStr(int n, char *string, ...) {
+error_msg FilesStrStr(int n, StringVector * result, char *string, ...) {
 	error_msg error;
 	va_list factor;
 	va_start(factor, string);
@@ -103,9 +100,10 @@ error_msg FilesStrStr(int n, char *string, ...) {
 			destroy_int_vector(pos);
 			return error;
 		}
-		error = print_result("Найдено в: ", file_name, pos, f);
+		error = print_result(result, "Найдено в: ", file_name, pos, f);
 		if (error) {
 			destroy_int_vector(pos);
+			fclose(f);
 			return error;
 		}
 		pos->size = 0;

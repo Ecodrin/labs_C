@@ -93,7 +93,7 @@ error_msg get_string_vector(StringVector *vec, int index, char **res) {
 
 void print_string_vector(StringVector *vec) {
 	for (int i = 0; i < vec->size; ++i) {
-		printf("%s ", (vec->data)[i]);
+		printf("%s", (vec->data)[i]);
 	}
 	putchar('\n');
 }

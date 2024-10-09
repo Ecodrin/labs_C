@@ -7,8 +7,9 @@
 
 #include "../SystemErrors/errors.h"
 #include "../vector/intvector.h"
+#include "../vector/stringvector.h"
 
 
-error_msg FilesStrStr(int n, char * string, ...);
+error_msg FilesStrStr(int n, StringVector * result, char * string, ...);
 
 #endif
