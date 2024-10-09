@@ -1,6 +1,33 @@
 #include "stringvector.h"
+
 #include <stdlib.h>
 #include <string.h>
+
+error_msg str_to_k(const char **string, char *separator, char * result){
+    error_msg error;
+    int len_string = SizeString(*string);
+    int len_separator = SizeString(separator);
+    char b[len_separator + 1];
+    if(len_string == 0) result = NULL;
+    for(int i = 0; i < len_string;++i){
+        printf("%s\n", *string);
+        error = strcopy(*string, b, 0, len_separator);
+        if(error) return error;
+        if(string_cmp(b, separator)){
+            result[i] = '\0';
+            *string += len_separator;
+            break;
+        }
+        if(len_separator == SizeString(*string) - 1){
+            result[i + len_separator - 1] = '\0';
+            *string += len_separator;
+            break;
+        }
+        result[i] = **string;
+        *string += 1;
+    }
+    return NORMAL;
+}
 
 int string_cmp(const char *a, const char *b) {
 	int i;
@@ -14,7 +41,7 @@ int string_cmp(const char *a, const char *b) {
 error_msg strcopy(const char *a, char *result, int start, int end) {
 	int i = 0;
 	int end_for = end - start;
-	if(start > 0) end_for++;
+	if (start > 0) end_for++;
 	for (; i < end_for; ++i) {
 		result[i] = a[i + start];
 	}
@@ -22,7 +49,7 @@ error_msg strcopy(const char *a, char *result, int start, int end) {
 	return NORMAL;
 }
 
-int SizeString(char *a) {
+int SizeString(const char *a) {
 	int i = 0;
 	for (; a[i] != '\0'; ++i)
 		;
@@ -65,7 +92,7 @@ error_msg push_end_string_vector(StringVector *vec, char *string) {
 	}
 	strcopy(string, vec->data[vec->size], 0, SizeString(string));
 	vec->size += 1;
-//	print_string_vector(vec);
+	//	print_string_vector(vec);
 	return NORMAL;
 }
 
@@ -91,7 +118,7 @@ error_msg get_string_vector(StringVector *vec, int index, char **res) {
 	return NORMAL;
 }
 
-void print_string_vector(StringVector *vec, char * separator) {
+void print_string_vector(StringVector *vec, char *separator) {
 	for (int i = 0; i < vec->size; ++i) {
 		printf("%s%s", (vec->data)[i], separator);
 	}
@@ -100,7 +127,7 @@ void print_string_vector(StringVector *vec, char * separator) {
 
 void destroy_string_vector(StringVector *vec) {
 	if (!vec) return;
-	if(vec->data){
+	if (vec->data) {
 		for (int i = 0; i < vec->size; i++) {
 			if (vec->data[i]) {
 				free(vec->data[i]);

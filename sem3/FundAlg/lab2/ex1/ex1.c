@@ -155,21 +155,23 @@ error_msg HandlerOptN(char **argv, char ** new_string) {
 }
 error_msg HandlerOptC(int argc, char **argv, char ** new_string) {
 	unsigned int seed;
-	error_msg error = CharToUInt(argv[2], &seed);
+	error_msg error = CharToUInt(argv[3], &seed);
+    if(error) return error;
 	srand(seed);
-	int sum_size = 0;
+	int sum_size = SizeString(argv[2]);
 	// Находим суммарный размер всех строчек
-	for(int i = 2; i < argc; ++i){
+	for(int i = 4; i < argc; ++i){
 		sum_size += SizeString(argv[i]);
 	}
-	if(error) return error;
-	*new_string = (char *)malloc(sum_size);
+	*new_string = (char *)malloc(sum_size + 1);
 	if(!*new_string) return MEMORY_ALLOCATED_ERROR;
 	(*new_string)[0] = '\0';
-
+    for(int j = 3; j < argc - 1;++j){
+        argv[j] = argv[j + 1];
+    }
 	int size = argc - 3, random_index;
 	for(int i = 0;i < argc - 3; ++i){
-		random_index = rand() % size + 3;
+		random_index = rand() % size + 2;
 		error = my_strcat(*new_string,argv[random_index]);
 		if(error) return error;
 		for(int j = random_index; j < argc - 1;++j){

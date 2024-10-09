@@ -40,3 +40,7 @@ add_executable(ex4 ex4/main.c
 
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)
+add_executable(ex5 ex5/main.c
+        ex5/overloads.c
+        ex5/overloads.h
+        vector/stringvector.c)
