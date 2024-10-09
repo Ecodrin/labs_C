@@ -8,7 +8,10 @@ error_msg str_to_k(const char **string, char *separator, char *result) {
 	int len_string = SizeString(*string);
 	int len_separator = SizeString(separator);
 	char b[len_separator + 1];
-	if (len_string == 0) result = NULL;
+	if (len_string == 0) {
+		result = NULL;
+		return NORMAL;
+	}
 	for (int i = 0; i < len_string; ++i) {
 		//        printf("%s\n", *string);
 		error = strcopy(*string, b, 0, len_separator);
@@ -18,11 +21,11 @@ error_msg str_to_k(const char **string, char *separator, char *result) {
 			*string += len_separator;
 			break;
 		}
-		if (len_separator == SizeString(*string) - 1) {
+		if (len_separator == SizeString(*string)) {
+			result[i] = '\0';
 			error = my_strcat(result, *string);
 			if (error) return error;
-			result[i + len_separator + 1] = '\0';
-			*string += len_separator + 1;
+			*string = "\0";
 			break;
 		}
 		result[i] = **string;
