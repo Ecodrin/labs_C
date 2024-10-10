@@ -1,6 +1,8 @@
 #include "ex1.h"
 
 error_msg GetOpts(int argc, char **argv, kOpts *opt) {
+	if(argc == 1)
+		return INCORRECT_OPTIONS_ERROR;
 	const char *proceeding_option = argv[1];
 	if ((proceeding_option[0] == '/' || proceeding_option[0] == '-') && SizeString(proceeding_option) == 2) {
 		switch (proceeding_option[1]) {
@@ -108,6 +110,7 @@ error_msg HandlerOptN(char **argv, char **new_string) {
 	}
 	CharVector *others = create_char_vector(1);
 	if (!others) {
+		destroy_char_vector(letters);
 		return MEMORY_ALLOCATED_ERROR;
 	}
 	for (int i = 0; i < SizeString(old_string); ++i) {

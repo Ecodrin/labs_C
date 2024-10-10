@@ -1,13 +1,8 @@
 #include "overloads.h"
 
 
-int main(){
-    // TODO дописать str_to_k 
-    char * a = "hello ,. world ,. dfsfsf sdfd. dfdf ./sad";
-    char s[SizeString(a)];
-    while((str_to_k(&a, " ,. ", s) == NORMAL)){
-        printf("%s\n", s);
-		if(SizeString(a) == 0) break;
-    }
-
+int main() {
+	// TODO написание основного костыля
+	overfprintf(stdout, "%f\n", 12.2);
+	printf("% 12d", 12);
 }

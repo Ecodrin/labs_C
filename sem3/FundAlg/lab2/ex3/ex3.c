@@ -72,7 +72,7 @@ error_msg print_result(StringVector *result, char *string, char *filename, IntVe
 			++i;
 			if (i == val) break;
 		}
-		char msg[1000];
+		char msg[SizeString(string) + SizeString(filename) + 7 + 7];
 		sprintf(msg, "%s%s\t%d %d\n", string, filename, row, column);
 		error = push_end_string_vector(result, msg);
 		if(error){
@@ -94,16 +94,23 @@ error_msg FilesStrStr(int n, StringVector * result, char *string, ...) {
 	for (int i = 0; i < n; ++i) {
 		file_name = va_arg(factor, char *);
 		f = fopen(file_name, "r");
-		if (!f) return INPUT_FILE_ERROR;
+		if (!f) {
+			destroy_int_vector(pos);
+			va_end(factor);
+			return INPUT_FILE_ERROR;
+		}
 		error = KMPSearch(string, f, pos);
 		if (error) {
 			destroy_int_vector(pos);
+			fclose(f);
+			va_end(factor);
 			return error;
 		}
 		error = print_result(result, "Найдено в: ", file_name, pos, f);
 		if (error) {
 			destroy_int_vector(pos);
 			fclose(f);
+			va_end(factor);
 			return error;
 		}
 		pos->size = 0;

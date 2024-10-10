@@ -8,7 +8,10 @@ error_msg geometric_mean(double * result, int n, ...){
 	double s;
 	for(int i = 0; i < n;++i){
 		s = va_arg(factor, double);
-		if(s < 1e-16) return INCORRECT_OPTIONS_ERROR;
+		if(s < 1e-16) {
+			return INCORRECT_OPTIONS_ERROR;
+			va_end(factor);
+		}
 		*result *= s;
 
 	}
@@ -18,15 +21,13 @@ error_msg geometric_mean(double * result, int n, ...){
 }
 
 double QuitPow(double x, int n){
-	switch (n) {
-		case 0:
-			return 1;
-		case 1:
-			return x;
-		case 2:
-			return x * x;
-		default:
-			if(n % 2) return x * QuitPow(x, n - 1);
-			return x * x * QuitPow(x, n / 2);
-	}
+	if (n == 0)
+		return 1;
+	if (n < 0)
+		return QuitPow(1 / x, -n);
+
+	if (n % 2 == 0)
+		return QuitPow(x * x, n / 2);
+	else
+		return x * QuitPow(x * x, (n - 1) / 2);
 }
