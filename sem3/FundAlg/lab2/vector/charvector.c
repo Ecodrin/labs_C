@@ -60,9 +60,9 @@ void destroy_char_vector(CharVector* vector) {
 	free(vector);
 }
 
-void print_charvector(CharVector* vector) {
+void print_charvector(CharVector* vector, char * separator) {
 	for (int i = 0; i < vector->size; ++i) {
-		printf("%c ", vector->arr[i]);
+		printf("%c%s", vector->arr[i], separator);
 	}
 	putchar('\n');
 }

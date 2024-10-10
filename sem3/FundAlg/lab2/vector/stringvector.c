@@ -132,9 +132,9 @@ error_msg get_string_vector(StringVector *vec, int index, char **res) {
 	return NORMAL;
 }
 
-void print_string_vector(StringVector *vec, char *separator) {
+void print_string_vector(FILE * stream, StringVector *vec, char *separator) {
 	for (int i = 0; i < vec->size; ++i) {
-		printf("%s%s", (vec->data)[i], separator);
+		fprintf(stream, "%s%s", (vec->data)[i], separator);
 	}
 	putchar('\n');
 }

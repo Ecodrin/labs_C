@@ -2,7 +2,9 @@
 
 
 int main() {
-	// TODO написание основного костыля
-	overfprintf(stdout, "%f\n", 12.2);
-	printf("% 12d", 12);
+	// TODO fprintf основные функции написаны/ надо дописать доп
+	int count = overfprintf(stdout, "Hello%04df%xriend%*\n", 12, 12, 23);
+	printf("%d\n", count);
+	int n = fprintf(stdout,"Hello%04dfrie%xnd%*\n", 12, 12, 23);
+	printf("%d\n", n);
 }

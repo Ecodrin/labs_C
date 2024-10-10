@@ -24,7 +24,7 @@ error_msg resize_string_vector(StringVector *vec);
 error_msg push_end_string_vector(StringVector *vec, char *string);
 error_msg at_string_vector(StringVector *vec, int index, char *res);
 error_msg get_string_vector(StringVector *vec, int index, char **res);
-void print_string_vector(StringVector *vec, char *separator);
+void print_string_vector(FILE * stream, StringVector *vec, char *separator);
 void destroy_string_vector(StringVector *vec);
 
 #endif

@@ -15,7 +15,7 @@ error_msg get_charvector(CharVector* vector, int index, char * value);
 void destroy_char_vector(CharVector* vector);
 error_msg at_charvector(CharVector* vector, int index, char new_element);
 int size_charvector(CharVector* vector);
-void print_charvector(CharVector* vector);
+void print_charvector(CharVector* vector, char * separator);
 void vector_char_clear(CharVector * vector);
 
 #endif

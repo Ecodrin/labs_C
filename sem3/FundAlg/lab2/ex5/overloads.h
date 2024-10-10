@@ -8,7 +8,9 @@
 #include "../vector/stringvector.h"
 
 int overfprintf(FILE * restrict stream, const char * format, ...);
-int oversprintf(const char * format, ...);
+
+int oversprintf(char *str, const char *format, ...);
+
 
 
 
