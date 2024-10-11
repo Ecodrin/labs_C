@@ -8,7 +8,7 @@ int main(){
 		destroy_string_vector(result);
 		return print_error(error);
 	}
-	print_string_vector(result, "");
+	print_string_vector(stdout, result, "");
 	destroy_string_vector(result);
 
 	return NORMAL;

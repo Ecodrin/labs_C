@@ -136,7 +136,6 @@ void print_string_vector(FILE * stream, StringVector *vec, char *separator) {
 	for (int i = 0; i < vec->size; ++i) {
 		fprintf(stream, "%s%s", (vec->data)[i], separator);
 	}
-	putchar('\n');
 }
 
 void destroy_string_vector(StringVector *vec) {

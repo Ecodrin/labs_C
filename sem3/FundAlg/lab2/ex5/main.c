@@ -2,9 +2,11 @@
 
 
 int main() {
-	// TODO fprintf основные функции написаны/ надо дописать доп
-	int count = overfprintf(stdout, "Hello%04df%xriend%*\n", 12, 12, 23);
+	int count = overfprintf(stdout, "He %x l%mf\n", "J50", 25, 13243.123);
 	printf("%d\n", count);
-	int n = fprintf(stdout,"Hello%04dfrie%xnd%*\n", 12, 12, 23);
-	printf("%d\n", n);
+	char s[10000];
+	int n = oversprintf(s, "He %x l%mf\n", "J50", 25,13243.123);
+	printf("%s%d\n", s, n);
+
+	printf("df %hd f\n", 12);
 }

@@ -3,13 +3,16 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <math.h>
+#include <stdint.h>
 
 #include "../SystemErrors/errors.h"
 #include "../vector/stringvector.h"
+#include "../vector/charvector.h"
 
 int overfprintf(FILE * restrict stream, const char * format, ...);
 
-int oversprintf(char *str, const char *format, ...);
+int oversprintf(char *string, const char *format, ...);
 
 
 
