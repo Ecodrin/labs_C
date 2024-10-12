@@ -45,6 +45,15 @@ add_executable(ex5 ex5/main.c
         vector/charvector.c
         vector/charvector.h)
 
+add_executable(ex8 ex8/main.c
+        ex8/ex8.c
+        SystemErrors/errors.c
+        SystemErrors/errors.h
+        ex8/ex8.h
+        vector/stringvector.c
+        vector/charvector.c
+        vector/charvector.h)
+
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)
 
