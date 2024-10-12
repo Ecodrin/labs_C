@@ -37,6 +37,11 @@ error_msg int_to_zeckendorf(unsigned int num, char * zeckendorf) {
 		}
 	}
 	zeckendorf[32] = '\0';
+	int i = 31;
+	while (zeckendorf[i] == '0') {
+		zeckendorf[i] = '\0';
+		i -= 1;
+	}
 	return NORMAL;
 }
 
@@ -248,10 +253,11 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 	return count;
 }
 
-int oversprintf(char *string, const char *format, ...){
+int oversprintf(char string[], const char *format, ...){
 	int count = 0;
 	const char *p = format;
 	va_list factor;
+	string[0] = '\0';
 	va_start(factor, format);
 	while (*p) {
 		if (*p == '%') {
@@ -371,9 +377,8 @@ int oversprintf(char *string, const char *format, ...){
 			}
 		} else {
 			string[SizeString(string)] = *p;
-			string[SizeString(string)] = '\0';
-
 			count++;
+			string[count] = '\0';
 			p++;
 		}
 	}
