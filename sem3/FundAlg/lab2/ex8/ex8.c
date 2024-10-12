@@ -122,7 +122,7 @@ error_msg AdditionManyNumbers(char * result, int base, int n, ...){
 			va_end(factor);
 			return errorMsg;
 		}
-		printf("%s\n", last);
+//		printf("%s\n", last);
 	}
 	StringWithoutLeadingZeros(last, result);
 	free(last);
