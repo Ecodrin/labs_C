@@ -90,7 +90,11 @@ void test_oversprintf() {
 }
 
 int main() {
+	printf("Тесты overfprintf:\n");
 	test_overfprintf();
+	printf("\nТесты oversprintf:\n");
 	test_oversprintf();
+
+	overfprintf(stdout, "Hello Friend! %d %f%dsdsad%x%Ro", 12, 12.23, 15, 15, 45);
 	return 0;
 }
