@@ -1,17 +1,12 @@
 #include "overloads.h"
 
-
-error_msg int_to_roman(int num, char * roman) {
-	const char *roman_numerals[] = {
-	    "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
-	};
-	const int values[] = {
-	    1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1
-	};
+error_msg int_to_roman(int num, char *roman) {
+	const char *roman_numerals[] = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+	const int values[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
 	roman[0] = '\0';
 	for (int i = 0; i < 13; i++) {
 		while (num >= values[i]) {
-			my_strcat(roman,roman_numerals[i]);
+			my_strcat(roman, roman_numerals[i]);
 			num -= values[i];
 		}
 	}
@@ -19,7 +14,7 @@ error_msg int_to_roman(int num, char * roman) {
 	return NORMAL;
 }
 
-error_msg int_to_zeckendorf(unsigned int num, char * zeckendorf) {
+error_msg int_to_zeckendorf(unsigned int num, char *zeckendorf) {
 	int fib[33];
 	fib[0] = 1;
 	fib[1] = 1;
@@ -45,7 +40,7 @@ error_msg int_to_zeckendorf(unsigned int num, char * zeckendorf) {
 	return NORMAL;
 }
 
-void From10to(int number, char* result, int based) {
+void From10to(int number, char *result, int based) {
 	char tmp[16];
 	int index = 0;
 	while (number > 0) {
@@ -62,10 +57,9 @@ void From10to(int number, char* result, int based) {
 	result[index] = '\0';
 }
 
-void ToUpper(char *s){
-	for(int i = 0; s[i] != '\0'; ++i){
-		if(s[i] >= 'a' && s[i] <= 'z' )
-			s[i] = 'A' + s[i] - 'a';
+void ToUpper(char *s) {
+	for (int i = 0; s[i] != '\0'; ++i) {
+		if (s[i] >= 'a' && s[i] <= 'z') s[i] = 'A' + s[i] - 'a';
 	}
 }
 
@@ -84,16 +78,16 @@ char back_sequence_number(int x) {
 	return 'a' + (x - 10);
 }
 
-int IsLower(char *s){
-	for(int i = 0; s[i] != '\0'; ++i){
-		if(s[i] >= 'A' && s[i] <= 'Z') return 0;
+int IsLower(char *s) {
+	for (int i = 0; s[i] != '\0'; ++i) {
+		if (s[i] >= 'A' && s[i] <= 'Z') return 0;
 	}
 	return 1;
 }
 
-int IsUpper(char *s){
-	for(int i = 0; s[i] != '\0'; ++i){
-		if(s[i] >= 'a' && s[i] <= 'z') return 0;
+int IsUpper(char *s) {
+	for (int i = 0; s[i] != '\0'; ++i) {
+		if (s[i] >= 'a' && s[i] <= 'z') return 0;
 	}
 	return 1;
 }
@@ -118,11 +112,10 @@ void memory_dump(void *ptr, size_t size, char *result) {
 	for (size_t i = 0; i < size; i++) {
 		char tmp[10];
 		tmp[0] = '\0';
-		sprintf(tmp,"%08b ", bytes[i]);
+		sprintf(tmp, "%08b ", bytes[i]);
 		my_strcat(result, tmp);
 	}
 }
-
 
 int overfprintf(FILE *restrict stream, const char *format, ...) {
 	int count = 0;
@@ -138,7 +131,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				// Римские числа
 				p += 2;
 				int x = va_arg(factor, int);
-				if(x <= 0) return -1;
+				if (x <= 0) return -1;
 				char vec[(int)pow(2, sizeof(int) * 8) / 1000 + 1];
 				int_to_roman(x, vec);
 				fprintf(stream, "%s", vec);
@@ -154,7 +147,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				p += 2;
 				int x = va_arg(factor, int);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				char vec[sizeof(int) * 8];
 				From10to(x, vec, base);
 				fprintf(stream, "%s", vec);
@@ -163,7 +156,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				p += 2;
 				int x = va_arg(factor, int);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				char vec[sizeof(int) * 8];
 				From10to(x, vec, base);
 				ToUpper(vec);
@@ -171,11 +164,11 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				count += SizeString(vec);
 			} else if (*p == 't' && *(p + 1) == 'o') {
 				p += 2;
-				char * str = va_arg(factor, char*);
+				char *str = va_arg(factor, char *);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				long int number;
-				if(FromXTo10(str, base, &number) || !IsLower(str)){
+				if (FromXTo10(str, base, &number) || !IsLower(str)) {
 					va_end(factor);
 					return -1;
 				}
@@ -183,11 +176,11 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				count += n;
 			} else if (*p == 'T' && *(p + 1) == 'O') {
 				p += 2;
-				char * str = va_arg(factor, char*);
+				char *str = va_arg(factor, char *);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				long int number;
-				if(FromXTo10(str, base, &number) || !IsUpper(str)){
+				if (FromXTo10(str, base, &number) || !IsUpper(str)) {
 					va_end(factor);
 					return -1;
 				}
@@ -217,9 +210,9 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				memory_dump(&value, sizeof(value), result);
 				fprintf(stream, "%s", result);
 				count += SizeString(result);
-			}else if (*p == 'm' && *(p + 1) == 'f') {
+			} else if (*p == 'm' && *(p + 1) == 'f') {
 				p += 2;
-				float value = va_arg(factor, double );
+				float value = va_arg(factor, double);
 				char result[8 * (sizeof(value) + 1)];
 				result[0] = '\0';
 				memory_dump(&value, sizeof(value), result);
@@ -227,7 +220,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				count += SizeString(result);
 			} else {
 				char tmp[SizeString(format)];
-				if(str_to_k(&p, "%", tmp)) {
+				if (str_to_k(&p, "%", tmp)) {
 					va_end(factor);
 					return -1;
 				}
@@ -236,7 +229,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 				my_strcat(tmp_str, "%");
 				my_strcat(tmp_str, tmp);
 				int n = vfprintf(stream, tmp_str, factor);
-				if(n < 0){
+				if (n < 0) {
 					va_end(factor);
 					return -1;
 				}
@@ -253,7 +246,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 	return count;
 }
 
-int oversprintf(char string[], const char *format, ...){
+int oversprintf(char string[], const char *format, ...) {
 	int count = 0;
 	const char *p = format;
 	va_list factor;
@@ -268,7 +261,7 @@ int oversprintf(char string[], const char *format, ...){
 				// Римские числа
 				p += 2;
 				int x = va_arg(factor, int);
-				if(x <= 0) return -1;
+				if (x <= 0) return -1;
 				// размер = 2 ^ (бит в int) / M(1000 в Римской сс)
 				char vec[(int)pow(2, sizeof(int) * 8) / 1000 + 1];
 				int_to_roman(x, vec);
@@ -285,7 +278,7 @@ int oversprintf(char string[], const char *format, ...){
 				p += 2;
 				int x = va_arg(factor, int);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				char vec[sizeof(int) * 8];
 				From10to(x, vec, base);
 				my_strcat(string, vec);
@@ -294,7 +287,7 @@ int oversprintf(char string[], const char *format, ...){
 				p += 2;
 				int x = va_arg(factor, int);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				char vec[sizeof(int) * 8];
 				From10to(x, vec, base);
 				ToUpper(vec);
@@ -302,11 +295,11 @@ int oversprintf(char string[], const char *format, ...){
 				count += SizeString(vec);
 			} else if (*p == 't' && *(p + 1) == 'o') {
 				p += 2;
-				char * str = va_arg(factor, char*);
+				char *str = va_arg(factor, char *);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				long int number;
-				if(FromXTo10(str, base, &number) || !IsLower(str)){
+				if (FromXTo10(str, base, &number) || !IsLower(str)) {
 					va_end(factor);
 					return -1;
 				}
@@ -314,11 +307,11 @@ int oversprintf(char string[], const char *format, ...){
 				count += n;
 			} else if (*p == 'T' && *(p + 1) == 'O') {
 				p += 2;
-				char * str = va_arg(factor, char*);
+				char *str = va_arg(factor, char *);
 				int base = va_arg(factor, int);
-				if(base < 2 || base > 36) base = 10;
+				if (base < 2 || base > 36) base = 10;
 				long int number;
-				if(FromXTo10(str, base, &number) || !IsUpper(str)){
+				if (FromXTo10(str, base, &number) || !IsUpper(str)) {
 					va_end(factor);
 					return -1;
 				}
@@ -348,18 +341,19 @@ int oversprintf(char string[], const char *format, ...){
 				memory_dump(&value, sizeof(value), result);
 				my_strcat(string, result);
 				count += SizeString(result);
-			}else if (*p == 'm' && *(p + 1) == 'f') {
+			} else if (*p == 'm' && *(p + 1) == 'f') {
 				p += 2;
-				float value = va_arg(factor, double );
+				float value = va_arg(factor, double);
 				char result[8 * (sizeof(value) + 1)];
 				result[0] = '\0';
 				memory_dump(&value, sizeof(value), result);
-				my_strcat(string, result);;
+				my_strcat(string, result);
+				;
 				count += SizeString(result);
 			} else {
 				char tmp[SizeString(format)];
 				tmp[0] = '\0';
-				if(str_to_k(&p, "%", tmp)) {
+				if (str_to_k(&p, "%", tmp)) {
 					va_end(factor);
 					return -1;
 				}
@@ -367,8 +361,8 @@ int oversprintf(char string[], const char *format, ...){
 				tmp_str[0] = '\0';
 				my_strcat(tmp_str, "%");
 				my_strcat(tmp_str, tmp);
-				int n = vsprintf( string + SizeString(string), tmp_str,factor);
-				if(n < 0){
+				int n = vsprintf(string + SizeString(string), tmp_str, factor);
+				if (n < 0) {
 					va_end(factor);
 					return -1;
 				}

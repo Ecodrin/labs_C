@@ -4,7 +4,7 @@ int main() {
 	Point p1 = {0, 0};
 	Point p2 = {3, 0.5};
 	Point p3 = {4, 4};
-	Point p4 = {4, 0};
+	Point p4 = {0, 4};
 
 	if (IsConvexPolygon(4, p1, p2, p3, p4))
 		printf("Прямоугольник выпуклый\n");

@@ -30,7 +30,7 @@ int IsConvexPolygon(int n, ...) {
 	for (int i = 0; i < n; ++i) {
 		double cp = cross_product(p[i], p[(i + 1) % n], p[(i + 2) % n]);
 		//		printf("%f\n", cp);
-		if (!sign) sign = cp > 0;
+		if (!sign) sign = (cp > 0) ? 1 : -1;
 		if (cp * sign < 0) {
 			return 0;
 		}
