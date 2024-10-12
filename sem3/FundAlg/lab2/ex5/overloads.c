@@ -263,6 +263,7 @@ int oversprintf(char *string, const char *format, ...){
 				p += 2;
 				int x = va_arg(factor, int);
 				if(x <= 0) return -1;
+				// размер = 2 ^ (бит в int) / M(1000 в Римской сс)
 				char vec[(int)pow(2, sizeof(int) * 8) / 1000 + 1];
 				int_to_roman(x, vec);
 				my_strcat(string, vec);
