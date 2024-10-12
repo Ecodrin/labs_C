@@ -4,10 +4,12 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "../SystemErrors/errors.h"
 #include "../vector/stringvector.h"
+#include "../vector/intvector.h"
 
-error_msg IsCorrectFraction(StringVector * vec, int base, int n, ...);
+error_msg AreCorrectFractions(StringVector * vec, int base, int n, ...);
 
 #endif
