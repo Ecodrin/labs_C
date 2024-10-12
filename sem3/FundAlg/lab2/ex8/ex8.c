@@ -97,11 +97,13 @@ int max(int a, int b){
 }
 
 error_msg AdditionManyNumbers(char * result, int base, int n, ...){
+	if(base < 2 || base > 36) return NUMERAL_SYSTEM_ERROR;
 	error_msg errorMsg;
 	va_list factor;
 	va_start(factor, n);
 	char * first = va_arg(factor, char*), *tmp;
-	char * last = (char*)malloc(sizeof(char) * (SizeString(first) + 1));
+	int size = SizeString(first) + 11;
+	char * last = (char*)malloc(sizeof(char) * (size));
 	if(!last){
 		va_end(factor);
 		return MEMORY_ALLOCATED_ERROR;
@@ -109,13 +111,16 @@ error_msg AdditionManyNumbers(char * result, int base, int n, ...){
 	strcopy(first, last, 0, SizeString(first));
 	for(int i = 1; i < n;++i){
 		char* second = va_arg(factor, char*);
-		tmp = (char*)realloc(last, max(SizeString(last), SizeString(second)) + 2);
-		if(!tmp){
-			free(last);
-			va_end(factor);
-			return MEMORY_ALLOCATED_ERROR;
+		if(size <= max(SizeString(last), SizeString(second))){
+			tmp = (char*)realloc(last, max(SizeString(last), SizeString(second)) * 2);
+			if(!tmp){
+				free(last);
+				va_end(factor);
+				return MEMORY_ALLOCATED_ERROR;
+			}
+			last = tmp;
+			size = max(SizeString(last), SizeString(second)) * 2;
 		}
-		last = tmp;
 		errorMsg = AdditionNumbers(last, second, last, base);
 		if(errorMsg) {
 			free(last);

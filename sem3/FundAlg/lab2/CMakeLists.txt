@@ -62,3 +62,5 @@ add_executable(ex7 ex7/main.c
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)
 target_link_libraries(ex7 m)
+add_executable(ex9 ex9/ex9.c ex9/ex9.h
+        ex9/main.c)
