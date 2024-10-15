@@ -26,7 +26,7 @@ FAILED_IFILE_RFILE_OFILE=$(BASH) $(TEST_TEMPLATES_DIR)/failed_ifile_rfile_ofile
 .PHONY: all test clean
 
 all:
-	for dir in ex1 ex2 ex3 ex4 ex5 ex7 ex8 ex9; do \
+	for dir in ex1 ex2 ex3 ex4 ex5 ex7 ex8 ex9 ex10; do \
 		cd $$dir ;\
 		make ;\
 		mv $$dir.a ../$$dir.a ;\
@@ -191,4 +191,11 @@ test_task9_2:
 test_task_9: test_task9_1 test_task9_2
 	@echo "ALL TESTS TASK 9 PASSED"
 
-test: test_task_1 test_task_2 test_task_3 test_task_4 test_task_5 test_task_7 test_task_8 test_task_9
+test_task10_1:
+	@$(SUCCESS_IFILE_OFILE) "ex10.a" "test_files/task_10_test_1_input" "test_files/task_10_test_1_output"
+	@echo "TEST 18(task_10 decomposition polynomial) PASSED"
+
+test_task_10: test_task10_1
+	@echo "ALL TESTS TASK 10 PASSED"
+
+test: test_task_1 test_task_2 test_task_3 test_task_4 test_task_5 test_task_7 test_task_8 test_task_9 test_task_10

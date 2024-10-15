@@ -68,9 +68,13 @@ add_executable(ex9 ex9/ex9.c ex9/ex9.h
         vector/intvector.h
         SystemErrors/errors.c)
 
+add_executable(ex10 ex10/ex10.c ex10/ex10.h
+        ex10/main.c
+        SystemErrors/errors.c)
+
 target_link_libraries(ex2 m)
 target_link_libraries(ex3 m)
 target_link_libraries(ex7 m)
 target_link_libraries(ex9 m)
-add_executable(ex10 ex10/ex10.c ex10/ex10.h
-        ex10/main.c)
+target_link_libraries(ex10 m)
+
