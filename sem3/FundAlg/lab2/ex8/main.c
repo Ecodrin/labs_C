@@ -3,7 +3,7 @@
 
 int main(){
 	char result1[100];
-	error_msg error1 = AdditionManyNumbers(result1, 10, 3, "123", "456", "789");
+	error_msg error1 = AdditionManyNumbers(result1, 10, 3, "0000000000000000000000000000000123", "456", "789");
 	if (error1) {
 		return print_error(error1);
 	}
@@ -37,12 +37,14 @@ int main(){
 	}
 	printf("AdditionManyNumbers Test 8: %s\n", result8); // Ожидаемый результат: "1001"
 
+
+	// Убрал прерывание
 	char result9[100];
-	error_msg error9 = AdditionManyNumbers(result9, 2, 3, "111", "1", "1");
+	error_msg error9 = AdditionManyNumbers(result9, 2, 3, "1;11", "1", "1");
 	if (error9) {
-		return print_error(error9);
+		print_error(error9);
 	}
-	printf("AdditionManyNumbers Test 9: %s\n", result9); // Ожидаемый результат: "1001"
+//	printf("AdditionManyNumbers Test 9: %s\n", result9); // Ожидаемый результат: "1001"
 
 	char result10[100];
 	error_msg error10 = AdditionManyNumbers(result10, 10, 2, "000123", "000456");

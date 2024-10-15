@@ -6,6 +6,7 @@
 
 #include "../SystemErrors/errors.h"
 #include "../vector/charvector.h"
+#include "../vector/stringvector.h"
 
 typedef enum kOpts { OPT_L, OPT_R, OPT_U, OPT_N, OPT_C } kOpts;
 error_msg GetOpts(int argc, char **argv, kOpts *opt);

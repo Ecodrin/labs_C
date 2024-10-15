@@ -73,7 +73,7 @@ error_msg print_result(StringVector *result, char *string, char *filename, IntVe
 			if (i == val) break;
 		}
 		char msg[SizeString(string) + SizeString(filename) + 7 + 7];
-		sprintf(msg, "%s%s\t%d %d\n", string, filename, row, column);
+		sprintf(msg, "%s%s    %d %d\n", string, filename, row, column);
 		error = push_end_string_vector(result, msg);
 		if(error){
 			return error;
@@ -106,7 +106,7 @@ error_msg FilesStrStr(int n, StringVector * result, char *string, ...) {
 			va_end(factor);
 			return error;
 		}
-		error = print_result(result, "Найдено в: ", file_name, pos, f);
+		error = print_result(result, "Find in:", file_name, pos, f);
 		if (error) {
 			destroy_int_vector(pos);
 			fclose(f);

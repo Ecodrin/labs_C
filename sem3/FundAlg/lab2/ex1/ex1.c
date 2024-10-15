@@ -35,21 +35,6 @@ error_msg GetOpts(int argc, char **argv, kOpts *opt) {
 	return NORMAL;
 }
 
-int SizeString(const char *string) {
-	int i = 0;
-	for (; string[i] != '\0'; ++i)
-		;
-	return i;
-}
-
-error_msg my_strcat(char *a, const char *b) {
-	int i = SizeString(a);
-	for (int j = 0; j < SizeString(b); ++i, ++j) {
-		a[i] = b[j];
-	}
-	a[i] = '\0';
-	return NORMAL;
-}
 
 error_msg CharToUInt(const char *string, unsigned int *x) {
 	*x = 0;

@@ -15,7 +15,7 @@ error_msg int_to_roman(int num, char *roman) {
 }
 
 error_msg int_to_zeckendorf(unsigned int num, char *zeckendorf) {
-	int fib[33];
+	unsigned int fib[33];
 	fib[0] = 1;
 	fib[1] = 1;
 	for (int i = 2; i < 33; i++) {

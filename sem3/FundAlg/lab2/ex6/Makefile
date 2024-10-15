@@ -1,0 +1,5 @@
+FLAGS = -Wall -Wextra -g -lm
+COMP = gcc
+
+ex6: main.c
+	$(COMP) $(FLAGS) main.c ../SystemErrors/errors.c  ../vector/stringvector.c ../vector/charvector.c ex6.c -o ex6.a

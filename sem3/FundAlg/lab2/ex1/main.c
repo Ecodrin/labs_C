@@ -16,25 +16,37 @@ int main(int argc, char **argv) {
 			break;
 		case 1:
 			error = HandlerOptR(argv, &new_string);
-			if(error) return print_error(error);
+			if(error) {
+				free(new_string);
+				return print_error(error);
+			}
 			printf("%s\n", new_string);
 			free(new_string);
 			break;
 		case 2:
 			error = HandlerOptU(argv, &new_string);
-			if(error) return print_error(error);
+			if(error) {
+				free(new_string);
+				return print_error(error);
+			}
 			printf("%s\n", new_string);
 			free(new_string);
 			break;
 		case 3:
 			error = HandlerOptN(argv, &new_string);
-			if(error) return print_error(error);
+			if(error) {
+				free(new_string);
+				return print_error(error);
+			}
 			printf("%s\n", new_string);
 			free(new_string);
 			break;
 		case 4:
 			error = HandlerOptC(argc, argv, &new_string);
-			if(error) return print_error(error);
+			if(error) {
+				free(new_string);
+				return print_error(error);
+			}
 			printf("%s\n", new_string);
 			free(new_string);
 			break;
