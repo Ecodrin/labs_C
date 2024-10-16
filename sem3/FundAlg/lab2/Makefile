@@ -26,7 +26,7 @@ FAILED_IFILE_RFILE_OFILE=$(BASH) $(TEST_TEMPLATES_DIR)/failed_ifile_rfile_ofile
 .PHONY: all test clean
 
 all:
-	for dir in ex1 ex2 ex3 ex4 ex5 ex7 ex8 ex9 ex10; do \
+	for dir in ex1 ex2 ex3 ex4 ex5 ex6 ex7 ex8 ex9 ex10; do \
 		cd $$dir ;\
 		make ;\
 		mv $$dir.a ../$$dir.a ;\
@@ -164,10 +164,17 @@ test_task5_1:
 test_task_5: test_task5_1
 	@echo "ALL TESTS TASK 5 PASSED"
 
+test_task6_1:
+	@$(SUCCESS_IFILE_OFILE) "ex6.a" "test_files/task_6_test_1_input" "test_files/task_6_test_1_output"
+	@echo "TEST 14(task_5 overfscanf and oversscanf) PASSED"
+
+test_task_6: test_task6_1
+	@echo "ALL TESTS TASK 6 PASSED"
+
 
 test_task7_1:
 	@$(SUCCESS_IFILE_OFILE) "ex7.a" "test_files/task_7_test_1_input" "test_files/task_7_test_1_output"
-	@echo "TEST 14(task_7 dichotomy) PASSED"
+	@echo "TEST 15(task_7 dichotomy) PASSED"
 
 test_task_7: test_task7_1
 	@echo "ALL TESTS TASK 7 PASSED"
@@ -175,27 +182,27 @@ test_task_7: test_task7_1
 
 test_task8_1:
 	@$(SUCCESS_IFILE_OFILE) "ex8.a" "test_files/task_8_test_1_input" "test_files/task_8_test_1_output"
-	@echo "TEST 15(task_8 Addition numbers in other system) PASSED"
+	@echo "TEST 16(task_8 Addition numbers in other system) PASSED"
 
 test_task_8: test_task8_1
 	@echo "ALL TESTS TASK 8 PASSED"
 
 test_task9_1:
 	@$(SUCCESS_IFILE_OFILE) "ex9.a" "test_files/task_9_test_1_input" "test_files/task_9_test_1_output"
-	@echo "TEST 16(task_9 fraction in other ss, not parity) PASSED"
+	@echo "TEST 17(task_9 fraction in other ss, not parity) PASSED"
 
 test_task9_2:
 	@$(SUCCESS_IFILE_OFILE) "ex9.a" "test_files/task_9_test_2_input" "test_files/task_9_test_2_output"
-	@echo "TEST 17(task_9 fraction in other ss, parity) PASSED"
+	@echo "TEST 18(task_9 fraction in other ss, parity) PASSED"
 
 test_task_9: test_task9_1 test_task9_2
 	@echo "ALL TESTS TASK 9 PASSED"
 
 test_task10_1:
 	@$(SUCCESS_IFILE_OFILE) "ex10.a" "test_files/task_10_test_1_input" "test_files/task_10_test_1_output"
-	@echo "TEST 18(task_10 decomposition polynomial) PASSED"
+	@echo "TEST 19(task_10 decomposition polynomial) PASSED"
 
 test_task_10: test_task10_1
 	@echo "ALL TESTS TASK 10 PASSED"
 
-test: test_task_1 test_task_2 test_task_3 test_task_4 test_task_5 test_task_7 test_task_8 test_task_9 test_task_10
+test: test_task_1 test_task_2 test_task_3 test_task_4 test_task_5 test_task_6 test_task_7 test_task_8 test_task_9 test_task_10

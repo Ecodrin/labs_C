@@ -118,6 +118,7 @@ void memory_dump(void *ptr, size_t size, char *result) {
 }
 
 int overfprintf(FILE *restrict stream, const char *format, ...) {
+	if(!stream) return INPUT_FILE_ERROR;
 	int count = 0;
 	const char *p = format;
 	va_list factor;
