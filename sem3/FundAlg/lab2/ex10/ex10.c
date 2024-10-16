@@ -29,7 +29,8 @@ error_msg DecompositionPolynomial(double eps, double a, double **result, int n, 
 	(*result)[n] = coefficients[n];
 	for (int i = n - 1, count_derivative = n - 1; i >= 0; --i, count_derivative--) {
 		for (int j = i, k = 0; j <= n; ++j, ++k) {
-			if((double)special_product(count_derivative, j) * coefficients[j] * pow(a, k) - DBL_MAX >= eps) return OVERFLOW_ERROR;
+			if ((fabsl((long double)special_product(count_derivative, j) * coefficients[j]) * pow(a, k) - (long double)DBL_MAX) >= eps)
+				return OVERFLOW_ERROR;
 			(*result)[i] += (double)special_product(count_derivative, j) * coefficients[j] * pow(a, k);
 		}
 		(*result)[i] /= (double)fac(i);
