@@ -43,6 +43,11 @@ error_msg int_to_zeckendorf(unsigned int num, char *zeckendorf) {
 void From10to(int number, char *result, int based) {
 	char tmp[16];
 	int index = 0;
+	int fl = 0;
+	if(number < 0){
+		fl = 1;
+		number *= -1;
+	}
 	while (number > 0) {
 		if (number % based < 10)
 			tmp[index] = '0' + number % based;
@@ -50,6 +55,9 @@ void From10to(int number, char *result, int based) {
 			tmp[index] = 'a' + (number % based - 10);
 		index++;
 		number /= based;
+	}
+	if(fl) {
+		tmp[index++] = '-';
 	}
 	for (int i = 0; i <= index; i++) {
 		result[i] = tmp[index - i - 1];
