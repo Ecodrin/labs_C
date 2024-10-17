@@ -6,7 +6,7 @@ int main(){
 	int x = 0, y = 0, n;
 	x = 0, y = 0;
 	double s;
-	FILE * f = fopen("test", "r");
+	FILE * f = stdin;
 	n = overfscanf(f, "|||%d|||%d()%lf", &x, &y, &s);
 	printf("n: %d x: %d y: %d s:|%f|\n", n, x, y, s);
 

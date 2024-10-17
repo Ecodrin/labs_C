@@ -301,12 +301,23 @@ int oversscanf(char *buffer, char *format, ...) {
 				my_strcat(tmp_str, "%");
 				my_strcat(tmp_str, tmp);
 				int n = vsscanf(buffer, tmp_str, factor);
-				void * x = va_arg(factor, void *);
+				va_arg(factor, void *);
 				if (n == 0) {
 					va_end(factor);
 					return count;
 				}
-				
+				const char *cc = tmp_str;
+
+				while (*cc != 'c' && *cc != 's' && *cc != 'd' && *cc != 'i' &&
+				       *cc != 'u' && *cc != 'o' && *cc != 'x' && *cc != 'X' &&
+				       *cc != 'n' && *cc != 'a' && *cc != 'A' && *cc != 'e' &&
+				       *cc != 'E' && *cc != 'f' && *cc != 'F' && *cc != 'g' &&
+				       *cc != 'G' && *cc != 'p'){
+					cc += 1;
+				}
+				cc++;
+				while(*buffer != *cc) buffer++;
+				buffer += SizeString(cc);
 				count += n;
 				--p;
 			}
