@@ -13,6 +13,7 @@
  */
 
 error_msg DecompositionPolynomial(double eps, double a, double **result, int n, ...) {
+	if (eps < 0 || eps > 1) return INCORRECT_OPTIONS_ERROR;
 	va_list factor;
 	va_start(factor, n);
 	*result = (double *)calloc(n + 1, sizeof(double));
@@ -29,7 +30,8 @@ error_msg DecompositionPolynomial(double eps, double a, double **result, int n, 
 	(*result)[n] = coefficients[n];
 	for (int i = n - 1, count_derivative = n - 1; i >= 0; --i, count_derivative--) {
 		for (int j = i, k = 0; j <= n; ++j, ++k) {
-			if ((fabsl((long double)special_product(count_derivative, j) * coefficients[j]) * pow(a, k) - (long double)DBL_MAX) >= eps)
+			if ((fabsl((long double)special_product(count_derivative, j) * coefficients[j]) * pow(a, k) -
+			     (long double)DBL_MAX) >= eps)
 				return OVERFLOW_ERROR;
 			(*result)[i] += (double)special_product(count_derivative, j) * coefficients[j] * pow(a, k);
 		}
