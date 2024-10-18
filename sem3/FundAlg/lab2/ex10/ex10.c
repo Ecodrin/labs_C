@@ -13,7 +13,7 @@
  */
 
 error_msg DecompositionPolynomial(double eps, double a, double **result, int n, ...) {
-	if (eps < 0 || eps > 1) return INCORRECT_OPTIONS_ERROR;
+	if (eps < 1e-40) return INCORRECT_OPTIONS_ERROR;
 	va_list factor;
 	va_start(factor, n);
 	*result = (double *)calloc(n + 1, sizeof(double));

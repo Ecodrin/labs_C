@@ -3,7 +3,6 @@
 
 #include <stdarg.h>
 #include <stdlib.h>
-
 #include "../SystemErrors/errors.h"
 #include "../vector/charvector.h"
 #include "../vector/stringvector.h"

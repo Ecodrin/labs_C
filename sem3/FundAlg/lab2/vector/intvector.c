@@ -64,6 +64,4 @@ void print_intvector(IntVector* vector) {
 		printf("%d ", vector->arr[i]);
 	}
 	putchar('\n');
-
-	putchar('\n');
 }

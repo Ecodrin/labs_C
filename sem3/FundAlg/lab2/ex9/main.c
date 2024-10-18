@@ -1,15 +1,14 @@
-#include "ex9.h"
+#include "test.h"
 
 
 int main(){
-	int x;
-	scanf("%d", &x);
-	StringVector * vec = create_string_vector(1);
-	if(!vec) return MEMORY_ALLOCATED_ERROR;
-	error_msg errorMsg = AreCorrectFractions(vec, x, 4, 0.17, 0.5, 0.1, 0.13);
-
-	if(errorMsg) return print_error(errorMsg);
-	print_string_vector(stdout, vec, "\n");
-	destroy_string_vector(vec);
-	return 0;
+	int number_failed;
+	Suite * s;
+	SRunner *sr;
+	s = ex9_quite();
+	sr = srunner_create(s);
+	srunner_run_all(sr, CK_NORMAL);
+	number_failed = srunner_ntests_failed(sr);
+	srunner_free(sr);
+	return (number_failed == 0) ? 0 : 1;
 }

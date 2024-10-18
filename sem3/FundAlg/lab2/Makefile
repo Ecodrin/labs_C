@@ -122,87 +122,31 @@ test_task1_nflag_6:
 test_task_1: test_task1_command_args_1 test_task1_lflag_2 test_task1_lflag_3 test_task1_rflag_4 test_task1_uflag_5 test_task1_nflag_6
 	@echo "ALL TESTS TASK 1 PASSED"
 
-test_task2_1:
-	@$(SUCCESS_IFILE_OFILE) "ex2.a" "test_files/task_2_test_1_input" "test_files/task_2_test_1_output"
-	@echo "TEST 7 (task_2 POW<0) PASSED"
-
-test_task2_2:
-	@$(SUCCESS_IFILE_OFILE) "ex2.a" "test_files/task_2_test_2_input" "test_files/task_2_test_2_output"
-	@echo "TEST 8 (task_2 POW>0) PASSED"
-
-test_task_2: test_task2_1 test_task2_2
-	@echo "ALL TESTS TASK 2 PASSED"
 
 test_task3_1:
 	@$(SUCCESS_IFILE_OFILE) "ex3.a" "test_files/task_3_test_1_input" "test_files/task_3_test_1_output"
-	@echo "TEST 9(task_3 sss) PASSED"
+	@echo "TEST 7(task_3 sss) PASSED"
 
 test_task3_2:
 	@$(SUCCESS_IFILE_OFILE) "ex3.a" "test_files/task_3_test_2_input" "test_files/task_3_test_2_output"
-	@echo "TEST 10(task_3 many separators) PASSED"
+	@echo "TEST 8(task_3 many separators) PASSED"
 
 test_task3_3:
 	@$(SUCCESS_IFILE_OFILE) "ex3.a" "test_files/task_3_test_3_input" "test_files/task_3_test_3_output"
-	@echo "TEST 11(task_3 ssss) PASSED"
+	@echo "TEST 9(task_3 ssss) PASSED"
 
 test_task_3: test_task3_1 test_task3_2 test_task3_3
 	@echo "ALL TESTS TASK 3 PASSED"
 
-test_task4_1:
-	@$(SUCCESS_IFILE_OFILE) "ex4.a" "test_files/task_4_test_1_input" "test_files/task_4_test_1_output"
-	@echo "TEST 12(task_4) PASSED"
-
-test_task_4: test_task4_1
-	@echo "ALL TESTS TASK 4 PASSED"
-
-
-test_task5_1:
-	@$(SUCCESS_IFILE_OFILE) "ex5.a" "test_files/task_5_test_1_input" "test_files/task_5_test_1_output"
-	@echo "TEST 13(task_5 overfprintf and overssprintf) PASSED"
+test_task_allWithOut13:
+	@./ex2.a
+	@./ex4.a
+	@./ex5.a
+	@./ex6.a
+	@./ex7.a
+	@./ex8.a
+	@./ex9.a
+	@./ex10.a
 
 
-test_task_5: test_task5_1
-	@echo "ALL TESTS TASK 5 PASSED"
-
-test_task6_1:
-	@$(SUCCESS_IFILE_OFILE) "ex6.a" "test_files/task_6_test_1_input" "test_files/task_6_test_1_output"
-	@echo "TEST 14(task_5 overfscanf and oversscanf) PASSED"
-
-test_task_6: test_task6_1
-	@echo "ALL TESTS TASK 6 PASSED"
-
-
-test_task7_1:
-	@$(SUCCESS_IFILE_OFILE) "ex7.a" "test_files/task_7_test_1_input" "test_files/task_7_test_1_output"
-	@echo "TEST 15(task_7 dichotomy) PASSED"
-
-test_task_7: test_task7_1
-	@echo "ALL TESTS TASK 7 PASSED"
-
-
-test_task8_1:
-	@$(SUCCESS_IFILE_OFILE) "ex8.a" "test_files/task_8_test_1_input" "test_files/task_8_test_1_output"
-	@echo "TEST 16(task_8 Addition numbers in other system) PASSED"
-
-test_task_8: test_task8_1
-	@echo "ALL TESTS TASK 8 PASSED"
-
-test_task9_1:
-	@$(SUCCESS_IFILE_OFILE) "ex9.a" "test_files/task_9_test_1_input" "test_files/task_9_test_1_output"
-	@echo "TEST 17(task_9 fraction in other ss, not parity) PASSED"
-
-test_task9_2:
-	@$(SUCCESS_IFILE_OFILE) "ex9.a" "test_files/task_9_test_2_input" "test_files/task_9_test_2_output"
-	@echo "TEST 18(task_9 fraction in other ss, parity) PASSED"
-
-test_task_9: test_task9_1 test_task9_2
-	@echo "ALL TESTS TASK 9 PASSED"
-
-test_task10_1:
-	@$(SUCCESS_IFILE_OFILE) "ex10.a" "test_files/task_10_test_1_input" "test_files/task_10_test_1_output"
-	@echo "TEST 19(task_10 decomposition polynomial) PASSED"
-
-test_task_10: test_task10_1
-	@echo "ALL TESTS TASK 10 PASSED"
-
-test: test_task_1 test_task_2 test_task_3 test_task_4 test_task_5 test_task_6 test_task_7 test_task_8 test_task_9 test_task_10
+test: test_task_1 test_task_3 test_task_allWithOut13

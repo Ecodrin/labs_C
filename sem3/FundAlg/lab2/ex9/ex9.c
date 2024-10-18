@@ -39,12 +39,8 @@ error_msg prime_factors(int n, IntVector * factors) {
 
 error_msg has_finite_representation(double fraction, int base, int* fl) {
 	error_msg errorMsg;
-	int denominator = 1;
+	int denominator = 10;
 	if(fraction >= 1 || fraction <= 0) return INCORRECT_OPTIONS_ERROR;
-	while (fraction != floor(fraction)) {
-		fraction *= 10;
-		denominator *= 10;
-	}
 
 	IntVector * factors = create_int_vector(1);
 	if(!factors) return MEMORY_ALLOCATED_ERROR;
@@ -108,6 +104,7 @@ error_msg AreCorrectFractions(StringVector * vec, int base, int n, ...){
 	va_start(factor, n);
 	int fl;
 	error_msg errorMsg;
+	vec->size = 0;
 	for(int i = 0; i < n; ++i){
 		double x = va_arg(factor, double);
 		errorMsg = has_finite_representation(x, base, &fl);

@@ -21,6 +21,7 @@ int IsConvexPolygon(int n, ...) {
 	va_list factor;
 	va_start(factor, n);
 	Point p[n];
+	if(n <= 2 ) return 1;
 	//	Считываем
 	for (int i = 0; i < n; ++i) {
 		p[i] = va_arg(factor, Point);
@@ -29,9 +30,8 @@ int IsConvexPolygon(int n, ...) {
 	int sign = 0;
 	for (int i = 0; i < n; ++i) {
 		double cp = cross_product(p[i], p[(i + 1) % n], p[(i + 2) % n]);
-		//		printf("%f\n", cp);
 		if (!sign) sign = (cp > 0) ? 1 : -1;
-		if (cp * sign < 0) {
+		if (cp * sign <= 0) {
 			return 0;
 		}
 	}
@@ -58,7 +58,10 @@ error_msg ProductNumbers(char *a, char *b, char *result, int base) {
 	int len2 = SizeString(b);
 	CharVector *tmp = create_char_vector(1);
 	if (!tmp) return MEMORY_ALLOCATED_ERROR;
-	int k = 0, x, next, index_tmp;
+	int k = 0;
+	int x = 0;
+	int next = 0;
+	int index_tmp = 0;
 	for (int i = len1 - 1; i >= 0; --i) {
 		next = 0;
 		index_tmp = k;
@@ -205,7 +208,8 @@ int strcmpInOurCase(char *a, char *b){
 }
 
 void StringWithoutLeadingZeros(const char *a, char *b){
-	int fl = 0, j = 0;
+	int fl = 0;
+	int j = 0;
 	for(int i = 0; a[i] != '\0';++i){
 		if(a[i] != '0' || fl == 1){
 			fl = 1;
@@ -217,6 +221,7 @@ void StringWithoutLeadingZeros(const char *a, char *b){
 
 
 error_msg FindNumbersKarper(StringVector *vec, int base, int n, ...) {
+	vec->size = 0;
 	if (base < 2 || base > 36) return NUMERAL_SYSTEM_ERROR;
 	char * number;
 	va_list factor;
