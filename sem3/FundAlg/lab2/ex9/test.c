@@ -17,11 +17,11 @@ START_TEST(test_corect_fraction_in_different){
 	errorMsg = AreCorrectFractions(vec, 37, 3, 3.15, 0.18, 0.2);
 	ck_assert_int_eq(errorMsg, NUMERAL_SYSTEM_ERROR);
 
-	errorMsg = AreCorrectFractions(vec, 12, 3, 0.45, 0.18, 0.2);
+	errorMsg = AreCorrectFractions(vec, 3, 3, 1.0 / 3.0, 0.18, 0.2);
 	ck_assert_int_eq(errorMsg, NORMAL);
-	ck_assert_str_eq(vec->data[0],"Fraction 0.450000 hasn't finite representation in base 12");
-	ck_assert_str_eq(vec->data[1],"Fraction 0.180000 hasn't finite representation in base 12");
-	ck_assert_str_eq(vec->data[2],"Fraction 0.200000 hasn't finite representation in base 12");
+	ck_assert_str_eq(vec->data[0],"Fraction 0.333333 hasn't finite representation in base 3");
+	ck_assert_str_eq(vec->data[1],"Fraction 0.180000 hasn't finite representation in base 3");
+	ck_assert_str_eq(vec->data[2],"Fraction 0.200000 hasn't finite representation in base 3");
 
 
 	errorMsg = AreCorrectFractions(vec, 17, 3, 0.675455, 0.13538, 0.2);

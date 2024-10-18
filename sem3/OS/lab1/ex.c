@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-int CharToDouble(const char* string, double* result) {
+int CharToDouble(const char *string, double *result) {
     int k = -1;
     int fl = 0;
     double number = 0;
@@ -17,18 +17,17 @@ int CharToDouble(const char* string, double* result) {
             if (k != -1) k += 1;
         } else if (string[j] == '.' && k == -1)
             k = 0;
-        else if(string[j] == '\n')
+        else if (string[j] == '\n')
             break;
-        else{
+        else {
             return 1;
         }
     }
-    if(k == 0) return 1;
+    if (k == 0) return 1;
     for (int k_null = 0; k_null < k; ++k_null) number /= 10.0;
     k = -1;
     if (fl) number *= -1;
     // putchar('\n');
-    // printf("%f\n", number);
     *result = number;
     return 0;
 }
@@ -36,29 +35,50 @@ int CharToDouble(const char* string, double* result) {
 
 int main() {
     float sum = 0.0;
-    char buffer[4096];
-    ssize_t n;
-    while ((n = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
-        char *ptr = buffer;
-        char *token;
-        while ((token = strtok(ptr, " ")) != NULL) {
-            double num = 0;
-            if(CharToDouble(token, &num)){
+    char output[4096];
+    output[0] = '\0';
+    char c;
+    char buffer[1024];
+    int i = 0;
+    double num = 0;
+    while ((c = getc(stdin)) != EOF) {
+        if (c == ' ' && i != 0) {
+            num = 0;
+            buffer[i] = '\0';
+            if (CharToDouble(buffer, &num)) {
                 const char msg[] = "error: unrecognized character\n";
-                write(STDERR_FILENO, msg, sizeof (msg));
+                write(STDERR_FILENO, msg, sizeof(msg));
                 exit(EXIT_FAILURE);
             }
-            sum += num;
-            ptr = NULL;
+            i = 0;
+            sum += (float) num;
+        } else if (c == '\n') {
+            num = 0;
+            buffer[i] = '\0';
+            if (CharToDouble(buffer, &num)) {
+                const char msg[] = "error: unrecognized character\n";
+                write(STDERR_FILENO, msg, sizeof(msg));
+                exit(EXIT_FAILURE);
+            }
+            sum += (float) num;
+            sprintf(output + strlen(output), "%f\n", sum);
+            sum = 0;
+            i = 0;
+        } else {
+            buffer[i++] = c;
         }
     }
-
-
-    char output[1024];
-    snprintf(output, sizeof(output), "%f\n", sum);
-
-
-    int32_t written = write(STDOUT_FILENO, output, strlen(output));
+    if (i != 0) {
+        buffer[i] = '\0';
+        if (CharToDouble(buffer, &num)) {
+            const char msg[] = "error: unrecognized character\n";
+            write(STDERR_FILENO, msg, sizeof(msg));
+            exit(EXIT_FAILURE);
+        }
+        sum += (float) num;
+        sprintf(output + strlen(output), "%f\n", sum);
+    }
+    size_t written = write(STDOUT_FILENO, output, strlen(output));
     if (written != strlen(output)) {
         const char msg[] = "error: failed to write to output\n";
         write(STDERR_FILENO, msg, sizeof(msg));
