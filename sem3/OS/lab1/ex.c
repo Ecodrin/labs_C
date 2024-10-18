@@ -36,12 +36,21 @@ int CharToDouble(const char *string, double *result) {
 int main() {
     float sum = 0.0;
     char output[4096];
+    char input[4096];
     output[0] = '\0';
     char c;
     char buffer[1024];
     int i = 0;
+    int j = 0;
+    ssize_t n;
     double num = 0;
-    while ((c = getc(stdin)) != EOF) {
+    n = read(STDIN_FILENO, input, sizeof(input));
+    if(n < 0){
+        const char msg[] = "error: reading file\n";
+        write(STDERR_FILENO, msg, sizeof(msg));
+        exit(EXIT_FAILURE);
+    }
+    while ((c = input[j++]) != '\0') {
         if (c == ' ' && i != 0) {
             num = 0;
             buffer[i] = '\0';
