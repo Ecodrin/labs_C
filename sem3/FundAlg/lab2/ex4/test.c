@@ -53,6 +53,7 @@ START_TEST(test_find_numbers_karper) {
 	error = FindNumbersKarper(vec, 1, 1, "1");
 	ck_assert_int_eq(error, NUMERAL_SYSTEM_ERROR);
 
+
 	error = FindNumbersKarper(vec, 37, 1, "1");
 	ck_assert_int_eq(error, NUMERAL_SYSTEM_ERROR);
 
