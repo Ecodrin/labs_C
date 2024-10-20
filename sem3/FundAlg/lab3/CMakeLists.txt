@@ -10,3 +10,16 @@ add_executable(ex1 ex1/main.c
         ex1/test.h)
 
 target_link_libraries(ex1 m mstring vector -L../lib check subunit rt pthread)
+
+
+add_executable(ex2 ex2/main.c
+        ex2/ex2.c
+        ex2/ex2.h
+        ex2/test.c
+        ex2/test.h)
+
+add_executable(ex3 ex3/main.c
+        ex3/ex3.c
+        ex3/ex3.h)
+
+target_link_libraries(ex3 m mstring errors -L../lib)

@@ -2,11 +2,11 @@ FLAGS = -Wall -Wextra -Werror -g -lm -lcheck -lsubunit -lrt -lpthread -lerrors -
 COMP = gcc
 
 ex10: main.c
-	$(COMP) main.c ex1.c test.c -o ex1.a $(FLAGS) `pkg-config --cflags --libs check`
+	$(COMP) main.c ex2.c test.c -o ex2.a $(FLAGS) `pkg-config --cflags --libs check`
 
 
 test:
-	@./ex1.a
+	@./ex2.a
 
 clean:
 	rm *.a

@@ -3,7 +3,7 @@
 
 int main(){
 	int number_failed;
-	Suite * s = ex1_quite();
+	Suite * s = ex2_quite();
 	SRunner *sr;
     sr = srunner_create(s);
     srunner_run_all(sr, CK_VERBOSE);
