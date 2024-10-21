@@ -1,4 +1,4 @@
-FLAGS = -Wall -Wextra -Werror -g -lm
+FLAGS = -Wall -Wextra -Werror -g -lm -std=c99
 COMP = gcc -std=c99
 
 ex5: main.c
