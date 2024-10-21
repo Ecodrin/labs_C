@@ -44,25 +44,36 @@ int main() {
     int j = 0;
     ssize_t n;
     double num = 0;
-    n = read(STDIN_FILENO, input, sizeof(input));
-    if(n < 0){
-        const char msg[] = "error: reading file\n";
-        write(STDERR_FILENO, msg, sizeof(msg));
-        exit(EXIT_FAILURE);
-    }
-    while ((c = input[j++]) != '\0') {
-        if (c == ' ' && i != 0) {
-            num = 0;
-            buffer[i] = '\0';
-            if (CharToDouble(buffer, &num)) {
-                const char msg[] = "error: unrecognized character\n";
-                write(STDERR_FILENO, msg, sizeof(msg));
-                exit(EXIT_FAILURE);
+    while ((n = read(STDIN_FILENO, input, sizeof(input))) > 0){
+        j = 0;
+        while ((c = input[j++]) != '\0' ) {
+            if (c == ' ' && i != 0) {
+                num = 0;
+                buffer[i] = '\0';
+                if (CharToDouble(buffer, &num)) {
+                    const char msg[] = "error: unrecognized character\n";
+                    write(STDERR_FILENO, msg, sizeof(msg));
+                    exit(EXIT_FAILURE);
+                }
+                i = 0;
+                sum += (float) num;
+            } else if (c == '\n') {
+                num = 0;
+                buffer[i] = '\0';
+                if (CharToDouble(buffer, &num)) {
+                    const char msg[] = "error: unrecognized character\n";
+                    write(STDERR_FILENO, msg, sizeof(msg));
+                    exit(EXIT_FAILURE);
+                }
+                sum += (float) num;
+                sprintf(output + strlen(output), "%f\n", sum);
+                sum = 0;
+                i = 0;
+            } else {
+                buffer[i++] = c;
             }
-            i = 0;
-            sum += (float) num;
-        } else if (c == '\n') {
-            num = 0;
+        }
+        if (i != 0) {
             buffer[i] = '\0';
             if (CharToDouble(buffer, &num)) {
                 const char msg[] = "error: unrecognized character\n";
@@ -71,22 +82,9 @@ int main() {
             }
             sum += (float) num;
             sprintf(output + strlen(output), "%f\n", sum);
-            sum = 0;
-            i = 0;
-        } else {
-            buffer[i++] = c;
         }
     }
-    if (i != 0) {
-        buffer[i] = '\0';
-        if (CharToDouble(buffer, &num)) {
-            const char msg[] = "error: unrecognized character\n";
-            write(STDERR_FILENO, msg, sizeof(msg));
-            exit(EXIT_FAILURE);
-        }
-        sum += (float) num;
-        sprintf(output + strlen(output), "%f\n", sum);
-    }
+
     size_t written = write(STDOUT_FILENO, output, strlen(output));
     if (written != strlen(output)) {
         const char msg[] = "error: failed to write to output\n";
