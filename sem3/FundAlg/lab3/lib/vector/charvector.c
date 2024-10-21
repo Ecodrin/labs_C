@@ -1,72 +1,108 @@
 #include "charvector.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-CharVector* create_char_vector(int capacity) {
-	CharVector *vector = (CharVector*)malloc(sizeof(CharVector));
-	if(!vector){
+String* create_string(char* dest) {
+	String* vector = (String*)malloc(sizeof(String));
+	if (!vector) {
 		return NULL;
 	}
-	vector->arr = (char*)malloc(sizeof(char) * capacity);
+	vector->capacity = SizeString(dest) + 1;
+	vector->size = vector->capacity;
+	vector->arr = (char*)malloc(sizeof(char) * vector->capacity);
 	if (!vector->arr) {
-		printf("Ошибка выделения памяти\n");
 		return NULL;
 	}
-	vector->size = 0;
-	vector->capacity = capacity;
+	error_msg errorMsg = strcopy(dest, vector->arr, 0, SizeString(dest));
+	if (errorMsg) return NULL;
 	return vector;
 }
 
-error_msg resize_char_vector(CharVector* vector, int new_capacity) {
-	vector->arr = (char*)realloc(vector->arr, sizeof(char) * new_capacity);
-	if (!vector->arr) {
-		return MEMORY_ALLOCATED_ERROR;
-	}
-	vector->capacity = new_capacity;
-	return NORMAL;
+error_msg mstrcopy(const String* dest, String* result, int start, int end) {
+	error_msg errorMsg = resize_string(result, dest->size + 1);
+	if (errorMsg) return errorMsg;
+	errorMsg = strcopy(dest->arr, result->arr, start, end);
+	if (errorMsg) return errorMsg;
+	result->size = dest->size;
+	return SUCCESS;
 }
 
-error_msg push_end_charvector(CharVector* vector, char new_element) {
+error_msg resize_string(String* vector, int new_capacity) {
+	if (vector->capacity < new_capacity) {
+		char* tmp = (char*)realloc(vector->arr, sizeof(char) * new_capacity);
+		if (!tmp) {
+			return MEMORY_ALLOCATED_ERROR;
+		}
+		vector->arr = tmp;
+		vector->capacity = new_capacity;
+	}
+	return SUCCESS;
+}
+
+error_msg push_end_string(String* vector, char new_element) {
 	if (vector->size == vector->capacity) {
-		error_msg error = resize_char_vector(vector, vector->size * 2);
+		error_msg error = resize_string(vector, vector->size * 2);
 		if (error) return error;
 	}
 	vector->size += 1;
 	vector->arr[vector->size - 1] = new_element;
-	return NORMAL;
+	return SUCCESS;
 }
 
-error_msg get_charvector(CharVector* vector, int index, char * value) {
+error_msg get_string(String* vector, int index, char* value) {
 	if (index >= vector->capacity) {
 		return INDEX_VECTOR_ERROR;
 	}
 	*value = vector->arr[index];
-	return NORMAL;
+	return SUCCESS;
 }
 
-error_msg at_charvector(CharVector* vector, int index, char new_element) {
+error_msg at_string(String* vector, int index, char new_element) {
 	if (index >= vector->capacity) {
 		return INDEX_VECTOR_ERROR;
 	}
 	vector->arr[index] = new_element;
-	return NORMAL;
+	return SUCCESS;
 }
 
-int size_charvector(CharVector* vector) { return vector->size; }
+int size_string(String* vector) { return vector->size; }
 
-void destroy_char_vector(CharVector* vector) {
+void destroy_string(String* vector) {
 	free(vector->arr);
 	free(vector);
 }
 
-void print_charvector(FILE * stream, CharVector* vector, char * separator) {
+void print_string(FILE* stream, String* vector, char* separator) {
 	for (int i = 0; i < vector->size; ++i) {
 		fprintf(stream, "%c%s", vector->arr[i], separator);
 	}
 }
 
+void vector_string(String* vector) { vector->size = 0; }
 
-void vector_char_clear(CharVector * vector){
-	vector->size = 0;
+int strings_equals(const String* s1, const String* s2){
+    return !string_copm(s1->arr, s2->arr);
 }
+
+
+error_msg mstrcopynew(const String* dest, String**result){
+	*result = create_string(dest->arr);
+	if(!*result) return MEMORY_ALLOCATED_ERROR;
+
+	return SUCCESS;
+}
+
+error_msg mstrcat(String * first, const String * second){
+	error_msg errorMsg;
+	if(first->capacity < first->size + second->size){
+		errorMsg = resize_string(first, first->size + second->size + 1);
+		if(errorMsg) return errorMsg;
+	}
+	errorMsg = my_strcat(first->arr, second->arr);
+	if(errorMsg) return errorMsg;
+	first->size += second->size;
+	return SUCCESS;
+}
+
+int string_greater(const String * s1, const String * s2){
+	return string_copm(s1->arr, s2->arr);
+}
+

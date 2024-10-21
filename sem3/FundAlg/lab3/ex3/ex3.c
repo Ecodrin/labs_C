@@ -29,7 +29,7 @@ error_msg GetOptions(int argc, char **argv, kOpts *k, char **path1, char **path2
 		}
 	}
 	if (*k == 12 || !fl) return INCORRECT_OPTIONS_ERROR;
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size) {
@@ -59,7 +59,7 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 		}
 	}
 	fclose(f);
-	return NORMAL;
+	return SUCCESS;
 }
 
 int CompA(const void *val1, const void *val2) {
@@ -80,12 +80,12 @@ int CompD(const void *val1, const void *val2) {
 
 error_msg HandlerA(Employee **employees, int size) {
 	qsort(*employees, size, sizeof(Employee), CompA);
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg HandlerD(Employee **employees, int size) {
 	qsort(*employees, size, sizeof(Employee), CompD);
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg WriteFileToEmployees(char *path2, Employee *employees, int size) {
@@ -95,5 +95,5 @@ error_msg WriteFileToEmployees(char *path2, Employee *employees, int size) {
 		fprintf(f, "%u %s %s %f\n", (employees[i]).id, (employees[i]).name, (employees[i]).last_name,
 		        (employees[i]).salary);
 	}
-	return NORMAL;
+	return SUCCESS;
 }

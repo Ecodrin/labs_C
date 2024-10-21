@@ -8,7 +8,7 @@ error_msg str_to_k(const char **string, char *separator, char *result) {
 	char b[len_separator + 1];
 	if (len_string == 0) {
 		result = NULL;
-		return NORMAL;
+		return SUCCESS;
 	}
 	for (int i = 0; i < len_string; ++i) {
 		//        printf("%s\n", *string);
@@ -29,7 +29,7 @@ error_msg str_to_k(const char **string, char *separator, char *result) {
 		result[i] = **string;
 		*string += 1;
 	}
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg my_strcat(char *a, const char *b) {
@@ -38,7 +38,7 @@ error_msg my_strcat(char *a, const char *b) {
 		a[i] = b[j];
 	}
 	a[i] = '\0';
-	return NORMAL;
+	return SUCCESS;
 }
 
 int string_cmp(const char *a, const char *b) {
@@ -58,7 +58,7 @@ error_msg strcopy(const char *a, char *result, int start, int end) {
 		result[i] = a[i + start];
 	}
 	result[i] = '\0';
-	return NORMAL;
+	return SUCCESS;
 }
 
 int SizeString(const char *a) {
@@ -66,4 +66,16 @@ int SizeString(const char *a) {
 	for (; a[i] != '\0'; ++i)
 		;
 	return i;
+}
+
+int string_copm(const char *s1, const char*s2){
+	int len1 = SizeString(s1);
+	int len2 = SizeString(s2);
+	if(len1 > len2) return -1;
+	if(len1 < len2) return 1;
+	for(int i = 0; i < len2; ++i){
+		if(s1[i] > s2[i]) return -1;
+		if(s1[i] < s2[i]) return 1;
+	}
+	return 0;
 }

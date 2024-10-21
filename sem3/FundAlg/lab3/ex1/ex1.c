@@ -32,5 +32,5 @@ error_msg From10To(int x, const int base, char *result) {
     if (fl) tmp[index++] = '-';
     for (int i = index - 1; i >= 0; --i)result[index - i - 1] = tmp[i];
     result[index] = '\0';
-    return NORMAL;
+    return SUCCESS;
 }

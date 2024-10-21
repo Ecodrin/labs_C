@@ -20,7 +20,7 @@ error_msg resize_string_vector(StringVector *vec) {
 	}
 	vec->data = new_data;
 	vec->capacity *= 2;
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg push_end_string_vector(StringVector *vec, char *string) {
@@ -37,7 +37,7 @@ error_msg push_end_string_vector(StringVector *vec, char *string) {
 	strcopy(string, vec->data[vec->size], 0, SizeString(string));
 	vec->size += 1;
 	//	print_string_vector(vec);
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg at_string_vector(StringVector *vec, int index, char *res) {
@@ -51,7 +51,7 @@ error_msg at_string_vector(StringVector *vec, int index, char *res) {
 		return MEMORY_ALLOCATED_ERROR;
 	}
 	strcopy(res, vec->data[index], 0, SizeString(res));
-	return NORMAL;
+	return SUCCESS;
 }
 
 error_msg get_string_vector(StringVector *vec, int index, char **res) {
@@ -59,7 +59,7 @@ error_msg get_string_vector(StringVector *vec, int index, char **res) {
 		return INDEX_VECTOR_ERROR;
 	}
 	*res = vec->data[index];
-	return NORMAL;
+	return SUCCESS;
 }
 
 void print_string_vector(FILE * stream, StringVector *vec, char *separator) {
