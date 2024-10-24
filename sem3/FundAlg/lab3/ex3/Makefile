@@ -1,0 +1,7 @@
+CFLAGS = -Werror -Wextra -Wall -g -lmstring -lerrors -L../lib
+COMP = gcc
+
+
+
+ex1: main.c
+	$(COMP) main.c ex3.c $(CFLAGS) -o ex3.a

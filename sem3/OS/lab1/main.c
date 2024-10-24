@@ -8,12 +8,10 @@
  * 7 вариант) В файле записаны команды вида: «число число число<endline>». Дочерний процесс
 считает их сумму и выводит результат в стандартный поток вывода. Числа имеют тип float.
 Количество чисел может быть произвольным.
- * @param argc
- * @param argv
  * @return
  */
-int main(int argc, char **argv) {
-    size_t size = 256;
+int main() {
+    size_t size = 4096;
     char filename[size];
     ssize_t n;
     if((n = read(STDIN_FILENO, filename, size - 2)) < 0){
@@ -50,7 +48,7 @@ int main(int argc, char **argv) {
     } else{
 //        printf("Process 2: %d\n", getpgid(pid));
         close(fd[1]);
-        char buffer[1024];
+        char buffer[size];
         ssize_t n;
         while ((n = read(fd[0], buffer, sizeof(buffer))) > 0) {
             write(STDOUT_FILENO, buffer, n);

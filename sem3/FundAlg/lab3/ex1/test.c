@@ -17,7 +17,7 @@ START_TEST(test_from10to_2) {
     ck_assert_int_eq(errorMsg, INCORRECT_OPTIONS_ERROR);
 
     errorMsg = From10To(1234, 8, result);
-    ck_assert_int_eq(errorMsg, NORMAL);
+    ck_assert_int_eq(errorMsg, SUCCESS);
     ck_assert_str_eq(result, "2322");
 }
 
@@ -25,7 +25,7 @@ START_TEST(test_from10to_3) {
     error_msg errorMsg;
     char result[100];
     errorMsg = From10To(1234, 8, result);
-    ck_assert_int_eq(errorMsg, NORMAL);
+    ck_assert_int_eq(errorMsg, SUCCESS);
     ck_assert_str_eq(result, "2322");
 }
 
@@ -35,7 +35,7 @@ START_TEST(test_from10to_4) {
     error_msg errorMsg;
     char result[100];
     errorMsg = From10To(1234, 16, result);
-    ck_assert_int_eq(errorMsg, NORMAL);
+    ck_assert_int_eq(errorMsg, SUCCESS);
     ck_assert_str_eq(result, "4d2");
 }
 
@@ -46,7 +46,7 @@ START_TEST(test_from10to_5) {
     error_msg errorMsg;
     char result[100];
     errorMsg = From10To(-1234, 16, result);
-    ck_assert_int_eq(errorMsg, NORMAL);
+    ck_assert_int_eq(errorMsg, SUCCESS);
     ck_assert_str_eq(result, "-4d2");
 }
 
@@ -57,7 +57,7 @@ START_TEST(test_from10to_6) {
     error_msg errorMsg;
     char result[100];
     errorMsg = From10To(2321454, 32, result);
-    ck_assert_int_eq(errorMsg, NORMAL);
+    ck_assert_int_eq(errorMsg, SUCCESS);
     ck_assert_str_eq(result, "26r1e");
 }
 
@@ -81,4 +81,15 @@ Suite *ex1_quite() {
 
     suite_add_tcase(s, tc_core);
     return s;
+}
+
+int main(){
+	int number_failed;
+	Suite * s = ex1_quite();
+	SRunner *sr;
+	sr = srunner_create(s);
+	srunner_run_all(sr, CK_NORMAL);
+	number_failed = srunner_ntests_failed(sr);
+	srunner_free(sr);
+	return (number_failed == 0) ? 0 : 1;
 }

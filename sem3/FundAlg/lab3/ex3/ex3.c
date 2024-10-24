@@ -48,7 +48,7 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 		if (n != 4) return INCORRECT_OPTIONS_ERROR;
 		(*size)++;
 		if (*size == cap) {
-			Employee *tmp = (Employee *)realloc(employees, sizeof(Employee) * cap * 2);
+			Employee *tmp = (Employee *)realloc(*employees, sizeof(Employee) * cap * 2);
 			cap *= 2;
 			if (!tmp) {
 				free(employees);
@@ -63,18 +63,18 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 }
 
 int CompA(const void *val1, const void *val2) {
-	if (((Employee *)val1)->id > ((Employee *)val2)->id) return 1;
-	if (((Employee *)val1)->name > ((Employee *)val2)->name) return 1;
+	if (((Employee *)val1)->salary > ((Employee *)val2)->salary) return 1;
 	if (((Employee *)val1)->last_name > ((Employee *)val2)->last_name) return 1;
-	if (((Employee *)val1)->salary > ((Employee *)val2)->salary) return 11;
+	if (((Employee *)val1)->name > ((Employee *)val2)->name) return 1;
+	if (((Employee *)val1)->id > ((Employee *)val2)->id) return 1;
 	return -1;
 }
 
 int CompD(const void *val1, const void *val2) {
-	if (((Employee *)val1)->id > ((Employee *)val2)->id) return -1;
-	if (((Employee *)val1)->name > ((Employee *)val2)->name) return -1;
-	if (((Employee *)val1)->last_name > ((Employee *)val2)->last_name) return -1;
 	if (((Employee *)val1)->salary > ((Employee *)val2)->salary) return -1;
+	if (((Employee *)val1)->last_name > ((Employee *)val2)->last_name) return -1;
+	if (((Employee *)val1)->name > ((Employee *)val2)->name) return -1;
+	if (((Employee *)val1)->id > ((Employee *)val2)->id) return -1;
 	return 1;
 }
 

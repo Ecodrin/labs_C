@@ -26,8 +26,10 @@ target_link_libraries(ex3 m mstring errors -L../lib)
 
 
 add_executable(ex4
-        ex4/test.c
-        ex4/test.h)
+        ex4/main.c
+        ex4/test.h
+        ex4/mail.c
+        ex4/mail.h)
 
 
-target_link_libraries(ex4 -Wall -Wextra -Werror -g -lm -lcheck -lsubunit -lrt -lpthread -lerrors -lmstring -lvector -L../lib/ -std=c99  `pkg-config --cflags --libs check`)
+target_link_libraries(ex4 -Wall -Wextra -Werror -g -lm -lerrors -lmstring -lvector -L../lib/ -std=c99 )

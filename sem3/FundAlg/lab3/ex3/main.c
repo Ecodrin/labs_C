@@ -17,11 +17,15 @@ int main(int argc, char **argv) {
 	int size = 0;
 	errorMsg = ReadFileToEmployees(path1, &employees, &size);
 	if(errorMsg) {
+		free(employees);
 		return print_error(errorMsg);
 	}
 
 	errorMsg = handlers[k](&employees, size);
-	if(errorMsg) return print_error(errorMsg);
+	if(errorMsg) {
+		free(employees);
+		return print_error(errorMsg);
+	}
 
 	errorMsg = WriteFileToEmployees(path2, employees, size);
 	if(errorMsg) {

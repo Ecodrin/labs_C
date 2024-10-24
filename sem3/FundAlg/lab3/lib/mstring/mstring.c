@@ -54,7 +54,7 @@ error_msg strcopy(const char *a, char *result, int start, int end) {
 	int i = 0;
 	int end_for = end - start;
 	if (start > 0) end_for++;
-	for (; i < end_for; ++i) {
+	for (; i < end_for && i + start < SizeString(a); ++i) {
 		result[i] = a[i + start];
 	}
 	result[i] = '\0';
@@ -78,4 +78,13 @@ int string_copm(const char *s1, const char*s2){
 		if(s1[i] < s2[i]) return 1;
 	}
 	return 0;
+}
+
+
+int strtoint(const char * a){
+	int sum = 0;
+	while (*a){
+		sum *= 10 + (*a - '0');
+	}
+	return sum;
 }
