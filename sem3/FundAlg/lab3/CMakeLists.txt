@@ -5,11 +5,9 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(ex1 ex1/main.c
         ex1/ex1.c
-        ex1/ex1.h
-        ex1/test.c
-        ex1/test.h)
+        ex1/ex1.h)
 
-target_link_libraries(ex1 m mstring vector -L../lib check subunit rt pthread)
+target_link_libraries(ex1 errors -L../lib)
 
 
 add_executable(ex2 ex2/main.c

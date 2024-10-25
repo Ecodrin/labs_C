@@ -1,5 +1,5 @@
-FLAGS = -Wall -Wextra -Werror -g -lm -std=c99 -fsanitize=address -lcheck -lsubunit -lrt -lpthread
+FLAGS = -Wall -Wextra -Werror -g -lm -std=c99
 COMP = gcc
 
 ex5: main.c
-	$(COMP) main.c ../SystemErrors/errors.c  ../vector/stringvector.c overloads.c test.c $(FLAGS) -o ex5.a
+	$(COMP) main.c ../SystemErrors/errors.c  ../vector/stringvector.c overloads.c $(FLAGS) -o ex5.a

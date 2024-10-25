@@ -1,14 +1,6 @@
-#include "test.h"
+#include "overloads.h"
 
 int main(void) {
-	int number_failed;
-	Suite *s;
-	SRunner *sr;
+	overfprintf(stdout, "%%%d%Ro%1d%lld%Ro%mi%*d", 1, 1, 1, 1, 1, 1, 1);
 
-	s = overloads_suite();
-	sr = srunner_create(s);
-	srunner_run_all(sr, CK_NORMAL);
-	number_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
-	return (number_failed == 0) ? 0 : 1;
 }

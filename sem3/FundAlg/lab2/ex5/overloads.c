@@ -139,6 +139,7 @@ int overfprintf(FILE *restrict stream, const char *format, ...) {
 			p++;
 			if (*p == '%') {
 				count++;
+//				fputc('%', stream)
 			} else if (SizeString(p) >= 2 && *p == 'R' && *(p + 1) == 'o') {
 				// Римские числа
 				p += 2;

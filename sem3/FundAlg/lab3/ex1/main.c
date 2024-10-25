@@ -2,12 +2,8 @@
 
 
 int main(){
-	int number_failed;
-	Suite * s = ex1_quite();
-	SRunner *sr;
-    sr = srunner_create(s);
-    srunner_run_all(sr, CK_VERBOSE);
-    number_failed = srunner_ntests_failed(sr);
-    srunner_free(sr);
-	return (number_failed == 0) ? 0 : 1;
+	char r[100];
+	error_msg errorMsg = From10To(1234, 16, r);
+	if(errorMsg) return print_error(errorMsg);
+	printf("|%s|\n", r);
 }
