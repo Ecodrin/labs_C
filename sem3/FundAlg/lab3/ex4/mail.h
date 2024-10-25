@@ -8,6 +8,8 @@
 #include "../lib/vector/charvector.h"
 #include "../lib/mstring/mstring.h"
 
+
+
 typedef struct Address{
 	String city;
 	String street;
@@ -66,6 +68,10 @@ error_msg delete_mail_in_post(Post * post, String * mail_id, int* count_mails);
 // Функции ищущие доставленные и не доставленные письма
 error_msg find_received_mails(Post * post, int count_mail);
 error_msg find_not_received_mails(Post *post, int count_mail);
+
+
+error_msg scan_email(Mail * mail);
+void clear_buffer();
 #endif  // LAB3_MAIL_H
 
 

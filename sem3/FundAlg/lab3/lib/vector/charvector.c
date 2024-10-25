@@ -97,7 +97,7 @@ int string_greater(const String* s1, const String* s2) { return string_copm(s1->
 int string_to_int(const String* s1) {
 	int sum = 0;
 	for (int i = 0; i < s1->size; ++i) {
-		sum *= 10 + (s1->arr[i] - '0');
+		sum = sum * 10 + (s1->arr[i] - '0');
 	}
 	return sum;
 }

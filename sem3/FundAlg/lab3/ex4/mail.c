@@ -206,6 +206,12 @@ void print_mail(FILE *stream, Mail *mail) {
 }
 
 error_msg push_mail_into_post(Post *post, int *count_mails, int *size_post, Mail *mail) {
+	for(int i = 0; i < *count_mails; ++i){
+		if(strings_equals(&(mail->mail_id), &(post->mails[i].mail_id))){
+			destroy_mail(mail);
+			return INCORRECT_OPTIONS_ERROR;
+		}
+	}
 	if (*count_mails == *size_post) {
 		Mail *tmp = (Mail *)realloc(post->mails, *size_post * 2);
 		*size_post *= 2;
@@ -219,8 +225,9 @@ error_msg push_mail_into_post(Post *post, int *count_mails, int *size_post, Mail
 	while (i < *count_mails &&
 	       (string_to_int(&(post->mails[i].address.index)) < string_to_int(&(mail->address.index)) ||
 	        (string_to_int(&(post->mails[i].address.index)) == string_to_int(&(mail->address.index)) &&
-	         string_to_int(&(post->mails[i].mail_id)) < string_to_int(&(mail->mail_id)))))
+	         string_to_int(&(post->mails[i].mail_id)) < string_to_int(&(mail->mail_id))))) {
 		i++;
+	}
 	(*count_mails)++;
 	for (int j = *count_mails - 1; j > i; --j) {
 		post->mails[j] = post->mails[j - 1];
@@ -328,4 +335,32 @@ error_msg find_not_received_mails(Post *post, int count_mail) {
 	}
 	free(received_mails);
 	return SUCCESS;
+}
+
+
+error_msg scan_email(Mail * mail){
+	char city[100];
+	char street[100];
+	int house;
+	char building[100];
+	int apartment;
+	char index[100];
+	double weight_parcel;
+	char mail_id[100];
+	Time create_time;
+	Time receipt_time;
+	int n = scanf("%s %s %d %s %d %s %lf %s %d:%d:%d %d:%d:%d %d:%d:%d %d:%d:%d", city, street, &house,
+	              building, &apartment, index, &weight_parcel, mail_id, &(create_time.day),
+	              &(create_time.month), &(create_time.year), &(create_time.hour), &(create_time.minute),
+	              &(create_time.sec), &(receipt_time.day), &(receipt_time.month), &(receipt_time.year),
+	              &(receipt_time.hour), &(receipt_time.minute), &(receipt_time.sec));
+	if (n != 20) {
+		return INCORRECT_OPTIONS_ERROR;
+	}
+	getc(stdin);
+	return create_mail(mail, city, street, house, building, apartment, index, weight_parcel, mail_id, create_time, receipt_time);
+}
+
+void clear_buffer(){
+	while ( getchar() != '\n' );
 }

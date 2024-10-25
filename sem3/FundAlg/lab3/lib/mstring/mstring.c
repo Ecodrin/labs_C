@@ -85,6 +85,7 @@ int strtoint(const char * a){
 	int sum = 0;
 	while (*a){
 		sum *= 10 + (*a - '0');
+		a++;
 	}
 	return sum;
 }
