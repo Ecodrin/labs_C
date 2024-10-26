@@ -1,5 +1,5 @@
 CFLAGS = -Werror -Wextra -Wall -g -lmstring -lerrors -L../lib
-COMP = gcc
+COMP = clang
 
 
 

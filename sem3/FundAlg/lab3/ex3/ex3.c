@@ -65,6 +65,7 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 			*employees = tmp;
 		}
 	}
+	if(!feof(f)) return INCORRECT_OPTIONS_ERROR;
 	fclose(f);
 	return SUCCESS;
 }
