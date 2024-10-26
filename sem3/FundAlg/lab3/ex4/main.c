@@ -2,19 +2,19 @@
 
 const char* MSG[] = {"Enter the command:\n",
                      "Email format:\n(city street house building apartment post_index parcel_weight mail_id "
-                     "mail_create_time(%d:%d:%d %d:%d:%d) mail_create_time mail_receipt_time(%d:%d:%d %d:%d:%d))\n",
+                     "mail_create_time(%d:%d:%d %d:%d:%d) mail_receipt_time(%d:%d:%d %d:%d:%d))\n",
                      "You entered the wrong command\n",
                      "Unrecognized command\n",
                      "Incorrect data\n",
                      "Please, write mail_id: "};
 
-const char* COMMANDS[] = {"Add the email\n",
-                          "Help\n",
-                          "Print all emails\n",
-                          "Delete email\n",
-                          "Find email\n",
-                          "Print receipt emails\n",
-                          "Print not receipt emails\n"};
+const char* COMMANDS[] = {"add the email\n",
+                          "help\n",
+                          "print all emails\n",
+                          "delete email\n",
+                          "find email\n",
+                          "print receipt emails\n",
+                          "print not receipt emails\n"};
 
 int main() {
 	int capacity_mails = 10;
@@ -29,10 +29,11 @@ int main() {
 	char command[1000];
 	printf("\nIf you need help: %s\n", COMMANDS[1]);
 	while (1) {
-		printf("%s> ", MSG[0]);
+		if(!string_cmp(command, "\n")) printf("%s> ", MSG[0]);
 		char* er = fgets(command, sizeof(command), stdin);
 		if (!er) break;
-		if (string_cmp(command, COMMANDS[0])) {
+//		Добавление письма
+		if (string_cmp(command, COMMANDS[0]) || string_cmp(command, "1\n")) {
 			printf("%s", MSG[1]);
 			Mail mail;
 			errorMsg = scan_email(&mail);
@@ -51,14 +52,18 @@ int main() {
 				destroy_post(&post, count_mails);
 				return print_error(errorMsg);
 			}
-		} else if (string_cmp(command, COMMANDS[1])) {  // КККККККККККККККККККККККККККККККККККККККК
+//			Печать всех команд
+		} else if (string_cmp(command, COMMANDS[1]) || string_cmp(command, "2\n")) {  // КККККККККККККККККККККККККККККККККККККККК
 			printf("You should write one of these commands:\n");
 			for (int i = 0; i < 7; ++i) {
 				printf("%d. %s", i + 1, COMMANDS[i]);
 			}
-		} else if (string_cmp(command, COMMANDS[2])) {
+			printf("Program can get command with indices\n");
+//			Печать всех писем
+		} else if (string_cmp(command, COMMANDS[2]) || string_cmp(command, "3\n")) {
 			print_post(stdout, &post, count_mails);
-		} else if (string_cmp(command, COMMANDS[3])) {
+//			Удаление письма
+		} else if (string_cmp(command, COMMANDS[3]) || string_cmp(command, "4\n")) {
 			printf("%s", MSG[5]);
 			char id[100];
 			scanf("%s", id);
@@ -71,12 +76,14 @@ int main() {
 			errorMsg = delete_mail_in_post(&post, &mail_id, &count_mails);
 			destroy_string(&mail_id);
 			if (errorMsg == INCORRECT_OPTIONS_ERROR) {
+				clear_buffer();
 				printf("%s", MSG[4]);
 			} else if (errorMsg) {
 				destroy_post(&post, count_mails);
 				return print_error(errorMsg);
 			}
-		} else if (string_cmp(command, COMMANDS[4])) {
+//			Поиск письма
+		} else if (string_cmp(command, COMMANDS[4]) || string_cmp(command, "5\n")) {
 			printf("%s", MSG[5]);
 			char id[100];
 			scanf("%s", id);
@@ -99,13 +106,16 @@ int main() {
 				clear_buffer();
 				print_mail(stdout, &mail);
 			}
-		} else if (string_cmp(command, COMMANDS[5])) {
+//			Поиск доставленных писем
+		} else if (string_cmp(command, COMMANDS[5]) || string_cmp(command, "6\n")) {
 			errorMsg = find_received_mails(&post, count_mails);
 			if (errorMsg) return print_error(errorMsg);
-		} else if (string_cmp(command, COMMANDS[6])) {
+//			Поиск не доставленных писем
+		} else if (string_cmp(command, COMMANDS[6]) || string_cmp(command, "7\n")) {
 			errorMsg = find_not_received_mails(&post, count_mails);
 			if (errorMsg) return print_error(errorMsg);
-		} else if (!string_cmp(command, "\n")) {
+//			Неверная команда
+		} else if (!string_cmp(er, "\n")) {
 			printf("%s", MSG[3]);
 		}
 	}

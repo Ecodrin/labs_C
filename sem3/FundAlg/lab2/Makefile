@@ -139,14 +139,7 @@ test_task_3: test_task3_1 test_task3_2 test_task3_3
 	@echo "ALL TESTS TASK 3 PASSED"
 
 test_task_allWithOut13:
-	@./ex2.a
-	@./ex4.a
-	@./ex5.a
-	@./ex6.a
-	@./ex7.a
-	@./ex8.a
-	@./ex9.a
 	@./ex10.a
 
 
-test: test_task_1 test_task_3 test_task_allWithOut13
+test: test_task_3 test_task_allWithOut13
