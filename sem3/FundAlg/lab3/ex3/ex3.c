@@ -45,9 +45,13 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 	int n;
 	while ((n = fscanf(f, "%u %s %s %lf", &((*employees)[*size].id), (*employees)[*size].name,
 	                   (*employees)[*size].last_name, &((*employees)[*size].salary))) > 0) {
-		if (n != 4) return INCORRECT_OPTIONS_ERROR;
+		if (n != 4) {
+			return INCORRECT_OPTIONS_ERROR;
+		}
 		for(int i = 0; i < *size; ++i){
-			if((*employees)[*size].id == (*employees)[i].id) return INCORRECT_OPTIONS_ERROR;
+			if((*employees)[*size].id == (*employees)[i].id) {
+				return INCORRECT_OPTIONS_ERROR;
+			}
 		}
 		(*size)++;
 		if (*size == cap) {
