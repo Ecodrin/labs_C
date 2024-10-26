@@ -2,6 +2,7 @@
 
 error_msg create_address_ptr(Address **adrs, char *city, char *street, int house, char *building, int apartment,
                              char *index) {
+	if(house <= 0 || apartment <= 0) return INCORRECT_OPTIONS_ERROR;
 	*adrs = (Address *)malloc(sizeof(Address));
 	Address *address = *adrs;
 	error_msg errorMsg = create_string(&(address->city), city);
@@ -82,6 +83,7 @@ void destroy_post(Post *post, const int count_mails) {
 
 error_msg create_address(Address *address, char *city, char *street, int house, char *building, int apartment,
                          char *index) {
+	if(house <= 0 || apartment <= 0) return INCORRECT_OPTIONS_ERROR;
 	error_msg errorMsg = create_string(&(address->city), city);
 	if (errorMsg) return errorMsg;
 	errorMsg = create_string(&(address->street), street);
@@ -158,6 +160,10 @@ error_msg create_mail(Mail *mail, char *city, char *street, int house, char *bui
 		return INCORRECT_OPTIONS_ERROR;
 	}
 	mail->parcel_weight = parcel_weight;
+	if(parcel_weight < 1e-16){
+		destroy_address(&(mail->address));
+		return INCORRECT_OPTIONS_ERROR;
+	}
 	char tmp[21];
 	tmp[0] = '\0';
 	sprintf(tmp, "%02d:%02d:%04d %02d:%02d:%02d", mail_create_time.day, mail_create_time.month, mail_create_time.year,

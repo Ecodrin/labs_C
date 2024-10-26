@@ -39,7 +39,7 @@ START_TEST(task_4_test_3_eq_1) {
 }
 END_TEST
 
-START_TEST(task_4_test_3_eq_2) {
+START_TEST(task_4_test_4_eq_2) {
 	String s1;
 	error_msg errorMsg =  create_string(&s1, "aaaaaaaaaaaaaaaaa");
 	ck_assert_int_eq(errorMsg, SUCCESS);
@@ -130,7 +130,7 @@ Suite *ex4_quite() {
 	tcase_add_test(tc_core, task_4_test_1_create);
 	tcase_add_test(tc_core, task_4_test_2_copy);
 	tcase_add_test(tc_core, task_4_test_3_eq_1);
-	tcase_add_test(tc_core, task_4_test_3_eq_2);
+	tcase_add_test(tc_core, task_4_test_4_eq_2);
 	tcase_add_test(tc_core, task_4_test_5_copy);
 	tcase_add_test(tc_core, task_4_test_6_cat);
 	tcase_add_test(tc_core, task_4_test_7_greater_1);

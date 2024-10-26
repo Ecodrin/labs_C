@@ -27,6 +27,7 @@ int main() {
 	}
 	print_post(stdout, &post, count_mails);
 	char command[1000];
+	command[0] = '\0';
 	printf("\nIf you need help: %s\n", COMMANDS[1]);
 	while (1) {
 		if(!string_cmp(command, "\n")) printf("%s> ", MSG[0]);

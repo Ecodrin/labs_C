@@ -72,7 +72,7 @@ void print_string(FILE* stream, String* vector, char* separator) {
 
 void vector_string(String* vector) { vector->size = 0; }
 
-int strings_equals(const String* s1, const String* s2) { return !string_copm(s1->arr, s2->arr); }
+int strings_equals(const String* s1, const String* s2) { return string_cmp(s1->arr, s2->arr); }
 
 error_msg mstrcopynew(const String* dest, String* result) {
 	error_msg errorMsg = create_string(result, dest->arr);
@@ -92,7 +92,13 @@ error_msg mstrcat(String* first, const String* second) {
 	return SUCCESS;
 }
 
-int string_greater(const String* s1, const String* s2) { return string_copm(s1->arr, s2->arr); }
+int string_greater(const String* s1, const String* s2) {
+	int len1 = SizeString(s1->arr);
+	int len2 = SizeString(s2->arr);
+	if(len1 > len2) return -1;
+	if(len1 < len2) return 1;
+	return string_copm(s1->arr, s2->arr);
+}
 
 int string_to_int(const String* s1) {
 	int sum = 0;
