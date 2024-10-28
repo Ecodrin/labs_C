@@ -16,14 +16,13 @@ START_TEST(test_task2_1){
 	int count_vectors = 3;
 	int count_norms = 3;
     int p = 2;
-	Vector *** result = NULL;
-	errorMsg = MaxVectors(result, n, count_vectors, count_norms, v1, v2, v3, norm1, norm2, p, norm3, A);
-	ck_assert_int_eq(errorMsg, NORMAL);
-    for(int j = 0; j < count_norms;++j){
-        free(result[j]);
-    }
-    free(result);
-
+	ArrayVectors ** vectors = NULL;
+	errorMsg = MaxVectors(vectors, n, count_vectors, count_norms, v1, v2, v3, norm1, norm2, p, norm3, A);
+	ck_assert_int_eq(errorMsg, SUCCESS);
+    for(int i = 0; i < count_norms; ++i){
+		destroy_array_vector(vectors[i]);
+	}
+	free(vectors);
 
 }
 END_TEST
@@ -37,4 +36,19 @@ Suite *ex2_quite() {
 
     suite_add_tcase(s, tc_core);
     return s;
+}
+
+
+#include "test.h"
+
+
+int main(){
+	int number_failed;
+	Suite * s = ex2_quite();
+	SRunner *sr;
+	sr = srunner_create(s);
+	srunner_run_all(sr, CK_VERBOSE);
+	number_failed = srunner_ntests_failed(sr);
+	srunner_free(sr);
+	return (number_failed == 0) ? 0 : 1;
 }

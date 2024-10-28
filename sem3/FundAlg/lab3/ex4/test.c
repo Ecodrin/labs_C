@@ -88,7 +88,7 @@ START_TEST(task_4_test_7_greater_1) {
 	String s2;
 	errorMsg = create_string(&s2, "aaaaaaaaaaaaaaaaa");
 	ck_assert_int_eq(errorMsg, SUCCESS);
-	int res = string_greater(&s1, &s2);
+	int res = string_comp(&s1, &s2);
 	ck_assert_int_eq(res, 1);
 	destroy_string(&s1);
 	destroy_string(&s2);
@@ -102,7 +102,7 @@ START_TEST(task_4_test_8_greater_2) {
 	String s2;
 	errorMsg = create_string(&s2, "Hello world");
 	ck_assert_int_eq(errorMsg, SUCCESS);
-	int res = string_greater(&s1, &s2);
+	int res = string_comp(&s1, &s2);
 	ck_assert_int_eq(res, -1);
 	destroy_string(&s1);
 	destroy_string(&s2);
@@ -116,7 +116,7 @@ START_TEST(task_4_test_9_greater_3) {
 	String s2;
 	errorMsg = create_string(&s2, "Hello world");
 	ck_assert_int_eq(errorMsg, SUCCESS);
-	int res = string_greater(&s1, &s2);
+	int res = string_comp(&s1, &s2);
 	ck_assert_int_eq(res, 0);
 	destroy_string(&s1);
 	destroy_string(&s2);

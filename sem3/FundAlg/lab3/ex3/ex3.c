@@ -35,24 +35,31 @@ error_msg GetOptions(int argc, char **argv, kOpts *k, char **path1, char **path2
 error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size) {
 	FILE *f = fopen(input_path, "r");
 	if (!f) return INPUT_FILE_ERROR;
+
 	*size = 0;
 	int cap = 10;
 	*employees = (Employee *)malloc(sizeof(Employee) * cap);
+
 	if (!*employees) {
 		fclose(f);
 		return MEMORY_ALLOCATED_ERROR;
 	}
+
 	int n;
+
 	while ((n = fscanf(f, "%u %s %s %lf", &((*employees)[*size].id), (*employees)[*size].name,
 	                   (*employees)[*size].last_name, &((*employees)[*size].salary))) > 0) {
+
 		if (n != 4) {
 			return INCORRECT_OPTIONS_ERROR;
 		}
+
 		for(int i = 0; i < *size; ++i){
 			if((*employees)[*size].id == (*employees)[i].id) {
 				return INCORRECT_OPTIONS_ERROR;
 			}
 		}
+
 		(*size)++;
 		if (*size == cap) {
 			Employee *tmp = (Employee *)realloc(*employees, sizeof(Employee) * cap * 2);
@@ -71,19 +78,20 @@ error_msg ReadFileToEmployees(char *input_path, Employee **employees, int *size)
 }
 
 int CompA(const void *val1, const void *val2) {
-	if (((Employee *)val1)->salary > ((Employee *)val2)->salary) return 1;
-	else if(((Employee *)val1)->salary < ((Employee *)val2)->salary)return -1;
-	if(string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->last_name) != 0) return -string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->last_name);
-	if(string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->name) != 0) return -string_copm(((Employee*)val1)->name, ((Employee*)val2)->name);
-	if (((Employee *)val1)->id > ((Employee *)val2)->id) return 1;
-	return -1;
+	if (((Employee *)val1)->salary < ((Employee *)val2)->salary) return -1;
+	else if(((Employee *)val1)->salary > ((Employee *)val2)->salary)return 1;
+
+	if(string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->last_name) != 0) return -string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->last_name);
+	if(string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->name) != 0) return -string_compare(((Employee*)val1)->name, ((Employee*)val2)->name);
+	if (((Employee *)val1)->id < ((Employee *)val2)->id) return -1;
+	return 1;
 }
 
 int CompD(const void *val1, const void *val2) {
 	if (((Employee *)val1)->salary < ((Employee *)val2)->salary) return 1;
 	else if(((Employee *)val1)->salary > ((Employee *)val2)->salary)return -1;
-	if(string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->last_name) != 0) return string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->last_name);
-	if(string_copm(((Employee*)val1)->last_name, ((Employee*)val2)->name) != 0) return string_copm(((Employee*)val1)->name, ((Employee*)val2)->name);
+	if(string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->last_name) != 0) return string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->last_name);
+	if(string_compare(((Employee*)val1)->last_name, ((Employee*)val2)->name) != 0) return string_compare(((Employee*)val1)->name, ((Employee*)val2)->name);
 	if (((Employee *)val1)->id < ((Employee *)val2)->id) return 1;
 	return -1;
 }

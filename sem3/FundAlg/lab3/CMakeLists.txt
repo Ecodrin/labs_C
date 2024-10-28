@@ -12,15 +12,12 @@ target_link_libraries(ex1 errors -L../lib)
 
 add_executable(ex2 ex2/main.c
         ex2/ex2.c
-        ex2/ex2.h
-        ex2/test.c
-        ex2/test.h)
+        ex2/ex2.h)
 
 add_executable(ex3 ex3/main.c
         ex3/ex3.c
         ex3/ex3.h)
 
-target_link_libraries(ex3 m mstring errors -L../lib)
 
 
 add_executable(ex4
@@ -29,5 +26,14 @@ add_executable(ex4
         ex4/mail.c
         ex4/mail.h)
 
+add_executable(ex5 ex5/main.c
+        ex5/ex5.c
+        ex5/ex5.h
+        ../lib/vector/charvector.c
+        ../lib/vector/intvector.c
+        ../lib/mstring/mstring.c)
 
+target_link_libraries(ex3 m mstring errors -L../lib)
+target_link_libraries(ex2 m errors -L../lib)
+target_link_libraries(ex5 m errors -L../lib)
 target_link_libraries(ex4 -Wall -Wextra -Werror -g -lm -lerrors -lmstring -lvector -L../lib/ -std=c99 )

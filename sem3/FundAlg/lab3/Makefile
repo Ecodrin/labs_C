@@ -104,11 +104,11 @@ task_3_test_2_incorrect_opt:
 	@echo "TEST TASK_3 INCORRECT_FLAG PASSED"
 
 task_3_test3:
-	@$(SUCCESS_RFILE_CMD) "./ex3.a -d test_files/task_3_test_3_input test_files/task_3_test_3_output" "" "test_files/task_3_test_3_output" "test_files/task_3_test_3_correct_output"
+	@$(SUCCESS_RFILE_CMD) "./ex3.a -a test_files/task_3_test_3_input test_files/task_3_test_3_output" "" "test_files/task_3_test_3_output" "test_files/task_3_test_3_correct_output"
 	@echo "TEST TASK_3 CORRECT OPT PASSED"
 
 task_3_test4:
-	@$(SUCCESS_RFILE_CMD) "./ex3.a -a test_files/task_3_test_4_input test_files/task_3_test_4_output" "" "test_files/task_3_test_4_output" "test_files/task_3_test_4_correct_output"
+	@$(SUCCESS_RFILE_CMD) "./ex3.a -d test_files/task_3_test_4_input test_files/task_3_test_4_output" "" "test_files/task_3_test_4_output" "test_files/task_3_test_4_correct_output"
 	@echo "TEST TASK_3 CORRECT OPT PASSED"
 
 task_3_tests: task_3_test_1_incorrect_opt task_3_test_2_incorrect_opt task_3_test3 task_3_test4

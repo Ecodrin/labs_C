@@ -2,39 +2,22 @@
 
 error_msg create_address_ptr(Address **adrs, char *city, char *street, int house, char *building, int apartment,
                              char *index) {
+
 	if(house <= 0 || apartment <= 0) return INCORRECT_OPTIONS_ERROR;
+
 	*adrs = (Address *)malloc(sizeof(Address));
 	Address *address = *adrs;
-	error_msg errorMsg = create_string(&(address->city), city);
-	if (errorMsg) return errorMsg;
-	errorMsg = create_string(&(address->street), street);
-	if (errorMsg) {
-		destroy_string(&(address->city));
+	error_msg errorMsg = create_address(address, city, street, house, building, apartment, index);
+	if(errorMsg) {
+		free(*adrs);
 		return errorMsg;
 	}
-	address->house = house;
-	errorMsg = create_string(&(address->building), building);
-	if (errorMsg) {
-		destroy_string(&(address->city));
-		destroy_string(&(address->street));
-		return errorMsg;
-	}
-	address->apartment = apartment;
-	errorMsg = create_string(&(address->index), index);
-	if (errorMsg) {
-		destroy_string(&(address->city));
-		destroy_string(&(address->street));
-		destroy_string(&(address->building));
-		return errorMsg;
-	}
+
 	return SUCCESS;
 }
 
 void destroy_address_ptr(Address *address) {
-	destroy_string(&(address->city));
-	destroy_string(&(address->street));
-	destroy_string(&(address->building));
-	destroy_string(&(address->index));
+	destroy_address(address);
 	free(address);
 }
 
@@ -83,8 +66,11 @@ void destroy_post(Post *post, const int count_mails) {
 
 error_msg create_address(Address *address, char *city, char *street, int house, char *building, int apartment,
                          char *index) {
+
 	if(house <= 0 || apartment <= 0) return INCORRECT_OPTIONS_ERROR;
+
 	error_msg errorMsg = create_string(&(address->city), city);
+
 	if (errorMsg) return errorMsg;
 	errorMsg = create_string(&(address->street), street);
 	if (errorMsg) {
@@ -150,8 +136,10 @@ int BiggerTime(Time *t1, Time *t2) {
 
 error_msg create_mail(Mail *mail, char *city, char *street, int house, char *building, int apartment, char *index,
                       double parcel_weight, char *mail_id, Time mail_create_time, Time mail_receipt_time) {
+
 	error_msg errorMsg = create_address((&(*mail).address), city, street, house, building, apartment, index);
 	if (errorMsg) return errorMsg;
+
 	// Проверяем на соответствие
 	if (SizeString(index) != 6 || parcel_weight < 0 || !IsNumberString(index) || !IsNumberString(mail_id) ||
 	    SizeString(mail_id) != 14 || !IsCorrectTime(&mail_create_time) || !IsCorrectTime(&mail_receipt_time) ||
@@ -159,6 +147,7 @@ error_msg create_mail(Mail *mail, char *city, char *street, int house, char *bui
 		destroy_address(&(mail->address));
 		return INCORRECT_OPTIONS_ERROR;
 	}
+
 	mail->parcel_weight = parcel_weight;
 	if(parcel_weight < 1e-16){
 		destroy_address(&(mail->address));
@@ -168,7 +157,9 @@ error_msg create_mail(Mail *mail, char *city, char *street, int house, char *bui
 	tmp[0] = '\0';
 	sprintf(tmp, "%02d:%02d:%04d %02d:%02d:%02d", mail_create_time.day, mail_create_time.month, mail_create_time.year,
 	        mail_create_time.hour, mail_create_time.minute, mail_create_time.sec);
+
 	errorMsg = create_string(&(mail->mail_create_time), tmp);
+
 	if (errorMsg) {
 		destroy_address(&(mail->address));
 		return errorMsg;
@@ -176,7 +167,9 @@ error_msg create_mail(Mail *mail, char *city, char *street, int house, char *bui
 	tmp[0] = '\0';
 	sprintf(tmp, "%02d:%02d:%04d %02d:%02d:%02d", mail_receipt_time.day, mail_receipt_time.month,
 	        mail_receipt_time.year, mail_receipt_time.hour, mail_receipt_time.minute, mail_receipt_time.sec);
+
 	errorMsg = create_string(&(mail->mail_receipt_time), tmp);
+
 	if (errorMsg) {
 		destroy_address(&(mail->address));
 		destroy_string(&(mail->mail_create_time));
@@ -219,7 +212,7 @@ error_msg push_mail_into_post(Post *post, int *count_mails, int *size_post, Mail
 		}
 	}
 	if (*count_mails == *size_post) {
-		Mail *tmp = (Mail *)realloc(post->mails, *size_post * 2);
+		Mail *tmp = (Mail *)realloc(post->mails, *size_post * 2 * sizeof(Mail));
 		*size_post *= 2;
 		if (!tmp) {
 			destroy_post(post, *count_mails);
@@ -227,6 +220,7 @@ error_msg push_mail_into_post(Post *post, int *count_mails, int *size_post, Mail
 		}
 		post->mails = tmp;
 	}
+
 	int i = 0;
 	while (i < *count_mails &&
 	       (string_to_int(&(post->mails[i].address.index)) < string_to_int(&(mail->address.index)) ||
@@ -238,6 +232,7 @@ error_msg push_mail_into_post(Post *post, int *count_mails, int *size_post, Mail
 	for (int j = *count_mails - 1; j > i; --j) {
 		post->mails[j] = post->mails[j - 1];
 	}
+
 	post->mails[i] = *mail;
 	return SUCCESS;
 }
@@ -256,8 +251,11 @@ error_msg find_mail_in_post(Post *post, Mail *mail, String *mail_id, int count_m
 error_msg delete_mail_in_post(Post *post, String *mail_id, int *count_mails) {
 	int index = 0;
 	Mail mail;
+
 	error_msg errorMsg = find_mail_in_post(post, &mail, mail_id, *count_mails, &index);
+
 	if (errorMsg) return errorMsg;
+
 	destroy_mail(&(post->mails[index]));
 	for (int i = index; i < *count_mails - 1; ++i) {
 		post->mails[i] = post->mails[i + 1];

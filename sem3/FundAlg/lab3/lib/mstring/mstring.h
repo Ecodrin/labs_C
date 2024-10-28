@@ -11,7 +11,7 @@ error_msg my_strcat(char *a, const char *b);
 int string_cmp(const char *a, const char *b);
 error_msg strcopy(const char *a, char *result, int start, int end);
 int SizeString(const char *a);
-int string_copm(const char *s1, const char*s2);
+int string_compare(const char *s1, const char*s2);
 int strtoint(const char * a);
 
 
