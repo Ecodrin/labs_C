@@ -1,6 +1,6 @@
 #include "ex2.h"
 
-error_msg MaxVectors(ArrayVectors ** array_array_vectors, int count_vectors, int count_norms, ...) {
+error_msg MaxVectors(ArrayVectors *** array_vectors, int count_vectors, int count_norms, ...) {
 	va_list factor;
 	error_msg errorMsg;
 	va_start(factor, count_norms);
@@ -10,7 +10,7 @@ error_msg MaxVectors(ArrayVectors ** array_array_vectors, int count_vectors, int
 	}
 	double vector_len;
 	double max_vector_len;
-	array_array_vectors = (ArrayVectors **)malloc(sizeof( ArrayVectors*) * count_norms);
+	ArrayVectors ** array_array_vectors = (ArrayVectors **)malloc(sizeof( ArrayVectors*) * count_norms);
 	if(!array_array_vectors) return MEMORY_ALLOCATED_ERROR;
 	for(int i = 0; i < count_norms; ++i){
 		array_array_vectors[i] = create_array_vector_array(1);
@@ -23,26 +23,26 @@ error_msg MaxVectors(ArrayVectors ** array_array_vectors, int count_vectors, int
 	for (int i = 0; i < count_norms; ++i) {
 		norm_func norm = va_arg(factor, norm_func);
 		max_vector_len = -1.0;
-		va_copy(copy_factor, factor);
 		for (int j = 0; j < count_vectors; ++j) {
 			if(j != count_vectors - 1){
-				vector_len = norm((vectors[i]), copy_factor);
+				va_copy(copy_factor, factor);
+				vector_len = norm((vectors[j]), copy_factor);
+				va_end(copy_factor);
 			}
 			else{
-				va_end(copy_factor);
-				vector_len = norm((vectors[i]), factor);
+				vector_len = norm((vectors[j]), factor);
 			}
 
 			if(vector_len > max_vector_len) {
 				max_vector_len = vector_len;
 				array_array_vectors[i]->size = 0;
-				errorMsg = push_array_vector(array_array_vectors[i], vectors[i]);
+				errorMsg = push_array_vector(array_array_vectors[i], vectors[j]);
 				if(errorMsg) {
 					va_end(factor);
 					return errorMsg;
 				}
 			}else if(vector_len == max_vector_len){
-				errorMsg = push_array_vector(array_array_vectors[i], vectors[i]);
+				errorMsg = push_array_vector(array_array_vectors[i], vectors[j]);
 				if(errorMsg) {
 					va_end(factor);
 					return errorMsg;
@@ -51,18 +51,20 @@ error_msg MaxVectors(ArrayVectors ** array_array_vectors, int count_vectors, int
 		}
 	}
 	va_end(factor);
+	*array_vectors = array_array_vectors;
 	return SUCCESS;
 }
 
 double norm1(Vector x, va_list factor) {
 	va_list sd;
-	va_copy(factor, sd);
+	va_copy(sd, factor);
 	double max_x = fabs(x.coords[0]);
 	for (int i = 0; i < x.n; ++i) {
 		if (fabs(x.coords[i]) > max_x) {
 			max_x = fabs(x.coords[i]);
 		}
 	}
+	va_end(sd);
 	return max_x;
 }
 

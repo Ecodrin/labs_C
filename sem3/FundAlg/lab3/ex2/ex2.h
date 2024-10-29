@@ -24,7 +24,7 @@ typedef struct ArrayVectors ArrayVectors;
 
 typedef double (*norm_func)(Vector, va_list );
 
-error_msg MaxVectors(ArrayVectors ** array_array_vectors, int count_vectors, int count_norms, ...);
+error_msg MaxVectors(ArrayVectors *** array_array_vectors, int count_vectors, int count_norms, ...);
 
 // Заданные нормы
 double norm1(Vector x, va_list factor);
