@@ -1,8 +1,6 @@
 #include "ex5.h"
 
-
-
-int to_what_stream(FILE * output_file, FILE ** stream, const char ** MSG){
+int to_what_stream(FILE *output_file, FILE **stream, const char **MSG) {
 	// Спрашиваем куда выводить
 	printf("%s", MSG[3]);
 	char format[10];
@@ -18,27 +16,26 @@ int to_what_stream(FILE * output_file, FILE ** stream, const char ** MSG){
 	return 0;
 }
 
-
-int find_by_name(FILE * output_file, String * command, Students * students, const char ** MSG){
+int find_by_name(FILE *output_file, String *command, Students *students, const char **MSG) {
 	int n;
 	error_msg errorMsg;
 	// Куда выводить
 	FILE *stream = stdout;
 	int what_stream = to_what_stream(output_file, &stream, MSG);
-	if(what_stream == -1){
+	if (what_stream == -1) {
 		return -1;
 	}
 	String name;
 
-	IntVector * result = create_int_vector(1);
-	if(!result){
+	IntVector *result = create_int_vector(1);
+	if (!result) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
 		return print_error(MEMORY_ALLOCATED_ERROR);
 	}
 	errorMsg = create_string(&name, "");
-	if(errorMsg){
+	if (errorMsg) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
@@ -49,16 +46,16 @@ int find_by_name(FILE * output_file, String * command, Students * students, cons
 	getc(stdin);
 	printf("Write name: ");
 	n = read_string(stdin, &name);
-	if(n == 0){
+	if (n == 0) {
 		printf("%s", MSG[2]);
 		clear_buffer();
 		return -1;
 	}
 	n = find_students_by_name(students, result, &name);
 	int index;
-	for(int i = 0; i < n;++i){
+	for (int i = 0; i < n; ++i) {
 		errorMsg = get_intvector(result, i, &index);
-		if(errorMsg){
+		if (errorMsg) {
 			destroy_string(command);
 			fclose(output_file);
 			destroy_students(students);
@@ -73,28 +70,26 @@ int find_by_name(FILE * output_file, String * command, Students * students, cons
 	return 0;
 }
 
-
-
-int find_by_last_name(FILE * output_file, String * command, Students * students, const char ** MSG){
+int find_by_last_name(FILE *output_file, String *command, Students *students, const char **MSG) {
 	int n;
 	error_msg errorMsg;
 	// Куда выводить
 	FILE *stream = stdout;
 	int what_stream = to_what_stream(output_file, &stream, MSG);
-	if(what_stream == -1){
+	if (what_stream == -1) {
 		return -1;
 	}
 	String last_name;
 
-	IntVector * result = create_int_vector(1);
-	if(!result){
+	IntVector *result = create_int_vector(1);
+	if (!result) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
 		return print_error(MEMORY_ALLOCATED_ERROR);
 	}
 	errorMsg = create_string(&last_name, "");
-	if(errorMsg){
+	if (errorMsg) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
@@ -105,16 +100,16 @@ int find_by_last_name(FILE * output_file, String * command, Students * students,
 	getc(stdin);
 	printf("Write last name: ");
 	n = read_string(stdin, &last_name);
-	if(n == 0){
+	if (n == 0) {
 		printf("%s", MSG[2]);
 		clear_buffer();
 		return -1;
 	}
 	n = find_students_by_last_name(students, result, &last_name);
 	int index;
-	for(int i = 0; i < n;++i){
+	for (int i = 0; i < n; ++i) {
 		errorMsg = get_intvector(result, i, &index);
-		if(errorMsg){
+		if (errorMsg) {
 			destroy_string(command);
 			fclose(output_file);
 			destroy_students(students);
@@ -129,27 +124,26 @@ int find_by_last_name(FILE * output_file, String * command, Students * students,
 	return 0;
 }
 
-
-int find_by_group(FILE * output_file, String * command, Students * students, const char ** MSG){
+int find_by_group(FILE *output_file, String *command, Students *students, const char **MSG) {
 	int n;
 	error_msg errorMsg;
 	// Куда выводить
 	FILE *stream = stdout;
 	int what_stream = to_what_stream(output_file, &stream, MSG);
-	if(what_stream == -1){
+	if (what_stream == -1) {
 		return -1;
 	}
 	String group;
 
-	IntVector * result = create_int_vector(1);
-	if(!result){
+	IntVector *result = create_int_vector(1);
+	if (!result) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
 		return print_error(MEMORY_ALLOCATED_ERROR);
 	}
 	errorMsg = create_string(&group, "");
-	if(errorMsg){
+	if (errorMsg) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
@@ -160,16 +154,16 @@ int find_by_group(FILE * output_file, String * command, Students * students, con
 	getc(stdin);
 	printf("Write group: ");
 	n = read_string(stdin, &group);
-	if(n == 0){
+	if (n == 0) {
 		printf("%s", MSG[2]);
 		clear_buffer();
 		return -1;
 	}
 	n = find_students_by_group(students, result, &group);
 	int index;
-	for(int i = 0; i < n;++i){
+	for (int i = 0; i < n; ++i) {
 		errorMsg = get_intvector(result, i, &index);
-		if(errorMsg){
+		if (errorMsg) {
 			destroy_string(command);
 			fclose(output_file);
 			destroy_students(students);
@@ -184,19 +178,18 @@ int find_by_group(FILE * output_file, String * command, Students * students, con
 	return 0;
 }
 
-
-int find_good_students(FILE * output_file, String * command, Students * students, const char ** MSG){
+int find_good_students(FILE *output_file, String *command, Students *students, const char **MSG) {
 	int n;
 	error_msg errorMsg;
 	// Куда выводить
 	FILE *stream = stdout;
 	int what_stream = to_what_stream(output_file, &stream, MSG);
-	if(what_stream == -1){
+	if (what_stream == -1) {
 		return -1;
 	}
 
-	IntVector * result = create_int_vector(1);
-	if(!result){
+	IntVector *result = create_int_vector(1);
+	if (!result) {
 		destroy_string(command);
 		fclose(output_file);
 		destroy_students(students);
@@ -205,15 +198,15 @@ int find_good_students(FILE * output_file, String * command, Students * students
 
 	getc(stdin);
 	n = filter_students_by_average_score(students, result);
-	if(n == 0){
+	if (n == 0) {
 		printf("%s", MSG[2]);
 		clear_buffer();
 		return -1;
 	}
 	int index;
-	for(int i = 0; i < n;++i){
+	for (int i = 0; i < n; ++i) {
 		errorMsg = get_intvector(result, i, &index);
-		if(errorMsg){
+		if (errorMsg) {
 			destroy_string(command);
 			fclose(output_file);
 			destroy_students(students);
@@ -227,7 +220,6 @@ int find_good_students(FILE * output_file, String * command, Students * students
 }
 
 int main(int argc, char **argv) {
-
 	const char *MSG[] = {"Enter the command:\n",
 	                     "Unrecognized command\n",
 	                     "Incorrect data\n",
@@ -236,11 +228,9 @@ int main(int argc, char **argv) {
 	                     "Program can get command with indices\n",
 	                     "Write "};
 
-	const char *COMMAND[] = {"help\n",          "find by id\n",         "find by name\n",  "find by last name\n",
-	                         "find by group\n", "sort by id\n",         "sort by name\n",  "sort by last name\n",
+	const char *COMMAND[] = {"help\n",          "find by id\n",        "find by name\n", "find by last name\n",
+	                         "find by group\n", "sort by id\n",        "sort by name\n", "sort by last name\n",
 	                         "sort by group\n", "find good students\n"};
-
-
 
 	const char *path1;
 	const char *path2;
@@ -272,7 +262,7 @@ int main(int argc, char **argv) {
 	printf("\n%s", MSG[4]);
 	String command;
 	errorMsg = create_string(&command, "");
-	if(errorMsg){
+	if (errorMsg) {
 		fclose(output_file);
 		return print_error(errorMsg);
 	}
@@ -280,8 +270,8 @@ int main(int argc, char **argv) {
 		command.size = 0;
 		printf("> ");
 		int err = read_line(stdin, &command);
-		if(!err) break;
-		if(string_cmp(command.arr, "\n")){
+		if (!err) break;
+		if (string_cmp(command.arr, "\n")) {
 			continue;
 		}
 		if (string_cmp(command.arr, COMMAND[0]) || string_cmp(command.arr, "1\n")) {
@@ -291,12 +281,12 @@ int main(int argc, char **argv) {
 			}
 			printf("%s", MSG[5]);
 
-///			 Поиск по id
+			///			 Поиск по id
 		} else if (string_cmp(command.arr, COMMAND[1]) || string_cmp(command.arr, "2\n")) {
 			// Куда выводить
 			FILE *stream = stdout;
 			int what_stream = to_what_stream(output_file, &stream, MSG);
-			if(what_stream == -1){
+			if (what_stream == -1) {
 				continue;
 			}
 
@@ -319,75 +309,75 @@ int main(int argc, char **argv) {
 				continue;
 			}
 			print_student(stream, &(students.students[index_student]));
-///		Поиск по имени
-		}else if(string_cmp(command.arr, COMMAND[2]) || string_cmp(command.arr, "3\n")){
+			///		Поиск по имени
+		} else if (string_cmp(command.arr, COMMAND[2]) || string_cmp(command.arr, "3\n")) {
 			int n = find_by_name(output_file, &command, &students, MSG);
-			if(n == -1) continue;
-			if(n != 0) return n;
-///		Поиск по фамилии
+			if (n == -1) continue;
+			if (n != 0) return n;
+			///		Поиск по фамилии
 
-		}else if(string_cmp(command.arr, COMMAND[3]) || string_cmp(command.arr, "4\n")) {
+		} else if (string_cmp(command.arr, COMMAND[3]) || string_cmp(command.arr, "4\n")) {
 			int n = find_by_last_name(output_file, &command, &students, MSG);
 			if (n == -1) continue;
-			if(n != 0) return n;
-///     Поиск по группе
-		}else if(string_cmp(command.arr, COMMAND[4]) || string_cmp(command.arr, "5\n")){
+			if (n != 0) return n;
+			///     Поиск по группе
+		} else if (string_cmp(command.arr, COMMAND[4]) || string_cmp(command.arr, "5\n")) {
 			int n = find_by_group(output_file, &command, &students, MSG);
 			if (n == -1) continue;
-			if(n != 0) return n;
+			if (n != 0) return n;
 
-///     Сортировка по id
-		}else if(string_cmp(command.arr, COMMAND[5]) || string_cmp(command.arr, "6\n")){
+			///     Сортировка по id
+		} else if (string_cmp(command.arr, COMMAND[5]) || string_cmp(command.arr, "6\n")) {
 			// Куда выводить
 			FILE *stream = stdout;
 			int what_stream = to_what_stream(output_file, &stream, MSG);
-			if(what_stream == -1){
+			if (what_stream == -1) {
 				continue;
 			}
 			getc(stdin);
 			sort_by_id(&students);
 			print_students(stream, &students);
-///		Сортировка по имени
-		}else if(string_cmp(command.arr, COMMAND[6]) || string_cmp(command.arr, "7\n")){
+			///		Сортировка по имени
+		} else if (string_cmp(command.arr, COMMAND[6]) || string_cmp(command.arr, "7\n")) {
 			// Куда выводить
 			FILE *stream = stdout;
 			int what_stream = to_what_stream(output_file, &stream, MSG);
-			if(what_stream == -1){
+			if (what_stream == -1) {
 				continue;
 			}
 			getc(stdin);
 			sort_by_name(&students);
 			print_students(stream, &students);
-///		Сортировка по фамилии
-		}else if(string_cmp(command.arr, COMMAND[7]) || string_cmp(command.arr, "8\n")){
+			///		Сортировка по фамилии
+		} else if (string_cmp(command.arr, COMMAND[7]) || string_cmp(command.arr, "8\n")) {
 			// Куда выводить
 			FILE *stream = stdout;
 			int what_stream = to_what_stream(output_file, &stream, MSG);
-			if(what_stream == -1){
+			if (what_stream == -1) {
 				continue;
 			}
 			getc(stdin);
 			sort_by_last_name(&students);
 			print_students(stream, &students);
-///		Сортировка по группе
-		}else if(string_cmp(command.arr, COMMAND[8]) || string_cmp(command.arr, "9\n")){
+			///		Сортировка по группе
+		} else if (string_cmp(command.arr, COMMAND[8]) || string_cmp(command.arr, "9\n")) {
 			// Куда выводить
 			FILE *stream = stdout;
 			int what_stream = to_what_stream(output_file, &stream, MSG);
-			if(what_stream == -1){
+			if (what_stream == -1) {
 				continue;
 			}
 			getc(stdin);
 			sort_by_group(&students);
 			print_students(stream, &students);
-///		Фильтровка по среднему баллу
-		}else if(string_cmp(command.arr, COMMAND[9]) || string_cmp(command.arr, "10\n")){
+			///		Фильтровка по среднему баллу
+		} else if (string_cmp(command.arr, COMMAND[9]) || string_cmp(command.arr, "10\n")) {
 			int n = find_good_students(output_file, &command, &students, MSG);
-			if(n == -1){
+			if (n == -1) {
 				continue;
 			}
-			if(n != 0) return n;
-		} else{
+			if (n != 0) return n;
+		} else {
 			printf("%s", MSG[1]);
 		}
 	}

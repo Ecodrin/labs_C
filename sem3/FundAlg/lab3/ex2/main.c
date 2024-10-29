@@ -31,7 +31,7 @@ int main() {
 	int count_vectors = 3;
 	int count_norms = 3;
 	int p = 2;
-	ArrayVectors** vectors = NULL;
+	ArrayVectors **vectors = NULL;
 	errorMsg = MaxVectors(&vectors, count_vectors, count_norms, v1, v2, v3, norm1, norm2, p, norm3, A);
 	if (errorMsg) {
 		for (int i = 0; i < count_norms; ++i) {
@@ -49,7 +49,7 @@ int main() {
 	free(v1.coords);
 	free(v2.coords);
 	free(v3.coords);
-	for(int i = 0; i < n;++i){
+	for (int i = 0; i < n; ++i) {
 		free(A[i]);
 	}
 	free(A);

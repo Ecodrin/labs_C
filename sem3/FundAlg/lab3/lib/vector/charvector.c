@@ -145,7 +145,7 @@ int read_line(FILE* stream, String* string) {
 			return count_read_symbol;
 		}
 	}
-	if(c == '\n'){
+	if (c == '\n') {
 		count_read_symbol++;
 		error_msg errorMsg = push_end_string(string, c);
 		if (errorMsg) {
