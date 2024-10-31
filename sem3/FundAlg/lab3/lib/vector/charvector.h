@@ -30,5 +30,6 @@ int string_comp(const String* s1, const String* s2);
 int string_to_int(const String* s1);
 int read_string(FILE* stream, String* string);
 int read_line(FILE* stream, String* string);
+void clear_string(String * string);
 
 #endif

@@ -33,7 +33,24 @@ add_executable(ex5 ex5/main.c
         ../lib/vector/intvector.c
         ../lib/mstring/mstring.c)
 
+
+add_executable(ex6
+        ex6/main.c
+        lib/vector/charvector.c
+        lib/mstring/mstring.c
+        ex6/ex6.c
+        ex6/ex6.h
+)
+
+add_executable(ex10 ex10/ex10.c
+        ex10/ex10.h
+        ex10/main.c
+        ../lib/vector/charvector.c
+        ../lib/mstring/mstring.c)
+
+
 target_link_libraries(ex3 m mstring errors -L../lib)
 target_link_libraries(ex2 m errors -L../lib)
 target_link_libraries(ex5 m errors -L../lib)
 target_link_libraries(ex4 -Wall -Wextra -Werror -g -lm -lerrors -lmstring -lvector -L../lib/ -std=c99 )
+target_link_libraries(ex10 m errors -L../lib)

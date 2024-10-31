@@ -1,5 +1,16 @@
 #include "ex5.h"
 
+
+int IsCorrectNameLastName(String * s){
+	for(int i = 0;i < s->size; ++i){
+		if(!((s->arr[i] >= 'a' && s->arr[i] <= 'z') ||(s->arr[i] >= 'A' && s->arr[i] <= 'Z'))){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+
 error_msg create_student(Student *student) {
 	error_msg errorMsg = create_string(&(student->name), "");
 	if (errorMsg) {
@@ -50,13 +61,13 @@ int read_student(FILE *stream, Student *student) {
 	count_read += 1;
 
 	n = read_string(stream, &(student->name));
-	if (n <= 0) {
+	if (n <= 0 || !IsCorrectNameLastName(&(student->name))) {
 		return count_read;
 	}
 	count_read += 1;
 
 	n = read_string(stream, &(student->last_name));
-	if (n <= 0) {
+	if (n <= 0 || !IsCorrectNameLastName(&(student->last_name))) {
 		return count_read;
 	}
 	count_read += 1;

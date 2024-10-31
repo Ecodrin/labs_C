@@ -38,9 +38,13 @@ error_msg From10To(int x, const int base, char *result) {
 //		printf("%d %d\n", x, ~x + 1);
 		x = add(~x, 1);
 	}
-
+	if(x == 0){
+		result[0] = '0';
+		result[1] = '\0';
+		return SUCCESS;
+	}
 	while (x > 0) {
-		tmp[index] = back_sequence(x & add(base, -1));
+		*(tmp + index) = back_sequence(x & add(base, -1));
 		index = add(index, 1);
 		x >>= r;
 	}

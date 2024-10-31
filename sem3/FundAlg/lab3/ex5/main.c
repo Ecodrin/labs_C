@@ -224,13 +224,13 @@ int main(int argc, char **argv) {
 	                     "Unrecognized command\n",
 	                     "Incorrect data\n",
 	                     "If tou want to write result in the trace file, write 1 or 0\n",
-	                     "If you need help: you should write one of these commands:\n",
+	                     "If you need help: write help\nYou should write one of these commands:\n",
 	                     "Program can get command with indices\n",
 	                     "Write "};
 
 	const char *COMMAND[] = {"help\n",          "find by id\n",        "find by name\n", "find by last name\n",
 	                         "find by group\n", "sort by id\n",        "sort by name\n", "sort by last name\n",
-	                         "sort by group\n", "find good students\n"};
+	                         "sort by group\n", "find good students\n", "write"};
 
 	const char *path1;
 	const char *path2;
@@ -254,18 +254,29 @@ int main(int argc, char **argv) {
 	}
 	fclose(input_file);
 
+
+
 	FILE *output_file = fopen(path2, "w");
 	if (!output_file) {
 		return print_error(OUTPUT_FILE_ERROR);
 	}
 
-	printf("\n%s", MSG[4]);
 	String command;
 	errorMsg = create_string(&command, "");
 	if (errorMsg) {
 		fclose(output_file);
 		return print_error(errorMsg);
 	}
+
+
+	// Первое сообщение
+	printf("%s", MSG[4]);
+	for (int i = 0; i < 10; ++i) {
+		printf("%d. %s", i + 1, COMMAND[i]);
+	}
+	printf("%s", MSG[5]);
+
+
 	while (1) {
 		command.size = 0;
 		printf("> ");
@@ -309,6 +320,8 @@ int main(int argc, char **argv) {
 				continue;
 			}
 			print_student(stream, &(students.students[index_student]));
+			double average_score = calculate_average_score_student(&(students.students[index_student]));
+			fprintf(stream, "Average score: %f\n", average_score);
 			///		Поиск по имени
 		} else if (string_cmp(command.arr, COMMAND[2]) || string_cmp(command.arr, "3\n")) {
 			int n = find_by_name(output_file, &command, &students, MSG);

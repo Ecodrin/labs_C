@@ -120,14 +120,15 @@ int read_string(FILE* stream, String* string) {
 	if (!stream) return 0;
 	int count_read_symbol = 0;
 	char c;
-	while ((c = getc(stream)) != EOF) {
+	while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t'));
+	do {
 		if (c == '\n' || c == '\t' || c == ' ' || c == EOF) {
 			return count_read_symbol;
 		}
 		count_read_symbol++;
 		error_msg errorMsg = push_end_string(string, c);
 		if (errorMsg) return count_read_symbol;
-	}
+	} while ((c = getc(stream)) != EOF);
 	return count_read_symbol;
 }
 
@@ -153,4 +154,9 @@ int read_line(FILE* stream, String* string) {
 		}
 	}
 	return count_read_symbol;
+}
+
+
+void clear_string(String * string){
+	string->size = 0;
 }

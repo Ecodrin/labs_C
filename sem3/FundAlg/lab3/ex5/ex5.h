@@ -58,6 +58,7 @@ int compare_by_group(const void * a, const void * b);
 // Средний балл
 int filter_students_by_average_score(Students * students, IntVector * result);
 double calculate_average_score_students(Students * students);
+double calculate_average_score_student(Student * student);
 
 void clear_buffer();
 #endif  // LAB3_EX5_H
