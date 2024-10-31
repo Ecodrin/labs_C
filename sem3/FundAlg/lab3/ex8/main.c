@@ -8,12 +8,15 @@ int main(){
 		return print_error(errorMsg);
 	}
 	String s;
-	create_string(&s, "x^2 - 2x + 3x^4 - 123x^7 + 7 - 9 +123x^8");
+	create_string(&s, "x^2 - 2x + 3x^4 - 123x^7 + 7 - 9 +123x^7");
 	errorMsg = read_polynomial_from_string(polynomial, &s);
 	if(errorMsg){
 		destroy_string(&s);
 		return print_error(errorMsg);
 	}
+	print_LinkedList(stdout, polynomial->coefficients, " ");
+	delete_leading_zeros(polynomial);
+	putc('\n', stdout);
 	print_LinkedList(stdout, polynomial->coefficients, " ");
 	destroy_polynomial(polynomial);
 	destroy_string(&s);

@@ -25,8 +25,10 @@ Node* find_node(Node* head, int data);
 error_msg push_node(Node** head, int data);
 void print_LinkedList(FILE* stream, Node* head, char* separator);
 
+
 // Функции для многочлена
 error_msg create_polynomial(Polynomial** polynomial);
 void destroy_polynomial(Polynomial* polynomial);
 error_msg read_polynomial_from_string(Polynomial* polynomial, String* string);
+void delete_leading_zeros(Polynomial * p);
 #endif  // LAB3_EX8_H

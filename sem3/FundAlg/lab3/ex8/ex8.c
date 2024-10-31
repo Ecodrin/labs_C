@@ -170,3 +170,33 @@ error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_stri
 	destroy_string(&string);
 	return SUCCESS;
 }
+
+void delete_leading_zeros(Polynomial * p){
+	Node * x = NULL;
+	Node  * head = p->coefficients;
+	int degree = 0, i = 0;
+	while (head->next){
+		if(head->next->data == 0 && !x) {
+			x = head;
+			degree = i;
+		} else if(head->next->data != 0 ){
+			x = NULL;
+		}
+		head = head->next;
+		i++;
+	}
+	if(x){
+		Node * tmp_x = x;
+		x = x->next;
+		tmp_x->next = NULL;
+		Node * t = x;
+		while (x){
+			x = x->next;
+			t->data = 0;
+			free(t);
+			t = x;
+		}
+	}
+	p->degree = degree;
+
+}
