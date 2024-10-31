@@ -48,9 +48,16 @@ add_executable(ex10 ex10/ex10.c
         ../lib/vector/charvector.c
         ../lib/mstring/mstring.c)
 
+add_executable(ex8 ex8/main.c
+        ex8/ex8.c
+        ex8/ex8.h
+        ../lib/vector/charvector.c
+        ../lib/mstring/mstring.c)
+
 
 target_link_libraries(ex3 m mstring errors -L../lib)
 target_link_libraries(ex2 m errors -L../lib)
 target_link_libraries(ex5 m errors -L../lib)
 target_link_libraries(ex4 -Wall -Wextra -Werror -g -lm -lerrors -lmstring -lvector -L../lib/ -std=c99 )
+target_link_libraries(ex8 m errors -L../lib)
 target_link_libraries(ex10 m errors -L../lib)
