@@ -1,6 +1,7 @@
 #ifndef LAB3_EX10_H
 #define LAB3_EX10_H
 
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,10 +15,10 @@ typedef struct Node {
 	int capacity_children;
 } Node;
 
-typedef struct NodeLL{
-	struct NodeLL * next;
-	Node * node;
-}NodeLL;
+typedef struct NodeLL {
+	struct NodeLL *next;
+	Node *node;
+} NodeLL;
 
 #define max(a, b) (a > b) ? a : b
 
@@ -25,20 +26,19 @@ typedef struct NodeLL{
 int checks_names_files(int argc, char **argv);
 
 // Функции для дерева
-error_msg build_tree(String * expression,  Node** root);
+error_msg build_tree(String *expression, Node **root);
 void destroy_tree(Node *head);
-void print_tree(FILE* output, Node* root, int level) ;
+void print_tree(FILE *output, Node *root, int level);
 
 error_msg create_node(Node **node, String *s);
 void destroy_node(Node *node);
 error_msg add_node(Node *father, Node *child);
 
-
 // Односвязный список
-error_msg create_node_ll(NodeLL ** nodeLl, Node * node);
-error_msg push_into_ll(NodeLL ** head, Node * x);
-void print_ll(FILE * stream, NodeLL * head);
-NodeLL *  find_prev_node(NodeLL * head, NodeLL * cur);
+error_msg create_node_ll(NodeLL **nodeLl, Node *node);
+error_msg push_into_ll(NodeLL **head, Node *x);
+void print_ll(FILE *stream, NodeLL *head);
+NodeLL *find_prev_node(NodeLL *head, NodeLL *cur);
 
-void delete_node_ll(NodeLL *prev, NodeLL *cur) ;
+void delete_node_ll(NodeLL *prev, NodeLL *cur);
 #endif  // LAB3_EX10_H

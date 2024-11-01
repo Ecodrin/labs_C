@@ -41,7 +41,7 @@ Node* find_node(Node* head, int data) {
 	return NULL;
 }
 
-error_msg push_node(Node** head, int data) {
+error_msg push_node_end(Node** head, int data) {
 	Node* tmp = *head;
 	error_msg errorMsg;
 	if (!tmp) {
@@ -59,6 +59,17 @@ error_msg push_node(Node** head, int data) {
 	return SUCCESS;
 }
 
+error_msg push_node_start(Node** head, int data) {
+	Node* t;
+	error_msg errorMsg = create_node(&t, data);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	t->next = (*head);
+	*head = t;
+	return SUCCESS;
+}
+
 void print_LinkedList(FILE* stream, Node* head, char* separator) {
 	while (head) {
 		fprintf(stream, "%d%s", head->data, separator);
@@ -68,9 +79,8 @@ void print_LinkedList(FILE* stream, Node* head, char* separator) {
 
 error_msg create_polynomial(Polynomial** polynomial) {
 	*polynomial = (Polynomial*)calloc(1, sizeof(Polynomial));
-	error_msg errorMsg = create_node(&((*polynomial)->coefficients), 0);
-	if (errorMsg) {
-		return errorMsg;
+	if (!*polynomial) {
+		return MEMORY_ALLOCATED_ERROR;
 	}
 	(*polynomial)->degree = 0;
 	return SUCCESS;
@@ -82,9 +92,14 @@ void destroy_polynomial(Polynomial* polynomial) {
 	free(polynomial);
 }
 
-error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_string) {
+error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
+	Polynomial* polynomial = *pl;
+	error_msg errorMsg = create_polynomial(&polynomial);
+	if (errorMsg) {
+		return print_error(errorMsg);
+	}
 	String string;
-	error_msg errorMsg = create_string(&string, "");
+	errorMsg = create_string(&string, "");
 	if (errorMsg) {
 		return errorMsg;
 	}
@@ -96,8 +111,9 @@ error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_stri
 				return errorMsg;
 			}
 		}
-		if (input_string->arr[i] != ' ' && input_string->arr[i] != 'x' && input_string->arr[i] != '+' && input_string->arr[i] != '-' &&
-		    input_string->arr[i] != '^' && (input_string->arr[i] < '0' || input_string->arr[i] > '9')) {
+		if (input_string->arr[i] != ' ' && input_string->arr[i] != 'x' && input_string->arr[i] != '+' &&
+		    input_string->arr[i] != '-' && input_string->arr[i] != '^' &&
+		    (input_string->arr[i] < '0' || input_string->arr[i] > '9')) {
 			destroy_string(&string);
 			return INCORRECT_OPTIONS_ERROR;
 		}
@@ -127,13 +143,13 @@ error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_stri
 		coefficient *= sign;
 		if (string.arr[i] == 'x') {
 			i++;
-			if(string.arr[i] != '^' && string.arr[i] != '+' && string.arr[i] != '-'){
+			if (string.arr[i] != '^' && string.arr[i] != '+' && string.arr[i] != '-' && string.arr[i] != '\0') {
 				destroy_string(&string);
 				return INCORRECT_OPTIONS_ERROR;
 			}
 			if (string.arr[i] == '^') {
 				i++;
-				if(!(string.arr[i] >= '0' && string.arr[i] <= '9')){
+				if (!(string.arr[i] >= '0' && string.arr[i] <= '9')) {
 					destroy_string(&string);
 					return INCORRECT_OPTIONS_ERROR;
 				}
@@ -147,9 +163,13 @@ error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_stri
 		} else {
 			degree = 0;
 		}
-		if (polynomial->degree < degree) {
-			for (int j = 0; j < degree - polynomial->degree; ++j) {
-				errorMsg = push_node(&(polynomial->coefficients), 0);
+		if (polynomial->degree <= degree) {
+			int size = degree - polynomial->degree + 1;
+			if (polynomial->coefficients) {
+				size -= 1;
+			}
+			for (int j = 0; j < size; ++j) {
+				errorMsg = push_node_start(&(polynomial->coefficients), 0);
 				if (errorMsg) {
 					destroy_string(&string);
 					return errorMsg;
@@ -158,45 +178,389 @@ error_msg read_polynomial_from_string(Polynomial* polynomial, String* input_stri
 			polynomial->degree = degree;
 		}
 		Node* moving_head = polynomial->coefficients;
-		for (int j = 0; j < degree; ++j) {
+		int j = polynomial->degree;
+		while (j > degree) {
 			moving_head = moving_head->next;
+			j--;
 		}
-		moving_head->data = moving_head->data + coefficient;
+		moving_head->data = coefficient;
 		coefficient = 0;
 		has_coefficient = 0;
 		degree = 0;
 		sign = 1;
 	}
 	destroy_string(&string);
+	delete_leading_zeros(polynomial);
+	*pl = polynomial;
 	return SUCCESS;
 }
 
-void delete_leading_zeros(Polynomial * p){
-	Node * x = NULL;
-	Node  * head = p->coefficients;
-	int degree = 0, i = 0;
-	while (head->next){
-		if(head->next->data == 0 && !x) {
-			x = head;
-			degree = i;
-		} else if(head->next->data != 0 ){
-			x = NULL;
-		}
-		head = head->next;
-		i++;
+void delete_leading_zeros(Polynomial* p) {
+	Node* t;
+	while (p->coefficients->next && p->coefficients->data == 0) {
+		t = p->coefficients;
+		p->coefficients = p->coefficients->next;
+		free(t);
+		p->degree -= 1;
 	}
-	if(x){
-		Node * tmp_x = x;
-		x = x->next;
-		tmp_x->next = NULL;
-		Node * t = x;
-		while (x){
-			x = x->next;
-			t->data = 0;
-			free(t);
-			t = x;
-		}
-	}
-	p->degree = degree;
+}
 
+error_msg add_polynomials(Polynomial** result, Polynomial* first, Polynomial* second) {
+	Polynomial* res = *result;
+	error_msg errorMsg = create_polynomial(&res);
+	if (errorMsg) {
+		return errorMsg;
+	}
+
+	// Делаем так, чтобы первый был меньше по степени
+	if (first->degree > second->degree) {
+		Polynomial* t = second;
+		second = first;
+		first = t;
+	}
+
+	Node* moving_head1 = first->coefficients;
+	Node* moving_head2 = second->coefficients;
+	int size = (second->degree - first->degree);
+	if(!moving_head1){
+		size++;
+	}
+	for (int i = 0; i < size && moving_head2; ++i) {
+		errorMsg = push_node_end(&(res->coefficients), moving_head2->data);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+		moving_head2 = moving_head2->next;
+	}
+	while (moving_head2 && moving_head1) {
+		errorMsg = push_node_end(&(res->coefficients), moving_head1->data + moving_head2->data);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+		moving_head1 = moving_head1->next;
+		moving_head2 = moving_head2->next;
+	}
+	res->degree = second->degree;
+	delete_leading_zeros(res);
+	*result = res;
+	return SUCCESS;
+}
+
+error_msg product_polynomials(Polynomial** result, Polynomial* first, Polynomial* second) {
+	Polynomial* res = *result;
+	error_msg errorMsg = create_polynomial(&res);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	for (int i = 0; i <= first->degree + second->degree; ++i) {
+		errorMsg = push_node_start(&(res->coefficients), 0);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+	}
+	Node* moving_head1 = first->coefficients;
+	Node* moving_head2 = second->coefficients;
+	int result_degree = first->degree + second->degree;
+	int i = first->degree;
+	int j;
+	res->degree = first->degree + second->degree;
+	while (moving_head1) {
+		moving_head2 = second->coefficients;
+		j = second->degree;
+		while (moving_head2) {
+			//			printf("|%d|\n", result_degree - (i + j));
+			Node* f = find_node_by_index(res->coefficients, result_degree - (i + j));
+			if (!f) {
+				destroy_polynomial(res);
+				return INDEX_VECTOR_ERROR;
+			}
+			f->data += moving_head1->data * moving_head2->data;
+			j--;
+			moving_head2 = moving_head2->next;
+		}
+
+		i--;
+		moving_head1 = moving_head1->next;
+	}
+	delete_leading_zeros(res);
+	*result = res;
+	return SUCCESS;
+}
+
+Node* find_node_by_index(Node* head, int index) {
+	Node* moving_head = head;
+	int i = 0;
+	while (moving_head && i++ < index) {
+		moving_head = moving_head->next;
+	}
+	if (moving_head) {
+		return moving_head;
+	}
+	return NULL;
+}
+
+error_msg subtract_polynomials(Polynomial** res, Polynomial* first, Polynomial* second) {
+	Polynomial* tmp;
+	error_msg errorMsg = create_polynomial(&tmp);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	Node* moving_head = second->coefficients;
+	while (moving_head) {
+		errorMsg = push_node_end(&(tmp->coefficients), -moving_head->data);
+		if (errorMsg) {
+			destroy_polynomial(tmp);
+			return errorMsg;
+		}
+		moving_head = moving_head->next;
+	}
+	tmp->degree = second->degree;
+	errorMsg = add_polynomials(res, first, tmp);
+	if (errorMsg) {
+		destroy_polynomial(tmp);
+	}
+	destroy_polynomial(tmp);
+	return SUCCESS;
+}
+
+error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Polynomial* numerator,
+                             Polynomial* denominator) {
+	Polynomial* quotient_tmp = *quotient;
+	Polynomial* remainder_tmp = *remainder;
+	error_msg errorMsg = create_polynomial(&quotient_tmp);
+	if (errorMsg) {
+		return errorMsg;
+	}
+
+	errorMsg = create_polynomial(&remainder_tmp);
+	if (errorMsg) {
+		destroy_polynomial(quotient_tmp);
+		return errorMsg;
+	}
+
+	remainder_tmp->degree = numerator->degree;
+	Node* moving_head_numerator = numerator->coefficients;
+	for (int i = 0; i <= remainder_tmp->degree; ++i) {
+		errorMsg = push_node_end(&(remainder_tmp->coefficients), moving_head_numerator->data);
+		if (errorMsg) {
+			destroy_polynomial(quotient_tmp);
+			destroy_polynomial(remainder_tmp);
+			return errorMsg;
+		}
+		moving_head_numerator = moving_head_numerator->next;
+	}
+	while (remainder_tmp->degree >= denominator->degree) {
+		int degree_diff = remainder_tmp->degree - denominator->degree;
+		double quotient_coefficient = (double)remainder_tmp->coefficients->data / denominator->coefficients->data;
+		errorMsg = push_node_end(&(quotient_tmp->coefficients), (int)quotient_coefficient);
+		if (errorMsg) {
+			destroy_polynomial(quotient_tmp);
+			destroy_polynomial(remainder_tmp);
+			return errorMsg;
+		}
+		quotient_tmp->degree = max(quotient_tmp->degree, degree_diff);
+
+		Node* moving_head_denominator = denominator->coefficients;
+		Node* moving_head_remainder = remainder_tmp->coefficients;
+		//		for (int i = 0; i < degree_diff; ++i) {
+		//			moving_head_remainder = moving_head_remainder->next;
+		//		}
+		while (moving_head_denominator) {
+			moving_head_remainder->data -= (int)(quotient_coefficient * (double)moving_head_denominator->data);
+			moving_head_denominator = moving_head_denominator->next;
+			moving_head_remainder = moving_head_remainder->next;
+		}
+		delete_leading_zeros(remainder_tmp);
+		print_LinkedList(stdout, remainder_tmp->coefficients, " ");
+		putc('\n', stdout);
+	}
+	delete_leading_zeros(quotient_tmp);
+	delete_leading_zeros(remainder_tmp);
+	*quotient = quotient_tmp;
+	*remainder = remainder_tmp;
+
+	return SUCCESS;
+}
+
+int eval_polynomial(Polynomial* src, int x) {
+	int sum = 0;
+	Node* moving_head = src->coefficients;
+	while (moving_head) {
+		sum = sum * x + moving_head->data;
+
+		moving_head = moving_head->next;
+	}
+	return sum;
+}
+
+long long int special_product(int n, int p) {
+	long long int x = 1;
+	for (int i = 0; i < n; ++i) {
+		x *= p;
+		p -= 1;
+	}
+	return x;
+}
+
+int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
+	Polynomial* res = *result;
+	error_msg errorMsg = create_polynomial(&res);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	if (order > dst->degree) {
+		errorMsg = push_node_start(&(res->coefficients), 0);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+		*result = res;
+		return SUCCESS;
+	}
+	Node* moving_head = dst->coefficients;
+	int i = dst->degree;
+	while (moving_head) {
+		if (i >= order) {
+			errorMsg = push_node_end(&(res->coefficients), moving_head->data * (int)special_product(order, i));
+			if (errorMsg) {
+				destroy_polynomial(res);
+				return errorMsg;
+			}
+		} else {
+			errorMsg = push_node_end(&(res->coefficients), 0);
+			if (errorMsg) {
+				destroy_polynomial(res);
+				return errorMsg;
+			}
+		}
+		moving_head = moving_head->next;
+		i--;
+	}
+	res->degree = dst->degree - order;
+	delete_leading_zeros(res);
+	*result = res;
+	return SUCCESS;
+}
+
+void print_polynomial(FILE* stream, Polynomial* polynomial) {
+	if (polynomial->degree == 0 && polynomial->coefficients->data == 0) {
+		fprintf(stream, "0\n");
+	}
+	Node* moving_head = polynomial->coefficients;
+	int i = polynomial->degree;
+	while (moving_head) {
+		if (moving_head->data != 0) {
+			if (moving_head != polynomial->coefficients) {
+				if ((moving_head->data == 1 || moving_head->data == -1) && moving_head->next) {
+					if (moving_head->data > 0) {
+						fprintf(stream, " + ");
+					} else {
+						fprintf(stream, " - ");
+					}
+				} else if (moving_head->data > 0) {
+					fprintf(stream, " + %d", moving_head->data);
+				} else {
+					fprintf(stream, " - %d", -moving_head->data);
+				}
+			} else {
+				if (moving_head->data != 1 && moving_head->data != -1) {
+					fprintf(stream, "%d", moving_head->data);
+				} else if (moving_head->data == -1) {
+					fprintf(stream, "-");
+				}
+			}
+			if (i > 1) {
+				fprintf(stream, "x^%d", i);
+			} else if (i == 1) {
+				fprintf(stream, "x");
+			}
+		}
+
+		i--;
+		moving_head = moving_head->next;
+	}
+}
+
+error_msg composition_polynomials(Polynomial** result, Polynomial* first, Polynomial* second) {
+	Polynomial* res = *result;
+	error_msg errorMsg = create_polynomial(&res);
+	if (errorMsg) {
+		return errorMsg;
+	}
+
+	Node* moving_head1 = first->coefficients;
+	for (int i = first->degree; i >= 0; --i) {
+		Polynomial* tmp1;
+		errorMsg = create_polynomial(&tmp1);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+
+		tmp1->degree = 0;
+		errorMsg = push_node_start(&(tmp1->coefficients), moving_head1->data);
+		if (errorMsg) {
+			destroy_polynomial(tmp1);
+			destroy_polynomial(res);
+			return errorMsg;
+		}
+
+		// получаем Q(x)^i
+		Polynomial* temp;
+		errorMsg = create_polynomial(&temp);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			destroy_polynomial(tmp1);
+			return errorMsg;
+		}
+		errorMsg = push_node_end(&(temp->coefficients), 1);
+		if(errorMsg){
+			destroy_polynomial(res);
+			destroy_polynomial(tmp1);
+			return errorMsg;
+		}
+		for (int j = 0; j < i; ++j) {
+			Polynomial* temp2;
+			errorMsg = product_polynomials(&temp2, temp, second);
+			if (errorMsg) {
+				destroy_polynomial(res);
+				destroy_polynomial(tmp1);
+				destroy_polynomial(temp);
+				destroy_polynomial(temp2);
+				return errorMsg;
+			}
+			destroy_polynomial(temp);
+			temp = temp2;
+		}
+		Polynomial * tmp_d_sum;
+		errorMsg = product_polynomials(&tmp_d_sum, tmp1, temp);
+		if (errorMsg) {
+			destroy_polynomial(res);
+			destroy_polynomial(tmp1);
+			destroy_polynomial(temp);
+			return errorMsg;
+		}
+
+		Polynomial* sum;
+		errorMsg = add_polynomials(&sum, res, tmp_d_sum);
+		if (errorMsg) {
+			destroy_polynomial(tmp1);
+			destroy_polynomial(temp);
+			destroy_polynomial(sum);
+			destroy_polynomial(res);
+			destroy_polynomial(tmp_d_sum);
+			return errorMsg;
+		}
+		destroy_polynomial(res);
+		destroy_polynomial(tmp1);
+		destroy_polynomial(temp);
+		destroy_polynomial(tmp_d_sum);
+		res = sum;
+		moving_head1 = moving_head1->next;
+	}
+	*result = res;
+	return SUCCESS;
 }

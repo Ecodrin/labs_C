@@ -10,6 +10,8 @@ int checks_names_files(int argc, char **argv) {
 	real_in = realpath(in, NULL);
 	real_out = realpath(out, NULL);
 	if (!real_in || (real_out && string_cmp(real_in, real_out))) {
+		free(real_in);
+		free(real_out);
 		return 0;
 	}
 	free(real_in);
@@ -247,7 +249,7 @@ void destroy_tree(Node *head) {
 
 void print_tree(FILE *output, Node *root, int level) {
 	for (int i = 0; i < level; i++) {
-		fprintf(output, "  ");
+		fprintf(output, "\t");
 	}
 	print_string(output, &root->data, "");
 	fprintf(output, "\n");
