@@ -204,6 +204,7 @@ error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
 }
 
 void delete_leading_zeros(Polynomial* p) {
+	if (p->degree == 0) return;
 	Node* t;
 	while (p->coefficients->next && p->coefficients->data == 0) {
 		t = p->coefficients;
@@ -342,6 +343,10 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 	if (errorMsg) {
 		return errorMsg;
 	}
+	if (denominator->degree == 0 && (!denominator->coefficients || denominator->coefficients->data == 0)) {
+		destroy_polynomial(&quotient_tmp);
+		return INCORRECT_OPTIONS_ERROR;
+	}
 
 	errorMsg = create_polynomial(&remainder_tmp);
 	if (errorMsg) {
@@ -362,7 +367,7 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 	}
 	while (remainder_tmp->degree >= denominator->degree) {
 		int degree_diff = remainder_tmp->degree - denominator->degree;
-		double quotient_coefficient = (double)remainder_tmp->coefficients->data / denominator->coefficients->data;
+		int quotient_coefficient = remainder_tmp->coefficients->data / denominator->coefficients->data;
 		errorMsg = push_node_end(&(quotient_tmp->coefficients), (int)quotient_coefficient);
 		if (errorMsg) {
 			destroy_polynomial(&quotient_tmp);
@@ -412,6 +417,9 @@ long long int special_product(int n, int p) {
 }
 
 int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
+	if (order < 0) {
+		return INCORRECT_OPTIONS_ERROR;
+	}
 	Polynomial* res = *result;
 	error_msg errorMsg = create_polynomial(&res);
 	if (errorMsg) {
@@ -452,8 +460,9 @@ int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
 }
 
 void print_polynomial(FILE* stream, Polynomial* polynomial) {
-	if (polynomial->degree == 0 && polynomial->coefficients->data == 0) {
-		fprintf(stream, "0\n");
+	if (polynomial->degree == 0 || polynomial->coefficients->data == 0) {
+		fprintf(stream, "0");
+		return;
 	}
 	Node* moving_head = polynomial->coefficients;
 	int i = polynomial->degree;
@@ -597,7 +606,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 	String command;
 
 	errorMsg = create_string(&command, "");
-	if(errorMsg){
+	if (errorMsg) {
 		destroy_polynomial(&polynomial);
 		return errorMsg;
 	}
@@ -610,7 +619,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			destroy_string(&command);
 			return errorMsg;
 		}
-		if(feof(in)){
+		if (feof(in)) {
 			break;
 		}
 		int index_first_bracket = find_index_string(&input, '(');
@@ -717,7 +726,6 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			destroy_string(&pol2);
 		}
 
-
 		clear_string(&command);
 		errorMsg = mstrcopy(&input, &command, 0, index_first_bracket);
 		if (errorMsg) {
@@ -797,14 +805,14 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			}
 			int x = eval_polynomial(polynomial1, polynomial2->coefficients->data);
 			errorMsg = create_polynomial(&polynomial);
-			if(errorMsg){
+			if (errorMsg) {
 				destroy_string(&command);
 				destroy_string(&input);
 				destroy_polynomial(&polynomial1);
 				destroy_polynomial(&polynomial2);
 			}
 			errorMsg = push_node_start(&(polynomial->coefficients), x);
-			if(errorMsg){
+			if (errorMsg) {
 				destroy_string(&command);
 				destroy_string(&input);
 				destroy_polynomial(&polynomial1);
@@ -854,32 +862,35 @@ error_msg read_command(FILE* stream, String* string, char separator) {
 	if (!stream) return 0;
 	int count_read_symbol = 0;
 	char c;
-	while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
-	do {
+	while ((c = getc(stream)) != EOF) {
+		if (c == separator) {
+			return SUCCESS;
+		}
+		while (c != EOF && (c == ' ' || c == '\t' || c == separator || c == '\n')) {
+			c = getc(stream);
+		}
 		if (c == '%') {
 			while ((c = getc(stream)) != EOF && c != '\n')
 				;
-			while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
+			continue;
 		}
 		if (c == '[') {
 			while ((c = getc(stream)) != EOF && c != ']')
 				;
 			if (c != ']') return INCORRECT_OPTIONS_ERROR;
-			while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
+			continue;
 		}
 
-		if (c == separator) {
-			return SUCCESS;
-		}
 		if (c == EOF) {
-			if(!count_read_symbol)return SUCCESS;
+			if (!count_read_symbol)
+				return SUCCESS;
 			else
 				return INCORRECT_OPTIONS_ERROR;
 		}
 		count_read_symbol++;
 		error_msg errorMsg = push_end_string(string, c);
 		if (errorMsg) return errorMsg;
-	} while ((c = getc(stream)) );
+	}
 	return SUCCESS;
 }
 
