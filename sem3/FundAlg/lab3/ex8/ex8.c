@@ -103,12 +103,14 @@ error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
 	String string;
 	errorMsg = create_string(&string, "");
 	if (errorMsg) {
+		destroy_polynomial(&polynomial);
 		return errorMsg;
 	}
 	for (int i = 0; i < input_string->size; ++i) {
 		if (input_string->arr[i] != ' ') {
 			errorMsg = push_end_string(&string, input_string->arr[i]);
 			if (errorMsg) {
+				destroy_polynomial(&polynomial);
 				destroy_string(&string);
 				return errorMsg;
 			}
@@ -117,6 +119,7 @@ error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
 		    input_string->arr[i] != '-' && input_string->arr[i] != '^' &&
 		    (input_string->arr[i] < '0' || input_string->arr[i] > '9')) {
 			destroy_string(&string);
+			destroy_polynomial(&polynomial);
 			return INCORRECT_OPTIONS_ERROR;
 		}
 	}
@@ -147,12 +150,14 @@ error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
 			i++;
 			if (string.arr[i] != '^' && string.arr[i] != '+' && string.arr[i] != '-' && string.arr[i] != '\0') {
 				destroy_string(&string);
+				destroy_polynomial(&polynomial);
 				return INCORRECT_OPTIONS_ERROR;
 			}
 			if (string.arr[i] == '^') {
 				i++;
 				if (!(string.arr[i] >= '0' && string.arr[i] <= '9')) {
 					destroy_string(&string);
+					destroy_polynomial(&polynomial);
 					return INCORRECT_OPTIONS_ERROR;
 				}
 				while (string.arr[i] >= '0' && string.arr[i] <= '9') {
@@ -174,6 +179,7 @@ error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
 				errorMsg = push_node_start(&(polynomial->coefficients), 0);
 				if (errorMsg) {
 					destroy_string(&string);
+					destroy_polynomial(&polynomial);
 					return errorMsg;
 				}
 			}
@@ -601,6 +607,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 		if (errorMsg) {
 			destroy_string(&input);
 			destroy_polynomial(&polynomial);
+			destroy_string(&command);
 			return errorMsg;
 		}
 		if(feof(in)){
@@ -623,6 +630,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			if (errorMsg) {
 				destroy_polynomial(&polynomial);
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 			errorMsg = mstrcopy(&input, &pol1, index_first_bracket + 1, index_comma - 1);
@@ -630,6 +638,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 				destroy_polynomial(&polynomial);
 				destroy_string(&pol1);
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 
@@ -638,6 +647,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			if (errorMsg) {
 				destroy_polynomial(&polynomial);
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 			errorMsg = mstrcopy(&input, &pol2, index_comma + 1, index_second_bracket - 1);
@@ -646,20 +656,23 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 				destroy_string(&pol1);
 				destroy_string(&pol2);
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 
 			errorMsg = read_polynomial_from_string(&polynomial1, &pol1);
 			if (errorMsg) {
-				destroy_polynomial(&polynomial);
+				destroy_string(&pol2);
 				destroy_string(&pol1);
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 
 			errorMsg = read_polynomial_from_string(&polynomial2, &pol2);
 			if (errorMsg) {
 				destroy_polynomial(&polynomial);
+				destroy_string(&command);
 				destroy_string(&pol1);
 				destroy_polynomial(&polynomial1);
 				destroy_string(&input);
@@ -671,6 +684,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			errorMsg = copy_polynomial(&polynomial, &polynomial1);
 			if (errorMsg) {
 				destroy_string(&input);
+				destroy_string(&command);
 				return errorMsg;
 			}
 			destroy_polynomial(&polynomial);
@@ -678,28 +692,30 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			String pol2;
 			errorMsg = create_string(&pol2, "");
 			if (errorMsg) {
-				destroy_polynomial(&polynomial);
 				destroy_string(&input);
+				destroy_string(&command);
+				destroy_polynomial(&polynomial1);
 				return errorMsg;
 			}
 			errorMsg = mstrcopy(&input, &pol2, index_first_bracket + 1, index_second_bracket - 1);
 			if (errorMsg) {
-				destroy_polynomial(&polynomial);
 				destroy_string(&pol2);
 				destroy_string(&input);
+				destroy_string(&command);
+				destroy_polynomial(&polynomial1);
 				return errorMsg;
 			}
 
 			errorMsg = read_polynomial_from_string(&polynomial2, &pol2);
 			if (errorMsg) {
-				destroy_polynomial(&polynomial);
 				destroy_string(&input);
 				destroy_string(&pol2);
+				destroy_string(&command);
+				destroy_polynomial(&polynomial1);
 				return errorMsg;
 			}
 			destroy_string(&pol2);
 		}
-
 
 
 		clear_string(&command);
