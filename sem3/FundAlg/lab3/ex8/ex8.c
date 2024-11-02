@@ -619,7 +619,7 @@ error_msg read_file_with_instruction(FILE* in, FILE* out) {
 			destroy_string(&command);
 			return errorMsg;
 		}
-		if (feof(in)) {
+		if (feof(in) && input.size == 0) {
 			break;
 		}
 		int index_first_bracket = find_index_string(&input, '(');
@@ -891,7 +891,12 @@ error_msg read_command(FILE* stream, String* string, char separator) {
 		error_msg errorMsg = push_end_string(string, c);
 		if (errorMsg) return errorMsg;
 	}
-	return SUCCESS;
+	if (c == EOF) {
+		if (!count_read_symbol)
+			return SUCCESS;
+		else
+			return INCORRECT_OPTIONS_ERROR;
+	}
 }
 
 error_msg copy_polynomial(Polynomial** dest, Polynomial** src) {
