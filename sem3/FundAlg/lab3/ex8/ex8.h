@@ -6,6 +6,7 @@
 
 #include "../lib/SystemErrors/errors.h"
 #include "../lib/vector/charvector.h"
+#include "../lib/mstring/mstring.h"
 
 typedef struct Node {
 	struct Node* next;
@@ -33,7 +34,8 @@ void print_LinkedList(FILE* stream, Node* head, char* separator);
 
 // Функции для многочлена
 error_msg create_polynomial(Polynomial** polynomial);
-void destroy_polynomial(Polynomial* polynomial);
+void destroy_polynomial(Polynomial** polynomial);
+error_msg copy_polynomial(Polynomial** dest, Polynomial ** src);
 error_msg read_polynomial_from_string(Polynomial** polynomial, String* string);
 void delete_leading_zeros(Polynomial * p);
 void print_polynomial(FILE * stream, Polynomial* polynomial);
@@ -44,4 +46,10 @@ error_msg divide_polynomials(Polynomial ** quotient, Polynomial ** remainder, Po
 int eval_polynomial(Polynomial * src, int x);
 int diff_polynomial(Polynomial ** res, Polynomial *dst, int order);
 error_msg composition_polynomials(Polynomial** res, Polynomial * first, Polynomial * second);
+
+
+
+// Функции обработки файла
+error_msg read_file_with_instruction(FILE * in, FILE * out);
+error_msg read_command(FILE* stream, String* string, char separator);
 #endif  // LAB3_EX8_H

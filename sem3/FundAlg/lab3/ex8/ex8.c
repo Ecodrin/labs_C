@@ -86,10 +86,12 @@ error_msg create_polynomial(Polynomial** polynomial) {
 	return SUCCESS;
 }
 
-void destroy_polynomial(Polynomial* polynomial) {
-	destroy_LinkedList(polynomial->coefficients);
-	polynomial->degree = 0;
-	free(polynomial);
+void destroy_polynomial(Polynomial** polynomial) {
+	destroy_LinkedList((*polynomial)->coefficients);
+	(*polynomial)->degree = 0;
+	(*polynomial)->coefficients = NULL;
+	free((*polynomial));
+	(*polynomial) = NULL;
 }
 
 error_msg read_polynomial_from_string(Polynomial** pl, String* input_string) {
@@ -222,13 +224,13 @@ error_msg add_polynomials(Polynomial** result, Polynomial* first, Polynomial* se
 	Node* moving_head1 = first->coefficients;
 	Node* moving_head2 = second->coefficients;
 	int size = (second->degree - first->degree);
-	if(!moving_head1){
+	if (!moving_head1) {
 		size++;
 	}
 	for (int i = 0; i < size && moving_head2; ++i) {
 		errorMsg = push_node_end(&(res->coefficients), moving_head2->data);
 		if (errorMsg) {
-			destroy_polynomial(res);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 		moving_head2 = moving_head2->next;
@@ -236,7 +238,7 @@ error_msg add_polynomials(Polynomial** result, Polynomial* first, Polynomial* se
 	while (moving_head2 && moving_head1) {
 		errorMsg = push_node_end(&(res->coefficients), moving_head1->data + moving_head2->data);
 		if (errorMsg) {
-			destroy_polynomial(res);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 		moving_head1 = moving_head1->next;
@@ -257,7 +259,7 @@ error_msg product_polynomials(Polynomial** result, Polynomial* first, Polynomial
 	for (int i = 0; i <= first->degree + second->degree; ++i) {
 		errorMsg = push_node_start(&(res->coefficients), 0);
 		if (errorMsg) {
-			destroy_polynomial(res);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 	}
@@ -274,7 +276,7 @@ error_msg product_polynomials(Polynomial** result, Polynomial* first, Polynomial
 			//			printf("|%d|\n", result_degree - (i + j));
 			Node* f = find_node_by_index(res->coefficients, result_degree - (i + j));
 			if (!f) {
-				destroy_polynomial(res);
+				destroy_polynomial(&res);
 				return INDEX_VECTOR_ERROR;
 			}
 			f->data += moving_head1->data * moving_head2->data;
@@ -312,7 +314,7 @@ error_msg subtract_polynomials(Polynomial** res, Polynomial* first, Polynomial* 
 	while (moving_head) {
 		errorMsg = push_node_end(&(tmp->coefficients), -moving_head->data);
 		if (errorMsg) {
-			destroy_polynomial(tmp);
+			destroy_polynomial(&tmp);
 			return errorMsg;
 		}
 		moving_head = moving_head->next;
@@ -320,9 +322,9 @@ error_msg subtract_polynomials(Polynomial** res, Polynomial* first, Polynomial* 
 	tmp->degree = second->degree;
 	errorMsg = add_polynomials(res, first, tmp);
 	if (errorMsg) {
-		destroy_polynomial(tmp);
+		destroy_polynomial(&tmp);
 	}
-	destroy_polynomial(tmp);
+	destroy_polynomial(&tmp);
 	return SUCCESS;
 }
 
@@ -337,7 +339,7 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 
 	errorMsg = create_polynomial(&remainder_tmp);
 	if (errorMsg) {
-		destroy_polynomial(quotient_tmp);
+		destroy_polynomial(&quotient_tmp);
 		return errorMsg;
 	}
 
@@ -346,8 +348,8 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 	for (int i = 0; i <= remainder_tmp->degree; ++i) {
 		errorMsg = push_node_end(&(remainder_tmp->coefficients), moving_head_numerator->data);
 		if (errorMsg) {
-			destroy_polynomial(quotient_tmp);
-			destroy_polynomial(remainder_tmp);
+			destroy_polynomial(&quotient_tmp);
+			destroy_polynomial(&remainder_tmp);
 			return errorMsg;
 		}
 		moving_head_numerator = moving_head_numerator->next;
@@ -357,8 +359,8 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 		double quotient_coefficient = (double)remainder_tmp->coefficients->data / denominator->coefficients->data;
 		errorMsg = push_node_end(&(quotient_tmp->coefficients), (int)quotient_coefficient);
 		if (errorMsg) {
-			destroy_polynomial(quotient_tmp);
-			destroy_polynomial(remainder_tmp);
+			destroy_polynomial(&quotient_tmp);
+			destroy_polynomial(&remainder_tmp);
 			return errorMsg;
 		}
 		quotient_tmp->degree = max(quotient_tmp->degree, degree_diff);
@@ -374,8 +376,6 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 			moving_head_remainder = moving_head_remainder->next;
 		}
 		delete_leading_zeros(remainder_tmp);
-		print_LinkedList(stdout, remainder_tmp->coefficients, " ");
-		putc('\n', stdout);
 	}
 	delete_leading_zeros(quotient_tmp);
 	delete_leading_zeros(remainder_tmp);
@@ -414,7 +414,7 @@ int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
 	if (order > dst->degree) {
 		errorMsg = push_node_start(&(res->coefficients), 0);
 		if (errorMsg) {
-			destroy_polynomial(res);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 		*result = res;
@@ -426,13 +426,13 @@ int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
 		if (i >= order) {
 			errorMsg = push_node_end(&(res->coefficients), moving_head->data * (int)special_product(order, i));
 			if (errorMsg) {
-				destroy_polynomial(res);
+				destroy_polynomial(&res);
 				return errorMsg;
 			}
 		} else {
 			errorMsg = push_node_end(&(res->coefficients), 0);
 			if (errorMsg) {
-				destroy_polynomial(res);
+				destroy_polynomial(&res);
 				return errorMsg;
 			}
 		}
@@ -496,15 +496,15 @@ error_msg composition_polynomials(Polynomial** result, Polynomial* first, Polyno
 		Polynomial* tmp1;
 		errorMsg = create_polynomial(&tmp1);
 		if (errorMsg) {
-			destroy_polynomial(res);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 
 		tmp1->degree = 0;
 		errorMsg = push_node_start(&(tmp1->coefficients), moving_head1->data);
 		if (errorMsg) {
-			destroy_polynomial(tmp1);
-			destroy_polynomial(res);
+			destroy_polynomial(&tmp1);
+			destroy_polynomial(&res);
 			return errorMsg;
 		}
 
@@ -512,55 +512,376 @@ error_msg composition_polynomials(Polynomial** result, Polynomial* first, Polyno
 		Polynomial* temp;
 		errorMsg = create_polynomial(&temp);
 		if (errorMsg) {
-			destroy_polynomial(res);
-			destroy_polynomial(tmp1);
+			destroy_polynomial(&res);
+			destroy_polynomial(&tmp1);
 			return errorMsg;
 		}
 		errorMsg = push_node_end(&(temp->coefficients), 1);
-		if(errorMsg){
-			destroy_polynomial(res);
-			destroy_polynomial(tmp1);
+		if (errorMsg) {
+			destroy_polynomial(&res);
+			destroy_polynomial(&tmp1);
 			return errorMsg;
 		}
 		for (int j = 0; j < i; ++j) {
 			Polynomial* temp2;
 			errorMsg = product_polynomials(&temp2, temp, second);
 			if (errorMsg) {
-				destroy_polynomial(res);
-				destroy_polynomial(tmp1);
-				destroy_polynomial(temp);
-				destroy_polynomial(temp2);
+				destroy_polynomial(&res);
+				destroy_polynomial(&tmp1);
+				destroy_polynomial(&temp);
+				destroy_polynomial(&temp2);
 				return errorMsg;
 			}
-			destroy_polynomial(temp);
+			destroy_polynomial(&temp);
 			temp = temp2;
 		}
-		Polynomial * tmp_d_sum;
+		Polynomial* tmp_d_sum;
 		errorMsg = product_polynomials(&tmp_d_sum, tmp1, temp);
 		if (errorMsg) {
-			destroy_polynomial(res);
-			destroy_polynomial(tmp1);
-			destroy_polynomial(temp);
+			destroy_polynomial(&res);
+			destroy_polynomial(&tmp1);
+			destroy_polynomial(&temp);
 			return errorMsg;
 		}
 
 		Polynomial* sum;
 		errorMsg = add_polynomials(&sum, res, tmp_d_sum);
 		if (errorMsg) {
-			destroy_polynomial(tmp1);
-			destroy_polynomial(temp);
-			destroy_polynomial(sum);
-			destroy_polynomial(res);
-			destroy_polynomial(tmp_d_sum);
+			destroy_polynomial(&tmp1);
+			destroy_polynomial(&temp);
+			destroy_polynomial(&sum);
+			destroy_polynomial(&res);
+			destroy_polynomial(&tmp_d_sum);
 			return errorMsg;
 		}
-		destroy_polynomial(res);
-		destroy_polynomial(tmp1);
-		destroy_polynomial(temp);
-		destroy_polynomial(tmp_d_sum);
+		destroy_polynomial(&res);
+		destroy_polynomial(&tmp1);
+		destroy_polynomial(&temp);
+		destroy_polynomial(&tmp_d_sum);
 		res = sum;
 		moving_head1 = moving_head1->next;
 	}
 	*result = res;
+	return SUCCESS;
+}
+
+error_msg read_file_with_instruction(FILE* in, FILE* out) {
+	error_msg errorMsg;
+	if (!in) {
+		return INPUT_FILE_ERROR;
+	}
+	String s;
+	errorMsg = create_string(&s, "0");
+	if (errorMsg) {
+		return errorMsg;
+	}
+	Polynomial* polynomial;
+	errorMsg = read_polynomial_from_string(&polynomial, &s);
+	destroy_string(&s);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	String input;
+	errorMsg = create_string(&input, "");
+	if (errorMsg) {
+		destroy_polynomial(&polynomial);
+		return errorMsg;
+	}
+
+	String command;
+
+	errorMsg = create_string(&command, "");
+	if(errorMsg){
+		destroy_polynomial(&polynomial);
+		return errorMsg;
+	}
+	do {
+		clear_string(&input);
+		errorMsg = read_command(in, &input, ';');
+		if (errorMsg) {
+			destroy_string(&input);
+			destroy_polynomial(&polynomial);
+			return errorMsg;
+		}
+		if(feof(in)){
+			break;
+		}
+		int index_first_bracket = find_index_string(&input, '(');
+		int index_second_bracket = find_index_string(&input, ')');
+		if (index_second_bracket != input.size - 1) {
+			destroy_polynomial(&polynomial);
+			destroy_string(&input);
+			return INCORRECT_OPTIONS_ERROR;
+		}
+		int index_comma = find_index_string(&input, ',');
+		Polynomial* polynomial1;
+		Polynomial* polynomial2;
+		if (index_comma != -1) {
+			String pol1;
+			destroy_polynomial(&polynomial);
+			errorMsg = create_string(&pol1, "");
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&input);
+				return errorMsg;
+			}
+			errorMsg = mstrcopy(&input, &pol1, index_first_bracket + 1, index_comma - 1);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&pol1);
+				destroy_string(&input);
+				return errorMsg;
+			}
+
+			String pol2;
+			errorMsg = create_string(&pol2, "");
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&input);
+				return errorMsg;
+			}
+			errorMsg = mstrcopy(&input, &pol2, index_comma + 1, index_second_bracket - 1);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&pol1);
+				destroy_string(&pol2);
+				destroy_string(&input);
+				return errorMsg;
+			}
+
+			errorMsg = read_polynomial_from_string(&polynomial1, &pol1);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&pol1);
+				destroy_string(&input);
+				return errorMsg;
+			}
+
+			errorMsg = read_polynomial_from_string(&polynomial2, &pol2);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&pol1);
+				destroy_polynomial(&polynomial1);
+				destroy_string(&input);
+				return errorMsg;
+			}
+			destroy_string(&pol2);
+			destroy_string(&pol1);
+		} else {
+			errorMsg = copy_polynomial(&polynomial, &polynomial1);
+			if (errorMsg) {
+				destroy_string(&input);
+				return errorMsg;
+			}
+			destroy_polynomial(&polynomial);
+
+			String pol2;
+			errorMsg = create_string(&pol2, "");
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&input);
+				return errorMsg;
+			}
+			errorMsg = mstrcopy(&input, &pol2, index_first_bracket + 1, index_second_bracket - 1);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&pol2);
+				destroy_string(&input);
+				return errorMsg;
+			}
+
+			errorMsg = read_polynomial_from_string(&polynomial2, &pol2);
+			if (errorMsg) {
+				destroy_polynomial(&polynomial);
+				destroy_string(&input);
+				destroy_string(&pol2);
+				return errorMsg;
+			}
+			destroy_string(&pol2);
+		}
+
+
+
+		clear_string(&command);
+		errorMsg = mstrcopy(&input, &command, 0, index_first_bracket);
+		if (errorMsg) {
+			destroy_string(&command);
+			destroy_string(&input);
+			destroy_polynomial(&polynomial1);
+			destroy_polynomial(&polynomial2);
+			return errorMsg;
+		}
+
+		if (string_cmp(command.arr, "Add")) {
+			errorMsg = add_polynomials(&polynomial, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+		} else if (string_cmp(command.arr, "Sub")) {
+			errorMsg = subtract_polynomials(&polynomial, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+		} else if (string_cmp(command.arr, "Mult")) {
+			errorMsg = product_polynomials(&polynomial, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+		} else if (string_cmp(command.arr, "Div")) {
+			Polynomial* remainder;
+			errorMsg = divide_polynomials(&polynomial, &remainder, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+			destroy_polynomial(&remainder);
+		} else if (string_cmp(command.arr, "Mod")) {
+			Polynomial* quotient;
+			errorMsg = divide_polynomials(&quotient, &polynomial, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			destroy_polynomial(&quotient);
+			putc('\n', out);
+		} else if (string_cmp(command.arr, "Eval")) {
+			if (polynomial2->degree != 0) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			int x = eval_polynomial(polynomial1, polynomial2->coefficients->data);
+			errorMsg = create_polynomial(&polynomial);
+			if(errorMsg){
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+			}
+			errorMsg = push_node_start(&(polynomial->coefficients), x);
+			if(errorMsg){
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+			}
+			fprintf(out, "%d\n", x);
+		} else if (string_cmp(command.arr, "Diff")) {
+			errorMsg = diff_polynomial(&polynomial, polynomial1, polynomial2->coefficients->data);
+			if (errorMsg || polynomial2->degree != 0) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return INCORRECT_OPTIONS_ERROR;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+		} else if (string_cmp(command.arr, "Cmps")) {
+			errorMsg = composition_polynomials(&polynomial, polynomial1, polynomial2);
+			if (errorMsg) {
+				destroy_string(&command);
+				destroy_string(&input);
+				destroy_polynomial(&polynomial1);
+				destroy_polynomial(&polynomial2);
+				return errorMsg;
+			}
+			print_polynomial(out, polynomial);
+			putc('\n', out);
+		} else {
+			destroy_string(&command);
+			destroy_string(&input);
+			destroy_polynomial(&polynomial1);
+			destroy_polynomial(&polynomial2);
+			return INCORRECT_OPTIONS_ERROR;
+		}
+		destroy_polynomial(&polynomial1);
+		destroy_polynomial(&polynomial2);
+	} while (!feof(in));
+	destroy_string(&input);
+	destroy_string(&command);
+	destroy_polynomial(&polynomial);
+	return SUCCESS;
+}
+
+error_msg read_command(FILE* stream, String* string, char separator) {
+	clear_string(string);
+	if (!stream) return 0;
+	int count_read_symbol = 0;
+	char c;
+	while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
+	do {
+		if (c == '%') {
+			while ((c = getc(stream)) != EOF && c != '\n')
+				;
+			while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
+		}
+		if (c == '[') {
+			while ((c = getc(stream)) != EOF && c != ']')
+				;
+			if (c != ']') return INCORRECT_OPTIONS_ERROR;
+			while (((c = getc(stream)) != EOF) && (c == ' ' || c == '\t' || c == separator || c == '\n'));
+		}
+
+		if (c == separator) {
+			return SUCCESS;
+		}
+		if (c == EOF) {
+			if(!count_read_symbol)return SUCCESS;
+			else
+				return INCORRECT_OPTIONS_ERROR;
+		}
+		count_read_symbol++;
+		error_msg errorMsg = push_end_string(string, c);
+		if (errorMsg) return errorMsg;
+	} while ((c = getc(stream)) );
+	return SUCCESS;
+}
+
+error_msg copy_polynomial(Polynomial** dest, Polynomial** src) {
+	error_msg errorMsg;
+	errorMsg = create_polynomial(src);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	(*src)->degree = (*dest)->degree;
+	Node* moving_head = (*dest)->coefficients;
+	while (moving_head) {
+		errorMsg = push_node_end(&((*src)->coefficients), moving_head->data);
+		if (errorMsg) {
+			destroy_polynomial(&*src);
+			return errorMsg;
+		}
+		moving_head = moving_head->next;
+	}
 	return SUCCESS;
 }

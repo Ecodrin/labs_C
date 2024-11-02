@@ -13,12 +13,16 @@ error_msg create_string(String* vec, char* src) {
 }
 
 error_msg mstrcopy(const String* dest, String* result, int start, int end) {
+	if(start > end){
+		return INCORRECT_OPTIONS_ERROR;
+	}
 	error_msg errorMsg;
 	errorMsg = resize_string(result, dest->size + 1);
 	if (errorMsg) return errorMsg;
+	result->size = end - start;
+	if (start > 0) result->size += 1;
 	errorMsg = strcopy(dest->arr, result->arr, start, end);
 	if (errorMsg) return errorMsg;
-	result->size = dest->size;
 	return SUCCESS;
 }
 
@@ -159,4 +163,14 @@ int read_line(FILE* stream, String* string) {
 
 void clear_string(String * string){
 	string->size = 0;
+}
+
+
+int find_index_string(String * s, char c){
+	for(int i = 0; i < s->size; ++i){
+		if(s->arr[i] == c){
+			return i;
+		}
+	}
+	return -1;
 }

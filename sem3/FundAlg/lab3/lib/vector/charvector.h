@@ -15,6 +15,7 @@ typedef struct String {
 
 error_msg create_string(String* vec, char* src);
 error_msg push_end_string(String* vector, char new_element);
+int find_index_string(String * s, char c);
 error_msg get_string(String* vector, int index, char* value);
 error_msg mstrcopy(const String* dest, String* result, int start, int end);
 int strings_equals(const String* s1, const String* s2);
