@@ -469,7 +469,7 @@ void print_polynomial(FILE* stream, Polynomial* polynomial) {
 	while (moving_head) {
 		if (moving_head->data != 0) {
 			if (moving_head != polynomial->coefficients) {
-				if ((moving_head->data == 1 || moving_head->data == -1) && moving_head->next) {
+				if ((moving_head->data == 1 || moving_head->data == -1) &&( moving_head->next || i != 0)) {
 					if (moving_head->data > 0) {
 						fprintf(stream, " + ");
 					} else {

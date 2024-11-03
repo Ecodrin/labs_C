@@ -163,6 +163,7 @@ int read_line(FILE* stream, String* string) {
 
 void clear_string(String * string){
 	string->size = 0;
+	string->arr[0] = '\0';
 }
 
 

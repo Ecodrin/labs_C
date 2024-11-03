@@ -42,15 +42,25 @@ add_executable(ex6
         ex6/ex6.h
 )
 
-add_executable(ex10 ex10/ex10.c
-        ex10/ex10.h
-        ex10/main.c
+
+
+add_executable(ex7 ex7/ex7.c ex7/ex7.h
+        ex7/main.c
         ../lib/vector/charvector.c
-        ../lib/mstring/mstring.c)
+        ../lib/mstring/mstring.c
+        ../lib/SystemErrors/errors.c)
 
 add_executable(ex8 ex8/main.c
         ex8/ex8.c
         ex8/ex8.h
+        ../lib/vector/charvector.c
+        ../lib/mstring/mstring.c
+        ../lib/SystemErrors/errors.c)
+
+
+add_executable(ex10 ex10/ex10.c
+        ex10/ex10.h
+        ex10/main.c
         ../lib/vector/charvector.c
         ../lib/mstring/mstring.c)
 
