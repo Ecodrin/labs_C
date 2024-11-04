@@ -97,11 +97,12 @@ void print_liver(FILE * stream, Liver * liver){
 void print_LinkedList(FILE *stream, Node *head, char *separator) {
 	while (head) {
 		print_liver(stream, &(head->data));
+		printf("%s", separator);
 		head = head->next;
 	}
 }
 
-int DayInMonth(unsigned int month, unsigned int year) {
+unsigned int DayInMonth(unsigned int month, unsigned int year) {
 	int days[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	if (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
 		return 29;
@@ -110,7 +111,7 @@ int DayInMonth(unsigned int month, unsigned int year) {
 }
 
 int IsCorrectDate(Date *time) {
-	if (time->year < 0 || time->year > 9999 || time->month < 1 || time->month > 12 || time->day < 0 ||
+	if (time->year > 9999 || time->month < 1 || time->month > 12 ||
 	    time->day > DayInMonth(time->month, time->year))
 		return 0;
 
@@ -235,8 +236,8 @@ int read_liver(FILE *stream, Liver *liver) {
 	}
 
 	char c;
-	while ((c = getc(stream)) != NULL && c == ' ');
-	if (c == NULL || (c != 'W' && c != 'M')) {
+	while ((c = getc(stream)) != EOF && c == ' ');
+	if (c == EOF || (c != 'W' && c != 'M')) {
 		return count;
 	}
 	liver->gender = c;
@@ -313,7 +314,7 @@ error_msg delete_liver(Node ** head, Liver * liver){
 }
 
 
-Node * find(Node ** head, Liver * liver){
+Node *find(Node ** head, Liver * liver){
 	Node * moving_head = *head;
 	while (moving_head){
 		if(eq_livers(&(moving_head->data), liver)){
@@ -329,7 +330,81 @@ error_msg change_liver(Node ** head, Liver * liver, Liver * new_liver){
 	if(!node){
 		return INCORRECT_OPTIONS_ERROR;
 	}
-	destroy_liver(&(node->data));
 	node->data = *new_liver;
 	return SUCCESS;
+}
+void clear_buffer(){
+	while ( getchar() != '\n' );
+}
+
+error_msg create_special_node(SpecialNode **node, Liver data, int instruction) {
+	*node = (SpecialNode *)calloc(1, sizeof(SpecialNode));
+	if (!*node) {
+		return MEMORY_ALLOCATED_ERROR;
+	}
+	(*node)->liver = data;
+	(*node)->instruction = instruction;
+	return SUCCESS;
+}
+
+void destroy_special_node(SpecialNode ** head){
+	destroy_liver(&((*head)->liver));
+	free(*head);
+	*head = NULL;
+}
+
+
+void destroy_LinkedList_with_special_node(SpecialNode *head) {
+	SpecialNode *tmp;
+	while (head) {
+		tmp = head;
+		head = head->next;
+		destroy_special_node(&tmp);
+	}
+}
+
+
+error_msg push_special_node_start(SpecialNode ** head, Liver data, int instruction){
+	SpecialNode *t;
+	error_msg errorMsg = create_special_node(&t, data, instruction);
+	if (errorMsg) {
+		return errorMsg;
+	}
+	if(!*head){
+		*head = t;
+	}
+	else{
+		t->next = *head;
+		*head = t;
+	}
+	return SUCCESS;
+}
+
+
+error_msg copy_liver(const Liver * dst, Liver * src){
+	error_msg errorMsg = create_liver(src);
+	if(errorMsg){
+		return errorMsg;
+	}
+	errorMsg = mstrcopy(&(dst->last_name),&( src->last_name), 0, dst->last_name.size);
+	if(errorMsg){
+		destroy_liver(src);
+		return errorMsg;
+	}
+	errorMsg = mstrcopy(&(dst->name),&( src->name), 0, dst->name.size);
+	if(errorMsg){
+		destroy_liver(src);
+		return errorMsg;
+	}
+
+	errorMsg = mstrcopy(&(dst->patronymic),&(src->patronymic), 0, dst->patronymic.size);
+	if(errorMsg){
+		destroy_liver(src);
+		return errorMsg;
+	}
+	src->birthday = dst->birthday;
+	src->gender = dst->gender;
+	src->income = dst->income;
+	return SUCCESS;
+
 }

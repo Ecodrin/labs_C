@@ -5,7 +5,7 @@ TEST_FLAGS = -lcheck -lsubunit -lrt -lpthread `pkg-config --cflags --libs check`
 COMP = gcc
 
 
-ex10: main.c
+ex8: main.c
 	$(COMP) $(CFLAGS) main.c ex8.c -o ex8.a $(LIBS_FLAG)
 	valgrind --leak-check=full --show-leak-kinds=all ./ex8.a test test
 	rm *a
