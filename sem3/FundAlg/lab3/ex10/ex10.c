@@ -4,19 +4,25 @@ int checks_names_files(int argc, char **argv) {
 	if(argc != 3){
 		return INCORRECT_OPTIONS_ERROR;
 	}
-	char *in, *out, *real_in, *real_out;
-	in = argv[1];
-	out = argv[2];
-	real_in = realpath(in, NULL);
-	real_out = realpath(out, NULL);
-	if (!real_in || (real_out && string_cmp(real_in, real_out))) {
-		free(real_in);
-		free(real_out);
-		return 0;
+	char *realnames[2] = {};
+	for (int i = 0; i < 2; ++i) {
+		realnames[i] = malloc(sizeof(char) * 4096);
 	}
-	free(real_in);
-	free(real_out);
-	return 1;
+
+	realpath(argv[1], realnames[0]);
+	realpath(argv[2], realnames[1]);
+
+	if (string_cmp(realnames[0], realnames[1])) {
+		for (int i = 0; i < 2; ++i) {
+			free(realnames[i]);
+		}
+		return INCORRECT_OPTIONS_ERROR;
+	}
+
+	for (int i = 0; i < 2; ++i) {
+		free(realnames[i]);
+	}
+	return SUCCESS;
 }
 
 error_msg to_linked_list(String *expression, NodeLL **linked_list_nodes) {
@@ -203,7 +209,7 @@ error_msg create_node(Node **node, String *s) {
 	if (!tmp_node) {
 		return MEMORY_ALLOCATED_ERROR;
 	}
-	tmp_node->capacity_children = 5;
+	tmp_node->capacity_children = DEFAULT_COUNT_CHILD;
 	tmp_node->children = (Node **)calloc(tmp_node->capacity_children, sizeof(Node));
 	if (!tmp_node->children) {
 		free(tmp_node);

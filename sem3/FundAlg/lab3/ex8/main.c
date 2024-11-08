@@ -11,6 +11,7 @@ int main() {
 	read_string(stdin, &filename);
 	FILE * in = fopen(filename.arr, "r");
 	if(!in){
+		destroy_string(&filename);
 		return print_error(INPUT_FILE_ERROR);
 	}
 	errorMsg = read_file_with_instruction(in, stdout);

@@ -378,9 +378,6 @@ error_msg divide_polynomials(Polynomial** quotient, Polynomial** remainder, Poly
 
 		Node* moving_head_denominator = denominator->coefficients;
 		Node* moving_head_remainder = remainder_tmp->coefficients;
-		//		for (int i = 0; i < degree_diff; ++i) {
-		//			moving_head_remainder = moving_head_remainder->next;
-		//		}
 		while (moving_head_denominator) {
 			moving_head_remainder->data -= (int)(quotient_coefficient * (double)moving_head_denominator->data);
 			moving_head_denominator = moving_head_denominator->next;
@@ -460,7 +457,7 @@ int diff_polynomial(Polynomial** result, Polynomial* dst, int order) {
 }
 
 void print_polynomial(FILE* stream, Polynomial* polynomial) {
-	if (polynomial->degree == 0 || polynomial->coefficients->data == 0) {
+	if (polynomial->degree == 0 && polynomial->coefficients->data == 0) {
 		fprintf(stream, "0");
 		return;
 	}
@@ -897,6 +894,7 @@ error_msg read_command(FILE* stream, String* string, char separator) {
 		else
 			return INCORRECT_OPTIONS_ERROR;
 	}
+	return SUCCESS;
 }
 
 error_msg copy_polynomial(Polynomial** dest, Polynomial** src) {

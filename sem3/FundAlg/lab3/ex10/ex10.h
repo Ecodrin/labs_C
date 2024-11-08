@@ -8,6 +8,8 @@
 #include "../lib/SystemErrors/errors.h"
 #include "../lib/vector/charvector.h"
 
+#define DEFAULT_COUNT_CHILD 5
+
 typedef struct Node {
 	String data;
 	struct Node **children;

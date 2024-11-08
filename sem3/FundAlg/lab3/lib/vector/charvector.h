@@ -29,8 +29,11 @@ error_msg mstrcopynew(const String* dest, String* result);
 error_msg mstrcat(String* first, const String* second);
 int string_comp(const String* s1, const String* s2);
 int string_to_int(const String* s1);
+
+int read_string_before_separator(FILE * stream, String * string, char separator);
 int read_string(FILE* stream, String* string);
 int read_line(FILE* stream, String* string);
+
 void clear_string(String * string);
 
 #endif

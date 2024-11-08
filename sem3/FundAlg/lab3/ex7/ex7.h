@@ -37,7 +37,7 @@ typedef struct SpecialNode{
 	struct SpecialNode * next;
 }SpecialNode;
 
-// Функции для односвязного списка
+// Функции для односвязного John Smith 15списка
 error_msg create_node(Node** node, Liver data);
 void destroy_node(Node ** head);
 void delete_node(Node* prev, Node* cur);

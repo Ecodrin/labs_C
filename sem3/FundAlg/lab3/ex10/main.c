@@ -1,7 +1,7 @@
 #include "ex10.h"
 
 int main(int argc, char ** argv){
-	if(!checks_names_files(argc, argv)){
+	if(checks_names_files(argc, argv)){
 		return print_error(INCORRECT_OPTIONS_ERROR);
 	}
 	FILE * in = fopen(argv[1], "r");
@@ -25,7 +25,6 @@ int main(int argc, char ** argv){
 	int n;
 	Node *head;
 	while ((n = read_line(in, &expression)) > 0){
-		// TODO вставить основу
 		head = NULL;
 		errorMsg = build_tree(&expression,  &head);
 		if(errorMsg){

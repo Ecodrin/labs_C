@@ -175,3 +175,21 @@ int find_index_string(String * s, char c){
 	}
 	return -1;
 }
+
+
+int read_string_before_separator(FILE * stream, String * string, char separator){
+	int count = 0;
+	char c;
+	error_msg errorMsg;
+	while (!feof(stream)){
+		c = getc(stream);
+		if(c == separator){
+			return count;
+		}
+		errorMsg = push_end_string(string, c);
+		if(errorMsg){
+			return count;
+		}
+	}
+	return count;
+}
