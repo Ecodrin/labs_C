@@ -16,6 +16,6 @@ rev_val:
 	rm ./a.out
 
 main_val:
-	g++ -Wall -Wextra -g Reverse_Polish_notation.cpp
+	g++ -Wall -Wextra -g Reverse_Polish_notation.h
 	valgrind ./a.out < test
 	rm ./a.out
