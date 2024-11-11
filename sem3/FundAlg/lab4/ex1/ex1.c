@@ -177,7 +177,7 @@ error_msg push_into_hash_table(HashTable *hash_table, String *def_name, String *
 	}
 	*max_size_list = max(*max_size_list, hash_table->data[index]->size);
 	for (int i = 0; i < hash_table->hash_size; ++i) {
-		if (hash_table->data[i]) *min_size_list = min(*min_size_list, hash_table->data[i]->size);
+		if (hash_table->data[i] && hash_table->data[i]->size > 1) *min_size_list = min(*min_size_list, hash_table->data[i]->size);
 	}
 	hash_table->hash_count += 1;
 	return SUCCESS;

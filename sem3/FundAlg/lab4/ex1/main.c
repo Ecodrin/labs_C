@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 //		return print_error(OUTPUT_FILE_ERROR);
 //	}
 //	fprintf(stream, "%s", result.arr);
-	//	fclose(stream);
+//		fclose(stream);
 
 	printf("%s", result.arr);
 
