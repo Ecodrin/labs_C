@@ -52,9 +52,7 @@ int string_cmp(const char *a, const char *b) {
 
 error_msg strcopy(const char *a, char *result, int start, int end) {
 	int i = 0;
-	int end_for = end - start;
-	if (start > 0) end_for++;
-	for (; i < end_for && i + start < SizeString(a); ++i) {
+	for (int j = start; j < end; ++i, j++) {
 		result[i] = a[i + start];
 	}
 	result[i] = '\0';

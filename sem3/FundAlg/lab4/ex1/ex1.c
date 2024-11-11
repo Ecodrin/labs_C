@@ -233,6 +233,7 @@ error_msg check_all_def(String *res, String *tmp, HashTable *hashTable) {
 		fl = 0;
 		for (int j = tmp->size; j >= i; --j) {
 			clear_string(&substring);
+
 			errorMsg = mstrcopy(tmp, &substring, i, j);
 			if (errorMsg) {
 				destroy_string(&substring);
@@ -250,18 +251,13 @@ error_msg check_all_def(String *res, String *tmp, HashTable *hashTable) {
 							destroy_string(&substring);
 							return errorMsg;
 						}
-						i = j;
-						if(substring.size != 1){
-							i--;
-							j--;
-						}
+						i = j - 1;
 						break;
 					}
 					moving = moving->next;
 				}
-			} else{
-				fl = 0;
 			}
+
 		}
 		if (!fl) {
 			errorMsg = push_end_string(res, tmp->arr[i]);

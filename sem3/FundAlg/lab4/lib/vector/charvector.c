@@ -19,7 +19,6 @@ error_msg mstrcopy(const String* dest, String* result, int start, int end) {
 	error_msg errorMsg;
 	errorMsg = resize_string(result, dest->size + 1);
 	if (errorMsg) return errorMsg;
-//	if (start > 0) result->size += 1;
 	errorMsg = strcopy(dest->arr, result->arr, start, end);
 	result->size = SizeString(result->arr);
 	if (errorMsg) return errorMsg;
