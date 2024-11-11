@@ -46,7 +46,7 @@ void destroy_list_node(ListNode *listNode);
 
 // Функции для хэш таблицы
 error_msg build_hash_table(FILE * stream, HashTable * hashTable, String * result);
-int calculate_new_size(int hash_size, int hash_count);
+int calculate_new_size(int hash_count);
 error_msg create_hash_table(HashTable *hashTable, int hash_size);
 error_msg push_into_hash_table(HashTable *hash_table, String *def_name, String *value, int *max_size_list,
                                int *min_size_list, unsigned int h);

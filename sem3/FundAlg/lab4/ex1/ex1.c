@@ -57,8 +57,8 @@ error_msg list_push_end(List *list, String *def_name, String *value, unsigned lo
 
 	errorMsg = mstrcopynew(value, &(listNode->value));
 	if (errorMsg) {
-		free(listNode);
 		destroy_string(&(listNode->value));
+		free(listNode);
 		return errorMsg;
 	}
 	list->size += 1;
@@ -90,8 +90,8 @@ error_msg list_push_start(List *list, String *def_name, String *value, unsigned 
 
 	errorMsg = mstrcopynew(value, &(listNode->value));
 	if (errorMsg) {
-		free(listNode);
 		destroy_string(&(listNode->value));
+		free(listNode);
 		return errorMsg;
 	}
 	listNode->hash = hash;
@@ -159,7 +159,7 @@ error_msg push_into_hash_table(HashTable *hash_table, String *def_name, String *
 	}
 
 	// Если не было до этого хэша
-	if (h == -1) {
+	if (h == (unsigned long )hash_table->hash_size + 1) {
 		h = hash_62(def_name, hash_table->hash_size);
 	}
 	unsigned long index = h % hash_table->hash_size;
@@ -184,7 +184,7 @@ error_msg push_into_hash_table(HashTable *hash_table, String *def_name, String *
 }
 
 error_msg renew_hash_table_with_new_size(const HashTable *dst, HashTable *src) {
-	int new_hash_size = calculate_new_size(dst->hash_size, dst->hash_count);
+	int new_hash_size = calculate_new_size(dst->hash_count);
 	;
 	error_msg errorMsg = create_hash_table(src, new_hash_size);
 	if (errorMsg) {
@@ -210,7 +210,7 @@ error_msg renew_hash_table_with_new_size(const HashTable *dst, HashTable *src) {
 	return SUCCESS;
 }
 
-int calculate_new_size(int hash_size, int hash_count) { return (int)((double)hash_count * 2); }
+int calculate_new_size(int hash_count) { return (int)((double)hash_count * 2); }
 
 int is_correct_def_name(String *s) {
 	for (int i = 0; i < s->size; ++i) {
@@ -328,7 +328,7 @@ error_msg build_hash_table(FILE *stream, HashTable *hashTable, String *result) {
 			}
 			position += n;
 
-			errorMsg = push_into_hash_table(hashTable, &def_name, &value, &max_size, &min_size, -1);
+			errorMsg = push_into_hash_table(hashTable, &def_name, &value, &max_size, &min_size, hashTable->hash_size + 1);
 			if (errorMsg) {
 				destroy_hash_table(hashTable);
 				destroy_string(&tmp);
@@ -424,19 +424,19 @@ error_msg read_instruction(FILE *stream, String *result) {
 			return errorMsg;
 		}
 	}
-	errorMsg = push_end_string(result, '\n');
-	if (errorMsg) {
-		destroy_hash_table(&hashTable);
-		destroy_string(&tmp);
-		destroy_string(&value);
-		destroy_string(&def_name);
-		return errorMsg;
-	}
+//	errorMsg = push_end_string(result, '\n');
+//	if (errorMsg) {
+//		destroy_hash_table(&hashTable);
+//		destroy_string(&tmp);
+//		destroy_string(&value);
+//		destroy_string(&def_name);
+//		return errorMsg;
+//	}
 
 	clear_string(&tmp);
 	while (1) {
 		c = getc(stream);
-		if ((c < '0' || c > '9') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') || c == EOF) {
+		if (c == EOF || ((c < '0' || c > '9') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))) {
 			errorMsg = check_all_def(result, &tmp, &hashTable);
 			if (errorMsg) {
 				destroy_hash_table(&hashTable);
