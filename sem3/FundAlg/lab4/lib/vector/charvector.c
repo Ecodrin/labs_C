@@ -111,12 +111,25 @@ int string_comp(const String* s1, const String* s2) {
 	return string_compare(s1->arr, s2->arr);
 }
 
-int string_to_int(const String* s1) {
-	int sum = 0;
-	for (int i = 0; i < s1->size; ++i) {
-		sum = sum * 10 + (s1->arr[i] - '0');
+error_msg string_to_int(String* dst, int* res) {
+	int fl = 0;
+	*res = 0;
+	for (int i = 0; i < dst->size; ++i) {
+		if (dst->arr[i] == '-' && !fl) {
+			fl = 1;
+		} else if (dst->arr[i] >= '0' && dst->arr[i] <= '9'){
+			*res = (*res) * 10 + (dst->arr[i] - '0');
+			if(*res < 0){
+				return OVERFLOW_ERROR;
+			}
+		}else{
+			return INCORRECT_OPTIONS_ERROR;
+		}
 	}
-	return sum;
+	if(fl){
+		*res *= -1;
+	}
+	return SUCCESS;
 }
 
 int read_string(FILE* stream, String* string) {

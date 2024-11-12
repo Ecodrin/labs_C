@@ -3,25 +3,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-IntVector* create_int_vector(int capacity) {
-	IntVector* vector = (IntVector*)malloc(sizeof(IntVector));
-	if (!vector) {
-		return NULL;
+error_msg create_int_vector(IntVector** vector, int capacity) {
+	*vector = (IntVector*)malloc(sizeof(IntVector));
+	if (!*vector) {
+		return MEMORY_ALLOCATED_ERROR;
 	}
-	vector->arr = (int*)malloc(sizeof(int) * capacity);
-	if (!(vector->arr)) {
-		return NULL;
+	(*vector)->arr = (int*)malloc(sizeof(int) * capacity);
+	if (!((*vector)->arr)) {
+		return MEMORY_ALLOCATED_ERROR;
 	}
-	vector->size = 0;
-	vector->capacity = capacity;
-	return vector;
+	(*vector)->size = 0;
+	(*vector)->capacity = capacity;
+	return SUCCESS;
 }
 
 int resize_int_vector(IntVector* vector, int new_capacity) {
-	vector->arr = (int*)realloc(vector->arr, sizeof(int) * new_capacity);
+	int* tmp = (int*)realloc(vector->arr, sizeof(int) * new_capacity);
 	if (!(vector->arr)) {
 		return MEMORY_ALLOCATED_ERROR;
 	}
+	vector->arr = tmp;
 	vector->capacity = new_capacity;
 	return SUCCESS;
 }
@@ -59,8 +60,19 @@ void destroy_int_vector(IntVector* vector) {
 	free(vector);
 }
 
-void print_intvector(FILE * stream, IntVector* vector, char * separator) {
+void print_intvector(FILE* stream, IntVector* vector, char* separator) {
 	for (int i = 0; i < vector->size; ++i) {
 		fprintf(stream, "%d%s", vector->arr[i], separator);
 	}
+}
+
+error_msg remove_int_vector(IntVector* vector, int index) {
+	if (index >= vector->size || index < 0) {
+		return INDEX_VECTOR_ERROR;
+	}
+	for (int i = index; i < vector->size - 1; ++i) {
+		vector->arr[i] = vector->arr[i + 1];
+	}
+	vector->size -= 1;
+	return SUCCESS;
 }
