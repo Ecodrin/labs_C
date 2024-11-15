@@ -29,6 +29,10 @@ error_msg mstrcopynew(const String* dest, String* result);
 error_msg mstrcat(String* first, const String* second);
 int string_comp(const String* s1, const String* s2);
 error_msg string_to_int(String* dst, int* res);
+void string_to_upper(String* string);
+int find_index_string_with_start_index(String* s, char c, int start_index);
+void strip(String* string);
+
 
 int read_string_before_separator(FILE* stream, String* string, char separator);
 int read_string(FILE* stream, String* string);
