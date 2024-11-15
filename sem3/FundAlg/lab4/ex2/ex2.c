@@ -1157,6 +1157,7 @@ error_msg read_instructions(IntVector **arrays, String *filename) {
 	while (!feof(file_with_instructions)) {
 		errorMsg = read_command(file_with_instructions, &instruction);
 		if (errorMsg) {
+			fclose(file_with_instructions);
 			destroy_string(&instruction);
 			return errorMsg;
 		}
@@ -1167,6 +1168,7 @@ error_msg read_instructions(IntVector **arrays, String *filename) {
 		// Ищем индекс команды
 		index_instruction = instruction_recognition(&instruction);
 		if (index_instruction == -1) {
+			fclose(file_with_instructions);
 			destroy_string(&instruction);
 			return INCORRECT_OPTIONS_ERROR;
 		}
@@ -1174,11 +1176,13 @@ error_msg read_instructions(IntVector **arrays, String *filename) {
 		// Запускаем действие
 		errorMsg = possible_instructions[index_instruction](arrays, &instruction);
 		if (errorMsg) {
+			fclose(file_with_instructions);
 			destroy_string(&instruction);
 			return errorMsg;
 		}
 	}
 
+	fclose(file_with_instructions);
 	destroy_string(&instruction);
 	return SUCCESS;
 }
