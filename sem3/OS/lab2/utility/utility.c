@@ -10,19 +10,16 @@ error_msg char_to_int(const char * src, int *result){
             fl = 1;
         } else if(src[i] >= '0' && src[i] <= '9'){
             if(*result * 10 + (src[i] - '0') < 0){
-                error_msg errorMsg ={OVERFLOW_ERROR, "Error - char_to_int: overflow int"};
-                return errorMsg;
+                return (error_msg){OVERFLOW_ERROR, "Error - char_to_int: overflow int"};
             }
             *result = *result * 10 + (src[i] - '0');
         } else{
-            error_msg errorMsg ={INCORRECT_OPTIONS_ERROR, "Error - char_to_int: unrecognized character"};
-            return errorMsg;
+            return (error_msg){INCORRECT_OPTIONS_ERROR, "Error - char_to_int: unrecognized character"};
         }
     }
     if(fl){
         *result *= -1;
     }
 
-    error_msg errorMsg = {SUCCESS, ""};
-    return errorMsg;
+    return (error_msg){SUCCESS, ""};
 }

@@ -1,6 +1,6 @@
 
-CFLAGS = -pthread -g -fsanitize=thread -o game
-COMP = clang
+CFLAGS = -Wall -Wextra -Werror -pthread -g -o game
+COMP = gcc
 
 game: main.c
 	$(COMP) $(CFLAGS) main.c utility/utility.c utility/functions.c SystemErrors/errors.c
