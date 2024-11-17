@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 typedef struct Thread_data {
-//    pthread_mutex_t mutex;
+    pthread_mutex_t* mutex;
     int* results;
     int count_games_all;
     int current_round;
