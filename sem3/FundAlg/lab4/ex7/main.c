@@ -1,7 +1,7 @@
 #include "../lib/SystemErrors2/errors.h"
 
 error_msg test(){
-	error_msg errorMsg = {INCORRECT_OPTIONS_ERROR, "Isadfsdafa"};
+	error_msg errorMsg = {INCORRECT_OPTIONS_ERROR, "test", "Некорректные данные на входе"};
 	return errorMsg;
 }
 

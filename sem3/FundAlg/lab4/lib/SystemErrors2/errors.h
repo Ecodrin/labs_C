@@ -19,6 +19,7 @@ typedef enum type_error{
 
 typedef struct error_msg{
 	type_error type;
+	char * func;
 	char * msg;
 }error_msg;
 
