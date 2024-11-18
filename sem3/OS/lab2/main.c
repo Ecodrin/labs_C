@@ -45,12 +45,21 @@ int main(int argc, char **argv) {
     for (int i = 0; i < count_threads; i++) {
         pthread_join(threads[i], NULL);
     }
-
-    printf("Player 1: %d\n", results[0]);
-    printf("Player 2: %d\n", results[1]);
-    printf("Draws: %d\n", count_experiments - results[0] - results[1]);
-
-
     pthread_mutex_destroy(&mutex);
+
+    char output[100];
+    memset(output, '\0', 100);
+    snprintf(output, 100, "Player 1: %d\n", results[0]);
+    write(STDOUT_FILENO, output, strlen(output));
+
+    memset(output, '\0', 100);
+    snprintf(output, 100, "Player 2: %d\n", results[1]);
+    write(STDOUT_FILENO, output, strlen(output));
+
+
+    memset(output, '\0', 100);
+    snprintf(output, 100, "Draws: %d\n", count_experiments - results[0] - results[1]);
+    write(STDOUT_FILENO, output, strlen(output));
+
     return 0;
 }

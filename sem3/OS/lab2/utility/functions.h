@@ -6,6 +6,7 @@
 #include "utility.h"
 
 #include <unistd.h>
+#include "string.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
