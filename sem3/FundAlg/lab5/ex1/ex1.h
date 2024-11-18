@@ -10,12 +10,14 @@ int add(int a, int b);
 int sub(int a, int b);
 
 class binary_int {
-   private:
-	int count_bits;
+   protected:
 	bool bit_representation[32];
 
+	// конструктор получающий массив bool
 	binary_int(const bool *number);
 
+   private:
+	int count_bits;
 	void to_reserve_code();
 
    public:

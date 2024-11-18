@@ -100,25 +100,39 @@ binary_int binary_int::operator-(binary_int &second) {
 }
 
 binary_int binary_int::operator*(binary_int &second) {
-	bool tmp[this->get_count_bits()];
-	std::memmove(tmp, this->bit_representation, count_bits);
+	binary_int tmp_this = *this;
+	binary_int tmp_second = second;
+	int count = 0;
+	if(this->get_bit_representation()[0]){
+		tmp_this = -tmp_this;
+		count += 1;
+	}
+	if(second.get_bit_representation()[0]){
+		count += 1;
+		tmp_second = -tmp_second;
+	}
+
+
+	bool tmp[tmp_this.get_count_bits()];
+	std::memmove(tmp, tmp_this.bit_representation, count_bits);
 	binary_int tmp_binary_int{tmp};
 
-	bool new_number[this->get_count_bits()];
+	bool new_number[tmp_this.get_count_bits()];
 	memset(new_number, false, get_count_bits());
 	binary_int binary{new_number};
 
 
+	for (int i = add(get_count_bits(), -1); i >= 0; i--) {
+		if (tmp_second.get_bit_representation()[i]) {
+			binary = (tmp_binary_int + binary);
 
-	for (int i = add(get_count_bits(), -1); i > 0; i = add(i, -1)) {
-		if (second.get_bit_representation()[i]) {
-			binary = tmp_binary_int + *this;
 		}
 		tmp_binary_int <<= 1;
 	}
-	if(second.get_bit_representation()[0]){
+	if(count == 1){
 		binary = -binary;
 	}
+
 	return binary;
 }
 
@@ -147,13 +161,16 @@ binary_int binary_int::operator>>(int shift) {
 
 	bool new_number[this->get_count_bits()];
 	std::memmove(new_number, this->get_bit_representation(), get_count_bits());
-
+	bool fl = false;
+	if(new_number[0]){
+		fl = true;
+	}
 	int i;
 	for (i = shift; i < get_count_bits(); i++) {
 		new_number[i] = get_bit_representation()[i - shift];
 	}
 
-	std::memset(new_number, false, shift);
+	std::memset(new_number, fl, shift);
 
 	return binary_int{new_number};
 }

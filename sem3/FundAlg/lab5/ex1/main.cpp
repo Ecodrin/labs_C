@@ -94,8 +94,14 @@ void test_increment_decrement() {
 	binary_int inc = a++;
 	std::cout << "a++: " << inc << std::endl;
 
+	inc = ++(--a);
+	std::cout << "++a: " << inc << std::endl;
+
 	binary_int dec = a--;
 	std::cout << "a--: " << dec << std::endl;
+
+	dec = --(++a);
+	std::cout << "--a: " << dec << std::endl;
 
 	binary_int b(-10); // -10 в десятичной
 	binary_int inc2 = b++;
@@ -105,13 +111,22 @@ void test_increment_decrement() {
 	std::cout << "b--: " << dec2 << std::endl;
 }
 
+
+void test_to_part(){
+	binary_int a{-1};
+	std::pair<binary_int, binary_int> pair;
+	pair = a.to_parts();
+	std::cout << "first_el: " << pair.first << std::endl;
+	std::cout << "second_el:" << pair.second << std::endl;
+}
+
 int main() {
 	test_addition();
 	test_subtraction();
 	test_multiplication();
 	test_shift_operations();
 	test_increment_decrement();
-
+	test_to_part();
 
 	return 0;
 }
