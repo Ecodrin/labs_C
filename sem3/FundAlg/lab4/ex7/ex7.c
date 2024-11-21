@@ -7,9 +7,9 @@ int is_figures(const String* s) {
 	return 1;
 }
 
-int is_correct_variable(const String * s){
-	for(int i = 0; i < s->size;++i){
-		if((s->arr[i] < 'a' || s->arr[i] > 'z') && (s->arr[i] < 'A' || s->arr[i] > 'Z')) {
+int is_correct_variable(const String* s) {
+	for (int i = 0; i < s->size; ++i) {
+		if ((s->arr[i] < 'a' || s->arr[i] > 'z') && (s->arr[i] < 'A' || s->arr[i] > 'Z')) {
 			return 0;
 		}
 	}
@@ -208,7 +208,7 @@ error_msg print_instruction(ArrayOfMemoryCell* arrayOfMemoryCell, String* instru
 			return errorMsg;
 		}
 		strip(&rhs);
-		if(!is_correct_variable(&rhs)){
+		if (!is_correct_variable(&rhs)) {
 			destroy_string(&rhs);
 			return (error_msg){INCORRECT_OPTIONS_ERROR, "print_instruction", "incorrect name of variable"};
 		}
@@ -240,14 +240,14 @@ error_msg equate(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction, Memo
 	int data = 0;
 	errorMsg = string_to_int(&rhs, &data);
 	if (errorMsg.type == INCORRECT_OPTIONS_ERROR) {
-		if(!is_correct_variable(&rhs)){
+		if (!is_correct_variable(&rhs)) {
 			destroy_string(&rhs);
 			return (error_msg){INCORRECT_OPTIONS_ERROR, "equate", "incorrect name of variable"};
 		}
 		MemoryCell* rhs_cell = find_memory_cell(arrayOfMemoryCell, &rhs);
 		if (!rhs_cell) {
 			destroy_string(&rhs);
-			return (error_msg){INCORRECT_OPTIONS_ERROR, "equate", "This variable doesn't exist"};;
+			return (error_msg){INCORRECT_OPTIONS_ERROR, "equate", "This variable doesn't exist"};
 		}
 		data = rhs_cell->value;
 	} else if (errorMsg.type) {
@@ -272,7 +272,6 @@ int remain(int a, int b) { return a % b; }
 
 error_msg counting(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction, MemoryCell* memoryCell, int index_eq,
                    Operation operation) {
-
 	int (*operations[5])(int a, int b) = {add, sub, multiple, divide, remain};
 
 	error_msg errorMsg;
@@ -309,7 +308,7 @@ error_msg counting(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction, Me
 	int data_second = 0;
 	errorMsg = string_to_int(&rhs_first, &data_first);
 	if (errorMsg.type == INCORRECT_OPTIONS_ERROR) {
-		if(!is_correct_variable(&rhs_first)){
+		if (!is_correct_variable(&rhs_first)) {
 			destroy_string(&rhs_first);
 			destroy_string(&rhs_second);
 			return (error_msg){INCORRECT_OPTIONS_ERROR, "equate", "incorrect name of variable"};
@@ -329,7 +328,7 @@ error_msg counting(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction, Me
 	errorMsg = string_to_int(&rhs_second, &data_second);
 
 	if (errorMsg.type == INCORRECT_OPTIONS_ERROR) {
-		if(!is_correct_variable(&rhs_second)){
+		if (!is_correct_variable(&rhs_second)) {
 			destroy_string(&rhs_first);
 			destroy_string(&rhs_second);
 			return (error_msg){INCORRECT_OPTIONS_ERROR, "equate", "incorrect name of variable"};
@@ -354,9 +353,8 @@ error_msg counting(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction, Me
 	return (error_msg){SUCCESS, "", ""};
 }
 
-
 error_msg execution_instruction(ArrayOfMemoryCell* arrayOfMemoryCell, String* instruction) {
-	if(instruction->size == 0){
+	if (instruction->size == 0) {
 		return (error_msg){SUCCESS, "", ""};
 	}
 	// Выделяем левую часть выражения
@@ -379,7 +377,7 @@ error_msg execution_instruction(ArrayOfMemoryCell* arrayOfMemoryCell, String* in
 		return errorMsg;
 	}
 	strip(&lhs);
-	if(!is_correct_variable(&lhs)){
+	if (!is_correct_variable(&lhs)) {
 		destroy_string(&lhs);
 		return (error_msg){INCORRECT_OPTIONS_ERROR, "execution_instruction", "incorrect name of variable"};
 	}
