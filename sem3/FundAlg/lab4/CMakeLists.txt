@@ -19,4 +19,9 @@ add_executable(ex2 ex2/ex2.c ex2/ex2.h
 
 
 add_executable(ex7 ex7/main.c
-        lib/SystemErrors2/errors.c)
+        ex7/ex7.c
+        ex7/ex7.h
+        lib2/SystemErrors2/errors.c
+        lib2/vector/charvector.c
+        lib2/mstring/mstring.c
+)

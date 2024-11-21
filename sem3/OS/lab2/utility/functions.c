@@ -11,7 +11,7 @@ error_msg get_ops(int argc, char **argv, int *count_threads, int *count_games_al
     if (errorMsg.type) {
         return errorMsg;
     }
-    if (*count_threads <= 0) {
+    if (*count_threads < 0) {
         return (error_msg) {INCORRECT_OPTIONS_ERROR, "Error - get_ops: count_threads must be greater than 0"};
     }
 
@@ -71,6 +71,7 @@ void *game_manager(void *arg) {
     int total_points_player2 = data->total_points_player2;
     int count_games_all = data->count_games_all;
     int count_experiments = data->count_experiments;
+    int fl_is_one_thread = data->fl_is_one_thread;
 
     int local_res[2] = {0, 0};
     for (int i = 0; i < count_experiments; ++i) {
@@ -93,11 +94,12 @@ void *game_manager(void *arg) {
         }
     }
 
-    pthread_mutex_lock(mutex);
+    if(!fl_is_one_thread)
+        pthread_mutex_lock(mutex);
     data->results[0] += local_res[0];
     data->results[1] += local_res[1];
-
-    pthread_mutex_unlock(mutex);
+    if(!fl_is_one_thread)
+        pthread_mutex_unlock(mutex);
 
     free(data);
     return NULL;

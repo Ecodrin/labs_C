@@ -19,6 +19,7 @@ typedef struct Thread_data {
     int total_points_player1;
     int total_points_player2;
     int count_experiments;
+    int fl_is_one_thread;
 } Thread_data;
 
 error_msg get_ops(int argc, char **argv, int *count_threads, int *count_games_all, int *current_round,

@@ -15,3 +15,4 @@ add_executable(lab2 main.c
 set(CMAKE_C_FLAGS -fsanitize=thread )
 
 target_link_libraries(lab2 -lpthread)
+

@@ -29,6 +29,9 @@ all:
 	cd lib/mstring/ && make
 	cd lib/vector/ && make
 	cd lib/SystemErrors/ && make
+	cd lib2/mstring/ && make
+	cd lib2/vector/ && make
+	cd lib2/SystemErrors/ && make
 	for dir in ex1 ex2; do \
 		cd $$dir ;\
 		make ;\
