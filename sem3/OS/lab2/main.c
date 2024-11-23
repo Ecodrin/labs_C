@@ -1,8 +1,7 @@
 #include "utility/functions.h"
 
 
-
-void print_result(int results[2], int count_experiments){
+void print_result(int results[2], int count_experiments) {
     char output[100];
     memset(output, '\0', 100);
     snprintf(output, 100, "Player 1: %d\n", results[0]);
@@ -39,7 +38,7 @@ int main(int argc, char **argv) {
 
 
     // однопоточка
-    if(count_threads == 0){
+    if (count_threads == 0) {
         Thread_data *data = (Thread_data *) malloc(sizeof(Thread_data));
         data->results = results;
         data->mutex = NULL;
@@ -83,7 +82,6 @@ int main(int argc, char **argv) {
     pthread_mutex_destroy(&mutex);
 
     print_result(results, count_experiments);
-
 
     return 0;
 }

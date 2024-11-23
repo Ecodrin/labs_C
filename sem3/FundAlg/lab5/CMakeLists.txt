@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(lab5)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 20)
 
 
 find_package(GTest REQUIRED)
@@ -49,3 +49,5 @@ target_link_libraries(test_ex4 ${GTEST_LIBRARIES} pthread)
 
 target_link_libraries(test_ex6 ${GTEST_LIBRARIES} pthread)
 
+add_executable(ex7 ex7/ex7.cpp ex7/ex7.h
+        ex7/main.cpp)

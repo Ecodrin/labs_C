@@ -2,7 +2,8 @@
 #ifndef LAB4_ERRORS_H
 #define LAB4_ERRORS_H
 
-#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
 
 typedef enum type_error{

@@ -6,14 +6,14 @@
 #include "utility.h"
 
 #include <unistd.h>
-#include "string.h"
+#include <string.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 typedef struct Thread_data {
-    pthread_mutex_t* mutex;
-    int* results;
+    pthread_mutex_t *mutex;
+    int *results;
     int count_games_all;
     int current_round;
     int total_points_player1;
