@@ -2,12 +2,12 @@
 #ifndef LAB5_EX7_H
 #define LAB5_EX7_H
 
+#include <algorithm>
 #include <ctime>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #define DEFAULT_PRICE_PRODUCT_PLACE 0.1
 #define DEFAULT_INCREASE_PERISHABLE_PRODUCT 0.1
@@ -52,6 +52,10 @@ class PerishableProduct : public Product {
 	PerishableProduct(const std::string& name, size_t id, double weight, double price, unsigned int storage_days,
 	                  time_t expiration_date);
 
+	PerishableProduct(const Product& product, const PerishableProduct& perishableProduct);
+	PerishableProduct & operator=(const PerishableProduct & perishableProduct);
+
+
 	time_t getExpirationDate() const;
 	std::string get_category() const override;
 	double calculateStorageFee() const override;
@@ -66,6 +70,9 @@ class ElectronicProduct : public Product {
 	ElectronicProduct(const std::string& name, int id, double weight, double price, unsigned int storageDays,
 	                  size_t warrantyPeriod, size_t powerRating);
 
+	ElectronicProduct(const Product& product, const ElectronicProduct& electronicProduct);
+	ElectronicProduct & operator=(const ElectronicProduct & electronicProduct);
+
 	std::string get_category() const override;
 	void displayInfo() const override;
 };
@@ -77,6 +84,10 @@ class BuildingMaterial : public Product {
    public:
 	BuildingMaterial(const std::string& name, size_t id, double weight, double price, unsigned int storageDays,
 	                 double flammability);
+
+	BuildingMaterial(const Product& product, const BuildingMaterial& buildingMaterial);
+
+	BuildingMaterial operator=(const BuildingMaterial & buildingMaterial);
 
 	std::string get_category() const override;
 	double calculateStorageFee() const override;
@@ -95,11 +106,12 @@ class Warehouse {
 	std::vector<PerishableProduct*> getExpiringProducts(size_t days) const;
 	void displayInventory() const;
 
-	Warehouse& operator+=(Product* product) &;
+	Warehouse& operator+=(const ElectronicProduct& product) &;
+	Warehouse& operator+=(const BuildingMaterial& product) &;
+	Warehouse& operator+=(const PerishableProduct& product) &;
 	Warehouse& operator-=(size_t id) &;
-	Product* operator[](size_t id) const;
+	Product* operator[](size_t id) &;
 	double calculateTotalStorageFee() const;
-
 };
 
 std::ostream& operator<<(std::ostream& ostream, const Warehouse& warehouse);

@@ -66,6 +66,18 @@ PerishableProduct::PerishableProduct(const std::string& name, size_t id, double 
 time_t PerishableProduct::getExpirationDate() const { return expirationDate; }
 std::string PerishableProduct::get_category() const { return "PerishableProduct"; }
 
+PerishableProduct::PerishableProduct(const Product& product, const PerishableProduct& perishableProduct)
+    : Product(product) {
+	storage_days =  perishableProduct.storage_days;
+}
+PerishableProduct& PerishableProduct::operator=(const PerishableProduct& perishableProduct){
+	if(this != &perishableProduct){
+		Product{perishableProduct};
+		storage_days = perishableProduct.storage_days;
+	}
+	return *this;
+}
+
 ElectronicProduct::ElectronicProduct(const std::string& name, int id, double weight, double price,
                                      unsigned int storageDays, size_t warrantyPeriod, size_t powerRating)
     : Product(name, id, weight, price, storageDays), warrantyPeriod(warrantyPeriod), powerRating(powerRating) {}
@@ -78,6 +90,20 @@ void ElectronicProduct::displayInfo() const {
 
 std::string ElectronicProduct::get_category() const { return "ElectronicProduct"; }
 
+ElectronicProduct::ElectronicProduct(const Product& product, const ElectronicProduct& electronicProduct)
+    : Product(product) {
+	powerRating = electronicProduct.powerRating;
+	warrantyPeriod = electronicProduct.warrantyPeriod;
+}
+ElectronicProduct& ElectronicProduct::operator=(const ElectronicProduct& electronicProduct) {
+	if(this != &electronicProduct){
+		Product{electronicProduct};
+		warrantyPeriod = electronicProduct.warrantyPeriod;
+		powerRating = electronicProduct.powerRating;
+	}
+	return *this;
+}
+
 double BuildingMaterial::calculateStorageFee() const {
 	return (flammability > 0) ? Product::calculateStorageFee() * flammability : Product::calculateStorageFee();
 }
@@ -89,15 +115,43 @@ BuildingMaterial::BuildingMaterial(const std::string& name, size_t id, double we
 	}
 }
 std::string BuildingMaterial::get_category() const { return "BuildingMaterial"; }
-
-Warehouse& Warehouse::operator+=(Product* product) & {
-	if (products.find(product->get_id()) != products.end()) {
-		throw repeated_id();
+BuildingMaterial::BuildingMaterial(const Product& product, const BuildingMaterial& buildingMaterial)
+    : Product(product) {
+	flammability = buildingMaterial.flammability;
+}
+BuildingMaterial BuildingMaterial::operator=(const BuildingMaterial& buildingMaterial) {
+	if(this != &buildingMaterial){
+		Product{buildingMaterial};
+		flammability = buildingMaterial.flammability;
 	}
-	products[product->get_id()] = product;
 	return *this;
 }
-std::map<size_t, Product*> Warehouse::get_products() const { return products; }
+
+Warehouse& Warehouse::operator+=(const ElectronicProduct& product) & {
+	if (products.find(product.get_id()) != products.end()) {
+		throw repeated_id();
+	}
+	products[product.get_id()] = new ElectronicProduct{product};
+	return *this;
+}
+
+Warehouse& Warehouse::operator+=(const PerishableProduct& product) & {
+	if (products.find(product.get_id()) != products.end()) {
+		throw repeated_id();
+	}
+	products[product.get_id()] = new PerishableProduct{product};
+	return *this;
+}
+
+Warehouse& Warehouse::operator+=(const BuildingMaterial& product) & {
+	if (products.find(product.get_id()) != products.end()) {
+		throw repeated_id();
+	}
+	products[product.get_id()] = new BuildingMaterial{product};
+	return *this;
+}
+
+
 
 Warehouse& Warehouse::operator-=(size_t id) & {
 	std::map<size_t, Product*>::iterator f = products.find(id);
@@ -107,12 +161,13 @@ Warehouse& Warehouse::operator-=(size_t id) & {
 	}
 	return *this;
 }
-Product* Warehouse::operator[](size_t id) const {
-	std::map<size_t, Product*>::const_iterator f = products.find(id);
+
+Product* Warehouse::operator[](size_t id) & {
+	std::map<size_t, Product*>::iterator f = products.find(id);
 	if (f == products.end()) {
 		return nullptr;
 	}
-	return f->second;
+	return (f->second);
 }
 std::ostream& operator<<(std::ostream& ostream, const Warehouse& warehouse) {
 	for (const std::pair<size_t, Product*> pr : warehouse.get_products()) {
@@ -156,19 +211,22 @@ std::vector<PerishableProduct*> Warehouse::getExpiringProducts(size_t days) cons
 }
 void Warehouse::displayInventory() const {
 	std::map<std::string, std::vector<Product*>> tmp;
-	for (const std::pair<size_t, Product*>& el : products) {
+	for (const std::pair<size_t, Product*> el : products) {
 		tmp[el.second->get_category()].push_back(el.second);
 	}
-	for (const std::pair<std::string, std::vector<Product*>>& category : tmp) {
+	for (const std::pair<std::string, std::vector<Product*>> category : tmp) {
 		std::cout << "Category: " << category.first << std::endl;
-		for (const Product* product : category.second) {
+		for (const Product * product : category.second) {
 			product->displayInfo();
 			std::cout << "------------------------\n";
 		}
 	}
 }
+std::map<size_t, Product*> Warehouse::get_products() const {
+	return products;
+}
 Warehouse::~Warehouse() {
-	for (const std::pair<size_t, Product*> pair : products) {
-		delete pair.second;
+	for(const std::pair <size_t, Product*> &el : products){
+		delete el.second;
 	}
 }

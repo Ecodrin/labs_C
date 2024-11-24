@@ -1,6 +1,6 @@
 #include "ex7.h"
 #include <gtest/gtest.h>
-#include <stdexcept>
+#include <ctime>
 
 // Тесты для класса Product
 TEST(ProductTest, Constructor) {
@@ -80,14 +80,14 @@ TEST(BuildingMaterialTest, CalculateStorageFee) {
 // Тесты для класса Warehouse
 TEST(WarehouseTest, AddProduct) {
 	Warehouse warehouse;
-	Product* product = new Product("Test Product", 1, 1.0, 10.0, 30);
+	PerishableProduct product("Perishable Product", 1, 1.0, 10.0, 30, time(0) + 7 * 24 * 60 * 60);
 	warehouse += product;
-	EXPECT_EQ(warehouse[1]->get_name(), "Test Product");
+	EXPECT_EQ(warehouse[1]->get_name(), "Perishable Product");
 }
 
 TEST(WarehouseTest, RemoveProduct) {
 	Warehouse warehouse;
-	Product* product = new Product("Test Product", 1, 1.0, 10.0, 30);
+	PerishableProduct product("Perishable Product", 1, 1.0, 10.0, 30, time(0) + 7 * 24 * 60 * 60);
 	warehouse += product;
 	warehouse -= 1;
 	EXPECT_EQ(warehouse[1], nullptr);
@@ -95,18 +95,18 @@ TEST(WarehouseTest, RemoveProduct) {
 
 TEST(WarehouseTest, CalculateTotalStorageFee) {
 	Warehouse warehouse;
-	Product* product1 = new Product("Test Product 1", 1, 1.0, 10.0, 30);
-	Product* product2 = new Product("Test Product 2", 2, 2.0, 20.0, 60);
+	PerishableProduct product1("Perishable Product 1", 1, 1.0, 10.0, 30, time(0) + 7 * 24 * 60 * 60);
+	ElectronicProduct product2("Electronic Product 2", 2, 2.0, 20.0, 60, 12, 65);
 	warehouse += product1;
 	warehouse += product2;
-	double expectedFee = 1.0 * DEFAULT_PRICE_PRODUCT_PLACE + 2.0 * DEFAULT_PRICE_PRODUCT_PLACE;
+	double expectedFee = 0.53;
 	EXPECT_EQ(warehouse.calculateTotalStorageFee(), expectedFee);
 }
 
 TEST(WarehouseTest, GetProductsByCategory) {
 	Warehouse warehouse;
-	Product* product1 = new PerishableProduct("Perishable Product", 1, 1.0, 10.0, 30, time(0) + 7 * 24 * 60 * 60);
-	Product* product2 = new ElectronicProduct("Electronic Product", 2, 1.0, 10.0, 30, 12, 65);
+	PerishableProduct product1("Perishable Product", 1, 1.0, 10.0, 30, time(0) + 7 * 24 * 60 * 60);
+	ElectronicProduct product2("Electronic Product", 2, 1.0, 10.0, 30, 12, 65);
 	warehouse += product1;
 	warehouse += product2;
 	std::vector<Product*> products = warehouse.get_products_by_category("PerishableProduct");
@@ -117,7 +117,7 @@ TEST(WarehouseTest, GetProductsByCategory) {
 TEST(WarehouseTest, GetExpiringProducts) {
 	Warehouse warehouse;
 	time_t expirationDate = time(0) + 7 * 24 * 60 * 60;
-	Product* product1 = new PerishableProduct("Perishable Product", 1, 1.0, 10.0, 30, expirationDate);
+	PerishableProduct product1("Perishable Product", 1, 1.0, 10.0, 30, expirationDate);
 	warehouse += product1;
 	std::vector<PerishableProduct*> expiringProducts = warehouse.getExpiringProducts(10);
 	EXPECT_EQ(expiringProducts.size(), 1);
