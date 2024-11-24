@@ -197,3 +197,18 @@ Vector::Vector(std::vector<double>::const_iterator begin, std::vector<double>::c
 	_data = new double [_size];
 	std::copy(begin, end, _data);
 }
+Vector::Vector(const Vector &vector) {
+	_size = vector._size;
+	_capacity = vector._capacity;
+	_data = new double [_size];
+	std::memmove(_data, vector._data, _size);
+}
+
+Vector &Vector::operator=(const Vector &vector) {
+	if(this != &vector){
+		_size = vector.size();
+		_capacity = vector.capacity();
+		_data = vector._data;
+	}
+	return *this;
+}

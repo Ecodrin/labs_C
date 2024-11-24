@@ -5,32 +5,34 @@ void Product::is_correct_product() const {
 		throw incorrect_data_product();
 	}
 }
-Product::Product(const std::string& _name, size_t _id, double _weight, double _price, unsigned int _shelf_life_in_days)
-    : name(_name), id(_id), weight(_weight), price(_price) , shelf_life_in_days(_shelf_life_in_days) {
+Product::Product(const std::string& _name, size_t _id, double _weight, double _price, unsigned int _storage_days)
+    : name(_name), id(_id), weight(_weight), price(_price), storage_days(_storage_days) {
 	is_correct_product();
 }
-Product::Product(const Product& product) {
-	name = product.name;
-	id = product.id;
-	weight = product.weight;
-	price = product.weight;
-	shelf_life_in_days = product.shelf_life_in_days;
+Product::Product(const Product& product)
+    : name(product.name),
+      id(product.id),
+      weight(product.weight),
+      price(product.price),
+      storage_days(product.storage_days) {
 	is_correct_product();
 }
 Product& Product::operator=(const Product& product) {
-	name = product.name;
-	id = product.id;
-	weight = product.weight;
-	price = product.weight;
-	shelf_life_in_days = product.shelf_life_in_days;
-	is_correct_product();
+	if (this != &product) {
+		name = product.name;
+		id = product.id;
+		weight = product.weight;
+		price = product.price;
+		storage_days = product.storage_days;
+		is_correct_product();
+	}
 	return *this;
 }
 Product::~Product() {
 	id = 0;
 	weight = 0;
 	price = 0;
-	shelf_life_in_days = 0;
+	storage_days = 0;
 	std::destroy(name.begin(), name.end());
 }
 void Product::displayInfo() const {
@@ -38,104 +40,135 @@ void Product::displayInfo() const {
 	std::cout << "Id: " << id << std::endl;
 	std::cout << "Weight: " << weight << std::endl;
 	std::cout << "Price: " << price << std::endl;
-	std::cout << "Shelf life in days: " << shelf_life_in_days << std::endl;
+	std::cout << "Shelf life in days: " << storage_days << std::endl;
 }
-double Product::calculateStorageFee() const { return weight * price * shelf_life_in_days; }
 
-void Date::is_correct_date() const {
-	if (month < 1 || month > 12 || year < 0) {
-		throw incorrect_date();
-	}
+double Product::calculateStorageFee() const { return weight * DEFAULT_PRICE_PRODUCT_PLACE; }
 
-	switch (month) {
-		case 1:
-		case 3:
-		case 5:
-		case 7:
-		case 8:
-		case 10:
-		case 12:
-			if (day < 1 || day > 31) {
-				throw incorrect_date();
-			}
-			break;
-		case 4:
-		case 6:
-		case 9:
-		case 11:
-			if (day < 1 || day > 30) {
-				throw incorrect_date();
-			}
-			break;
-		case 2:
-			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-				if (day < 1 || day > 29) {
-					throw incorrect_date();
-				}
-			} else {
-				if (day < 1 || day > 28) {
-					throw incorrect_date();
-				}
-			}
-			break;
-		default:
-			throw incorrect_date();
-	}
-}
-Date::Date(size_t day, size_t month, size_t year) {
-	this->day = day;
-	this->month = month;
-	this->year = year;
-	is_correct_date();
-}
-Date::Date(size_t days) {
-	year = 1970;
-	month = 1;
-	day = 1;
+size_t Product::get_id() const { return id; }
 
-	const size_t days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+std::string Product::get_name() const { return name; }
 
-	while (days > 0) {
-		bool is_leap_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-		size_t days_in_current_month = days_in_month[month - 1];
-		if (month == 2 && is_leap_year) {
-			days_in_current_month = 29;
-		}
-
-		if (days >= days_in_current_month) {
-			days -= days_in_current_month;
-			month++;
-			if (month > 12) {
-				month = 1;
-				year++;
-			}
-		} else {
-			day += days;
-			days = 0;
-		}
-	}
-}
-int Date::operator<=>(const Date& other) const {
-	if (other.year != year) {
-		return year - other.year;
-	}
-	if (month != other.month) {
-		return month - other.month;
-	}
-	return day - other.day;
-}
+double Product::get_weight() const { return weight; }
+std::string Product::get_category() const { return "Product"; }
+double Product::get_price() const { return price; }
 
 double PerishableProduct::calculateStorageFee() const {
-	// TODO
+	double days_before = difftime(expirationDate, time(0)) / 60 / 60 / 24;
+	if (days_before < 0) days_before = 0;
+	return Product::calculateStorageFee() * (1 + (storage_days - days_before) * DEFAULT_INCREASE_PERISHABLE_PRODUCT);
 }
 
 PerishableProduct::PerishableProduct(const std::string& name, size_t id, double weight, double price,
-                                     unsigned int shelfLifeInDays)
-    : Product(name, id, weight, price, shelfLifeInDays) {
-	expirationDate = {shelfLifeInDays};
+                                     unsigned int storage_days, time_t expiration_date)
+    : Product(name, id, weight, price, storage_days), expirationDate{expiration_date} {}
+
+time_t PerishableProduct::getExpirationDate() const { return expirationDate; }
+std::string PerishableProduct::get_category() const { return "PerishableProduct"; }
+
+ElectronicProduct::ElectronicProduct(const std::string& name, int id, double weight, double price,
+                                     unsigned int storageDays, size_t warrantyPeriod, size_t powerRating)
+    : Product(name, id, weight, price, storageDays), warrantyPeriod(warrantyPeriod), powerRating(powerRating) {}
+
+void ElectronicProduct::displayInfo() const {
+	Product::displayInfo();
+	std::cout << "Warranty Period: " << warrantyPeriod << " months\n";
+	std::cout << "Power Rating: " << powerRating << " W\n";
 }
 
-std::ostream& operator<<(std::ostream& ostream, const Date& date) {
-	ostream << date.day << "." << date.month << "." << date.year;
+std::string ElectronicProduct::get_category() const { return "ElectronicProduct"; }
+
+double BuildingMaterial::calculateStorageFee() const {
+	return (flammability > 0) ? Product::calculateStorageFee() * flammability : Product::calculateStorageFee();
+}
+BuildingMaterial::BuildingMaterial(const std::string& name, size_t id, double weight, double price,
+                                   unsigned int storageDays, double flammability)
+    : Product(name, id, weight, price, storageDays), flammability(flammability) {
+	if (flammability < 0) {
+		throw flammability_must_be_less_than_null();
+	}
+}
+std::string BuildingMaterial::get_category() const { return "BuildingMaterial"; }
+
+Warehouse& Warehouse::operator+=(Product* product) & {
+	if (products.find(product->get_id()) != products.end()) {
+		throw repeated_id();
+	}
+	products[product->get_id()] = product;
+	return *this;
+}
+std::map<size_t, Product*> Warehouse::get_products() const { return products; }
+
+Warehouse& Warehouse::operator-=(size_t id) & {
+	std::map<size_t, Product*>::iterator f = products.find(id);
+	if (f != products.end()) {
+		delete f->second;
+		products.erase(f);
+	}
+	return *this;
+}
+Product* Warehouse::operator[](size_t id) const {
+	std::map<size_t, Product*>::const_iterator f = products.find(id);
+	if (f == products.end()) {
+		return nullptr;
+	}
+	return f->second;
+}
+std::ostream& operator<<(std::ostream& ostream, const Warehouse& warehouse) {
+	for (const std::pair<size_t, Product*> pr : warehouse.get_products()) {
+		pr.second->displayInfo();
+		std::cout << "------------------------\n";
+	}
+
 	return ostream;
+}
+
+double Warehouse::calculateTotalStorageFee() const {
+	double totalFee = 0.0;
+	for (const std::pair<size_t, Product*> pair : products) {
+		totalFee += pair.second->calculateStorageFee();
+	}
+	return totalFee;
+}
+
+std::vector<Product*> Warehouse::get_products_by_category(const std::string& category) const {
+	std::vector<Product*> result;
+	for (const std::pair<size_t, Product*> product : products) {
+		if (product.second->get_category() == category) {
+			result.push_back(product.second);
+		}
+	}
+	return result;
+}
+
+std::vector<PerishableProduct*> Warehouse::getExpiringProducts(size_t days) const {
+	std::vector<PerishableProduct*> result;
+	for (const std::pair<size_t, Product*> pair : products) {
+		PerishableProduct* pr = dynamic_cast<PerishableProduct*>(pair.second);
+		if (pr) {
+			double diff = difftime(time(0), pr->getExpirationDate()) / 60 / 60 / 24;  //  разница в секундах -> в днях
+			if (diff < days) {
+				result.push_back(pr);
+			}
+		}
+	}
+	return result;
+}
+void Warehouse::displayInventory() const {
+	std::map<std::string, std::vector<Product*>> tmp;
+	for (const std::pair<size_t, Product*>& el : products) {
+		tmp[el.second->get_category()].push_back(el.second);
+	}
+	for (const std::pair<std::string, std::vector<Product*>>& category : tmp) {
+		std::cout << "Category: " << category.first << std::endl;
+		for (const Product* product : category.second) {
+			product->displayInfo();
+			std::cout << "------------------------\n";
+		}
+	}
+}
+Warehouse::~Warehouse() {
+	for (const std::pair<size_t, Product*> pair : products) {
+		delete pair.second;
+	}
 }

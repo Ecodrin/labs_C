@@ -18,11 +18,11 @@ class Vector {
 
    public:
 	Vector(size_t n = 0, double default_value = 0);
-
 	Vector(std::vector<double>::iterator begin, std::vector<double>::iterator end);
 	Vector(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end);
-
 	Vector(std::initializer_list<double> init);
+	Vector(const Vector & vector);
+	Vector& operator=(const Vector & vector);
 
 	~Vector();
 

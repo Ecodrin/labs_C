@@ -22,6 +22,8 @@ class binary_int {
 
    public:
 	binary_int(int number = 0);
+	binary_int(const binary_int & bi);
+	binary_int&operator=(const binary_int & bi);
 
 	bool *get_bit_representation();
 	int get_count_bits() const;
