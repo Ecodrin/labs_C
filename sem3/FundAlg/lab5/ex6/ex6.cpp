@@ -109,24 +109,24 @@ bool Vector::operator==(const Vector &other) const {
 	}
 	return true;
 }
-int Vector::operator<=>(const Vector &other) const {
+std::weak_ordering Vector::operator<=>(const Vector &other) const {
 	if (other.size() != size()) {
 		if (other.size() > size()) {
-			return -1;
+			return std::weak_ordering::less;
 		} else {
-			return 1;
+			return std::weak_ordering::greater;
 		}
 	}
 	for (int i = 0; i < size(); ++i) {
 		if (data()[i] != other[i]) {
 			if (data()[i] > other[i]) {
-				return 1;
+				return std::weak_ordering::greater;
 			} else {
-				return -1;
+				return std::weak_ordering::less;
 			}
 		}
 	}
-	return 0;
+	return std::weak_ordering::equivalent;
 }
 
 std::ostream &operator<<(std::ostream &ostream, const Vector &vector) {
@@ -169,6 +169,31 @@ bool Vector::Iterator::operator==(const Iterator &other) const { return ptr == o
 
 bool Vector::Iterator::operator!=(const Iterator &other) const { return ptr != other.ptr; }
 
+Vector::Iterator &Vector::Iterator::operator+=(size_t n) & {
+	*this = *this + n;
+	return *this;
+}
+Vector::Iterator &Vector::Iterator::operator-=(size_t n) & {
+	*this = *this - n;
+	return *this;
+}
+std::weak_ordering Vector::Iterator::operator<=>(const Vector::Iterator &other) const {
+	if (ptr > other.ptr) {
+		return std::weak_ordering::greater;
+	}
+	if (ptr < other.ptr) {
+		return std::weak_ordering::less;
+	}
+	return std::weak_ordering::equivalent;
+}
+bool Vector::Iterator::operator<(const Vector::Iterator &other) const {
+	return (*this <=> other) == std::weak_ordering::less;
+}
+
+bool Vector::Iterator::operator>(const Vector::Iterator &other) const {
+	return (*this <=> other) == std::weak_ordering::greater;
+}
+
 Vector::Iterator Vector::begin() { return Vector::Iterator{_data}; }
 
 Vector::Iterator Vector::end() { return Vector::Iterator{_data + _size}; }
@@ -185,18 +210,7 @@ Vector::Vector(std::initializer_list<double> init) {
 	_data = new double[_size];
 	std::copy(init.begin(), init.end(), _data);
 }
-Vector::Vector(std::vector<double>::iterator begin, std::vector<double>::iterator end) {
-	_size = end - begin;
-	_capacity = _size;
-	_data = new double [_size];
-	std::copy(begin, end, _data);
-}
-Vector::Vector(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end) {
-	_size = end - begin;
-	_capacity = _size;
-	_data = new double [_size];
-	std::copy(begin, end, _data);
-}
+
 Vector::Vector(const Vector &vector) {
 	_size = vector._size;
 	_capacity = vector._capacity;
@@ -211,4 +225,16 @@ Vector &Vector::operator=(const Vector &vector) {
 		_data = vector._data;
 	}
 	return *this;
+}
+
+double &Vector::Iterator::operator[](size_t index) { return *(ptr + index); }
+
+const double &Vector::Iterator::operator[](size_t index) const { return *(ptr + index); }
+
+bool Vector::Iterator::operator<=(const Vector::Iterator &other) const {
+	return (*this <=> other) == std::weak_ordering::less || (*this <=> other) == std::weak_ordering::equivalent;
+}
+
+bool Vector::Iterator::operator>=(const Vector::Iterator &other) const {
+	return (*this <=> other) == std::weak_ordering::greater || (*this <=> other) == std::weak_ordering::equivalent;
 }

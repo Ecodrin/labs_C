@@ -11,7 +11,7 @@ int sub(int a, int b);
 
 class binary_int {
    protected:
-	bool bit_representation[32];
+	bool bit_representation[sizeof(int) * 8];
 
 	// конструктор получающий массив bool
 	binary_int(const bool *number);
