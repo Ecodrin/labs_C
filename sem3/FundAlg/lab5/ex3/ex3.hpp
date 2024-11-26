@@ -1,19 +1,14 @@
-
-
-#ifndef LAB5_EX3_H
-#define LAB5_EX3_H
+#pragma once
 
 #include <cstring>
 #include <iostream>
-
-class incorrect_index_array : std::exception {};
 
 class logical_values_array {
    protected:
 	unsigned int value;
 
    public:
-	logical_values_array(unsigned int value = 0) : value(value){};
+	logical_values_array(unsigned int value) : value(value){};
 	logical_values_array(const logical_values_array& ar);
 	logical_values_array& operator=(const logical_values_array& ar);
 
@@ -35,5 +30,3 @@ class logical_values_array {
 };
 
 std::ostream& operator<<(std::ostream& out, const logical_values_array& value);
-
-#endif  // LAB5_EX3_H

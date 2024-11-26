@@ -1,6 +1,4 @@
-
-#ifndef LAB5_EX6_H
-#define LAB5_EX6_H
+#pragma once
 
 #include <algorithm>
 #include <cstring>
@@ -8,7 +6,6 @@
 #include <iostream>
 #include <iterator>
 
-class incorrect_index : std::exception {};
 
 class Vector {
    private:
@@ -62,8 +59,8 @@ class Vector {
 	Iterator begin();
 	Iterator end();
 
-	const Iterator begin() const;
-	const Iterator end() const;
+	Iterator cbegin() const;
+	Iterator cend() const;
 };
 
 std::ostream& operator<<(std::ostream& ostream, const Vector& vector);
@@ -112,5 +109,3 @@ Vector::Vector(InputIt begin, InputIt end, InputIt::iterator_category *p)  {
 	std::copy(begin, end, _data);
 }
 
-
-#endif  // LAB5_EX6_H

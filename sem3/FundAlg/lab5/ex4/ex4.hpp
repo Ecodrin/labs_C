@@ -1,10 +1,8 @@
-#ifndef LAB5_EX4_H
-#define LAB5_EX4_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
 
-class div_by_null : std::exception {};
 
 class Complex {
    protected:
@@ -12,7 +10,7 @@ class Complex {
 	double imaginary;
 
    public:
-	Complex(const double real = 0, const double imaginary = 0) : real(real), imaginary(imaginary){};
+	explicit Complex(const double real = 0, const double imaginary = 0) : real(real), imaginary(imaginary){};
 	Complex(const Complex& complex);
 	Complex& operator=(const Complex& complex);
 
@@ -34,5 +32,3 @@ class Complex {
 };
 
 std::ostream& operator<<(std::ostream& out, const Complex& complex);
-
-#endif  // LAB5_EX4_H

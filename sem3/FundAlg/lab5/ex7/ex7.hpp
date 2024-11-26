@@ -1,6 +1,4 @@
-
-#ifndef LAB5_EX7_H
-#define LAB5_EX7_H
+#pragma once
 
 #include <algorithm>
 #include <ctime>
@@ -8,6 +6,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 
 #define DEFAULT_PRICE_PRODUCT_PLACE 0.1
 #define DEFAULT_INCREASE_PERISHABLE_PRODUCT 0.1
@@ -87,7 +86,7 @@ class BuildingMaterial : public Product {
 
 	BuildingMaterial(const Product& product, const BuildingMaterial& buildingMaterial);
 
-	BuildingMaterial operator=(const BuildingMaterial & buildingMaterial);
+	BuildingMaterial& operator=(const BuildingMaterial & buildingMaterial);
 
 	std::string get_category() const override;
 	double calculateStorageFee() const override;
@@ -99,16 +98,13 @@ class Warehouse {
 
    public:
 
-	~Warehouse();
 
 	std::map<size_t, Product*> get_products() const;
 	std::vector<Product*> get_products_by_category(const std::string& category) const;
 	std::vector<PerishableProduct*> getExpiringProducts(size_t days) const;
 	void displayInventory() const;
 
-	Warehouse& operator+=(const ElectronicProduct& product) &;
-	Warehouse& operator+=(const BuildingMaterial& product) &;
-	Warehouse& operator+=(const PerishableProduct& product) &;
+	Warehouse& operator+=(Product& product) &;
 	Warehouse& operator-=(size_t id) &;
 	Product* operator[](size_t id) &;
 	double calculateTotalStorageFee() const;
@@ -116,4 +112,3 @@ class Warehouse {
 
 std::ostream& operator<<(std::ostream& ostream, const Warehouse& warehouse);
 
-#endif  // LAB5_EX7_H
