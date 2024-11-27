@@ -46,14 +46,11 @@ error_msg resize_binary_heap(BinaryHeap *binaryHeap, size_t new_capacity) {
 	if (binaryHeap == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "resize_binary_heap", "get pointer to null"};
 	}
-	if (binaryHeap->size < binaryHeap->capacity) {
-		return (error_msg){SUCCESS, "", ""};
-	}
 	Application **tmp = (Application **)realloc(binaryHeap->data, new_capacity * sizeof(Application *));
 	if (!tmp) {
 		return (error_msg){MEMORY_ALLOCATED_ERROR, "resize_binary_heap", "memory allocated: realloc"};
 	}
-	binaryHeap->capacity *= 2;
+	binaryHeap->capacity = new_capacity;
 	binaryHeap->data = tmp;
 	return (error_msg){SUCCESS, "", ""};
 }
@@ -171,7 +168,7 @@ error_msg merge_binary_heaps_without_destroy(const BinaryHeap *first, const Bina
 	if (errorMsg.type) {
 		return errorMsg;
 	}
-	errorMsg = resize_binary_heap(result, first->size + second->size + 1);
+	errorMsg = resize_binary_heap(result, first->capacity + second->capacity + 1);
 	if (errorMsg.type) {
 		destroy_binary_heap(result);
 		return errorMsg;

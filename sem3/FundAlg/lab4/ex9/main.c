@@ -127,7 +127,7 @@ int main() {
 	create_application(&r13, t13, 22, 2, &s13);
 
 	// Создаем первую кучу и добавляем элементы
-	Queue q = {NULL, heaps_functions[1]};
+	Queue q = {NULL, heaps_functions[0]};
 	q.v.create_heap(&(q.q));
 	q.v.insert_heap(q.q, r1);
 	q.v.insert_heap(q.q, r2);
@@ -189,7 +189,7 @@ int main() {
 	create_application(&r26, t26, 1, 2, &s26);
 
 	// Создаем вторую кучу и добавляем элементы
-	Queue q2 = {NULL, heaps_functions[1]};
+	Queue q2 = {NULL, heaps_functions[0]};
 	q2.v.create_heap(&(q2.q));
 	q2.v.insert_heap(q2.q, r14);
 	q2.v.insert_heap(q2.q, r15);
@@ -211,7 +211,7 @@ int main() {
 	printf("%zu\n", f->priority);
 	f = q.v.find_max_priority_elem(q2.q);
 	printf("%zu\n", f->priority);
-	Queue q3;
+	Queue q3 = {NULL, heaps_functions[0]};
 	error_msg errorMsg = q.v.merge_heap_without_destroy(q.q, q2.q, &(q3.q));
 	if(errorMsg.type){
 		return print_error(errorMsg);
