@@ -1,6 +1,4 @@
-
-#ifndef LAB4_BINOMIAL_HEAP_H
-#define LAB4_BINOMIAL_HEAP_H
+#pragma once
 
 #include "../../../lib2/SystemErrors2/errors.h"
 #include "../../application/application.h"
@@ -18,10 +16,6 @@ typedef struct BinomialHeap {
 	size_t size;
 } BinomialHeap;
 
-// Функции для узлов
-error_msg create_binomial_node(BinomialNode** binomialNode, Application* application);
-error_msg copy_binomial_node_new(BinomialNode* src, BinomialNode** dst);
-void destroy_binomial_node(BinomialNode* binomialNode);
 
 // Функции для кучи
 error_msg create_binomial_heap(BinomialHeap** binomialHeap);
@@ -32,5 +26,3 @@ error_msg insert_binomial_heap(BinomialHeap* binomialHeap, Application* applicat
 error_msg delete_binomial_heap(BinomialHeap* binomialHeap, Application** application);
 Application* find_max_priority_elem_binomial_heap(const BinomialHeap* binaryHeap);
 error_msg destroy_binomial_heap(BinomialHeap* binomialHeap);
-
-#endif  // LAB4_BINOMIAL_HEAP_H

@@ -98,55 +98,106 @@ error_msg merge_binomial_heap_with_destroy(BinomialHeap* first, BinomialHeap* se
 	if (first == second) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "merge_binomial_heap_with_destroy", "merge by itself"};
 	}
+
 	BinomialHeap* tmp;
 	error_msg errorMsg = create_binomial_heap(&tmp);
 	if (errorMsg.type) {
 		return errorMsg;
 	}
 
-	BinomialNode* res_current = NULL;
+	if (first->head == NULL) {
+		tmp->size = second->size;
+		tmp->head = second->head;
+		first->head = NULL;
+		second->head = NULL;
+		free(first);
+		free(second);
+		*result = tmp;
+		return (error_msg){SUCCESS, "", ""};
+	}
+
+	if (second->head == NULL) {
+		tmp->size = first->size;
+		tmp->head = first->head;
+		first->head = NULL;
+		second->head = NULL;
+		free(first);
+		free(second);
+		*result = tmp;
+		return (error_msg){SUCCESS, "", ""};
+	}
+
+	BinomialNode* res_current = tmp->head;
 	BinomialNode* first_current = first->head;
 	BinomialNode* second_current = second->head;
-	BinomialNode *prev1, *prev2, *prev_res;
 
-	while (first_current != NULL || second_current != NULL || res_current != NULL) {
-		prev1 = first_current;
-		prev2 = second_current;
-		prev_res = res_current;
-
-		if (first_current && second_current && first_current->degree == second_current->degree) {
-			first_current = first_current->brother;
-			second_current = second_current->brother;
-			res_current = merge_trees(prev1, prev2);
-		} else if (first_current && res_current && first_current->degree == res_current->degree) {
-			first_current = first_current->brother;
-			res_current = merge_trees(first_current, res_current);
-		} else if (second_current && res_current && second_current->degree == res_current->degree) {
-			second_current = second_current->brother;
-			res_current = merge_trees(second_current, res_current);
-		} else {
-			//			if (first_current && (!second_current || first_current->degree > second_current->degree)) {
-			//				prev1 = first_current;
-			//				first_current = first_current->brother;
-			//			} else if (second_current && (!first_current || second_current->degree < first_current->degree))
-			//{ 				prev2 = second_current; 				second_current = second_current->brother;
-			//			}
-
-			BinomialNode* new_node;
-			if (prev1) {
-				first_current = first_current->brother;
-				new_node = prev1;
-			} else if (prev2) {
-				second_current = second_current->brother;
-				new_node = prev2;
+	while (first_current && second_current) {
+		if (first_current->degree < second_current->degree) {
+			if (res_current) {
+				res_current->brother = first_current;
 			} else {
-				new_node = prev_res;
-				res_current = NULL;
+				res_current = first_current;
+				tmp->head = first_current;
 			}
-
-			new_node->brother = tmp->head;
-			tmp->head = new_node;
+			res_current = first_current;
+			first_current = first_current->brother;
+		} else {
+			if (res_current) {
+				res_current->brother = second_current;
+			} else {
+				res_current = second_current;
+				tmp->head = second_current;
+			}
+			res_current = second_current;
+			second_current = second_current->brother;
 		}
+	}
+	if (first_current == NULL) {
+		while (second_current) {
+			res_current->brother = second_current;
+			res_current = res_current->brother;
+			second_current = second_current->brother;
+		}
+	} else {
+		while (first_current) {
+			res_current->brother = first_current;
+			res_current = res_current->brother;
+			first_current = first_current->brother;
+		}
+	}
+	res_current = tmp->head;
+	BinomialNode* prev = NULL;
+	while (res_current->brother) {
+		if (res_current->degree == res_current->brother->degree) {
+			if (res_current->application->priority < res_current->brother->application->priority) {
+				if (prev == NULL) {
+					BinomialNode* t = res_current;
+					BinomialNode* t2 = res_current->brother->brother;
+					tmp->head = res_current->brother;
+					tmp->head->brother = t;
+					t->brother = t2;
+					res_current = tmp->head;
+				} else {
+					BinomialNode* t = res_current;
+					BinomialNode* t2 = res_current->brother->brother;
+					prev->brother = res_current->brother;
+					res_current = prev->brother;
+					res_current->brother = t;
+					t->brother = t2;
+				}
+			}
+			BinomialNode *t, *t2;
+			t = res_current->brother;
+			res_current->brother = res_current->brother->brother;
+			t2 = res_current->child;
+			res_current->child = t;
+			t->brother = t2;
+			t->parent = res_current;
+			res_current->degree += 1;
+			continue;
+		}
+		prev = res_current;
+		res_current = res_current->brother;
 	}
 
 	tmp->size = first->size + second->size;

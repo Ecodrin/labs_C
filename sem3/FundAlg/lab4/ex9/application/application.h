@@ -4,8 +4,7 @@
  * Файл с описанием заявок
  */
 
-#ifndef LAB4_APPLICATION_H
-#define LAB4_APPLICATION_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,5 +33,3 @@ error_msg create_application(Application** application, Time time, size_t priori
 error_msg copy_application_new(Application* src, Application** dst);
 
 void destroy_application(Application* application);
-
-#endif  // LAB4_APPLICATION_H

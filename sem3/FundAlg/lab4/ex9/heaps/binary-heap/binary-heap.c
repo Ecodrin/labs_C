@@ -162,6 +162,9 @@ error_msg merge_binary_heaps_without_destroy(const BinaryHeap *first, const Bina
 	if (first == NULL || second == NULL || res == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "merge_binary_heaps_without_destroy", "get pointer to null"};
 	}
+	if (first == second) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "merge_binary_heaps_without_destroy", "merge by itself"};
+	}
 
 	BinaryHeap *result;
 	error_msg errorMsg = create_binary_heap(&result);

@@ -1,7 +1,5 @@
 
-
-#ifndef LAB4_BINARY_HEAP_H
-#define LAB4_BINARY_HEAP_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,5 +28,3 @@ error_msg sift_up_binary_heap(BinaryHeap* binaryHeap);
 
 error_msg merge_binary_heaps_without_destroy(const BinaryHeap* first, const BinaryHeap* second, BinaryHeap** result);
 error_msg merge_binary_heaps_with_destroy(BinaryHeap* first, BinaryHeap* second, BinaryHeap** result);
-
-#endif  // LAB4_BINARY_HEAP_H

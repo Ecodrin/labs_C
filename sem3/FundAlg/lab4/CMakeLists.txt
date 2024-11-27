@@ -39,4 +39,6 @@ add_executable(ex9
         ex9/heaps/binary-heap/binary-heap.c
         ex9/heaps/binary-heap/binary-heap.h
         ex9/heaps/binomial-heap/binomial-heap.c
-        ex9/heaps/binomial-heap/binomial-heap.h)
+        ex9/heaps/binomial-heap/binomial-heap.h
+        ex9/heaps/fibonacci-heap/fibonacci-heap.c
+        ex9/heaps/fibonacci-heap/fibonacci-heap.h)
