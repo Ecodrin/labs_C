@@ -1,84 +1,9 @@
 #include "heaps/heaps.h"
 
-//int main() {
-//
-//	Application * r;
-//	String s;
-//	create_string(&s, "sad");
-//	Time t = {1, 2, 3, 4, 5, 6};
-//	create_application(&r, t, 10, 2, &s);
-//
-//	Application * r2;
-//	String s2;
-//	create_string(&s2, "sad");
-//	Time t2 = {1, 2, 3, 4, 5, 6};
-//	create_application(&r2, t2, 12, 2, &s2);
-//
-//	Application * r3;
-//	String s3;
-//	create_string(&s3, "sad");
-//	Time t3 = {1, 2, 3, 4, 5, 6};
-//	create_application(&r3, t3, 12, 2, &s3);
-//	Application *r4, *r5, *r6;
-//	copy_application_new(r, &r4);
-//	copy_application_new(r2, &r5);
-//	copy_application_new(r3, &r6);
-//
-//	Queue q = {NULL, heaps_functions[1]};
-//	q.v.create_heap(&(q.q));
-//	q.v.insert_heap(q.q, r);
-//	q.v.insert_heap(q.q, r2);
-//	q.v.insert_heap(q.q, r3);
-//
-//	Queue q2 = {NULL, heaps_functions[1]};
-//	q2.v.create_heap(&(q2.q));
-//	q2.v.insert_heap(q2.q, r4);
-//	q2.v.insert_heap(q2.q, r5);
-//	q2.v.insert_heap(q2.q, r6);
-//
-//	Queue q3;
-//	q.v.merge_heap_without_destroy(q.q, q2.q, &(q3.q));
-//	q.v.destroy_heap(q.q);
-//
-////	FibonacciHeap * f;
-////	error_msg errorMsg = create_fibonacci_heap(&f);
-////	if(errorMsg.type){
-////		return print_error(errorMsg);
-////	}
-////
-////	errorMsg = insert_fibonacci_heap(f, r);
-////	if(errorMsg.type){
-////		return print_error(errorMsg);
-////	}
-////
-////	errorMsg = insert_fibonacci_heap(f, r2);
-////	if(errorMsg.type){
-////		return print_error(errorMsg);
-////	}
-//
-////
-////	FibonacciHeap *res;
-////	FibonacciHeap * f2;
-////	errorMsg = create_fibonacci_heap(&f2);
-////	if(errorMsg.type){
-////		return print_error(errorMsg);
-////	}
-////
-////	errorMsg = merge_fibonacci_heap_with_destroy(f2, f, &res);
-////	if(errorMsg.type){
-////		return print_error(errorMsg);
-////	}
-////
-////	destroy_fibonacci_heap(res);
-//	return 0;
-//}
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-// Предположим, что у нас есть следующие структуры и функции:
-// Application, String, Time, create_string, create_application, copy_application_new, Queue, heaps_functions
 
 int main() {
 	// Создаем 13 элементов для первой кучи
@@ -127,7 +52,7 @@ int main() {
 	create_application(&r13, t13, 22, 2, &s13);
 
 	// Создаем первую кучу и добавляем элементы
-	Queue q = {NULL, heaps_functions[0]};
+	Queue q = {NULL, heaps_functions[2]};
 	q.v.create_heap(&(q.q));
 	q.v.insert_heap(q.q, r1);
 	q.v.insert_heap(q.q, r2);
@@ -189,7 +114,7 @@ int main() {
 	create_application(&r26, t26, 1, 2, &s26);
 
 	// Создаем вторую кучу и добавляем элементы
-	Queue q2 = {NULL, heaps_functions[0]};
+	Queue q2 = {NULL, heaps_functions[2]};
 	q2.v.create_heap(&(q2.q));
 	q2.v.insert_heap(q2.q, r14);
 	q2.v.insert_heap(q2.q, r15);
@@ -211,18 +136,23 @@ int main() {
 	printf("%zu\n", f->priority);
 	f = q.v.find_max_priority_elem(q2.q);
 	printf("%zu\n", f->priority);
-	Queue q3 = {NULL, heaps_functions[0]};
-	error_msg errorMsg = q.v.merge_heap_without_destroy(q.q, q2.q, &(q3.q));
+	Queue q3 = {NULL, heaps_functions[2]};
+	error_msg errorMsg = q.v.merge_heap_with_destroy(q.q, q2.q, &(q3.q));
 	if(errorMsg.type){
 		return print_error(errorMsg);
 	}
 	f = q.v.find_max_priority_elem(q3.q);
 	printf("%zu\n", f->priority);
-	// Уничтожаем первую кучу
-	q.v.destroy_heap(q.q);
-	q.v.destroy_heap(q2.q);
-	q.v.destroy_heap(q3.q);
 
+
+
+	Application * find;
+	errorMsg = q3.v.delete_heap(q3.q, &find);
+	if(errorMsg.type){
+		return print_error(errorMsg);
+	}
+	printf("%zu\n", find->priority);
+	q.v.destroy_heap(q3.q);
 	// Выводим сообщение о завершении
 	printf("Heaps merged and first heap destroyed.\n");
 
