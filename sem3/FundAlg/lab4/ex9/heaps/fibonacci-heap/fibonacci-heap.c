@@ -357,7 +357,7 @@ void add_root_list(FibonacciHeap* heap, FibonacciNode* node) {
 }
 
 error_msg consolidate(FibonacciHeap* heap) {
-	size_t max_degree = (size_t)(log((double)heap->size) / log(1.618)) + 1;
+	size_t max_degree = (size_t)(log((double)heap->size) / log(2)) + 1;
 	FibonacciNode** A = (FibonacciNode**)calloc(max_degree, sizeof(FibonacciNode*));
 	if (!A) {
 		return (error_msg){MEMORY_ALLOCATED_ERROR, "consolidate", "memory allocated"};
@@ -391,7 +391,7 @@ error_msg consolidate(FibonacciHeap* heap) {
 	}
 
 	heap->head = NULL;
-	for (int i = 0; i < max_degree; ++i) {
+	for (size_t i = 0; i < max_degree; ++i) {
 		if (A[i] != NULL) {
 			A[i]->right = NULL;
 			A[i]->left = NULL;

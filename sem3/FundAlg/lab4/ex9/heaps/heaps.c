@@ -6,7 +6,9 @@ V_table_queue heaps_functions[] = {
     {create_binomial, insert_binomial, delete_binomial, merge_binomial_with_destroy, merge_binomial_without_destroy,
      destroy_binomial, find_max_priority_elem_binomial},
     {create_fibonacci, insert_fibonacci, delete_fibonacci, merge_fibonacci_with_destroy,
-     merge_fibonacci_without_destroy, destroy_fibonacci, find_max_priority_elem_fibonacci}};
+     merge_fibonacci_without_destroy, destroy_fibonacci, find_max_priority_elem_fibonacci},
+    {create_skew, insert_skew, delete_skew, merge_skew_with_destroy, merge_skew_without_destroy, destroy_skew,
+     find_max_priority_elem_skew}};
 
 error_msg create_binary(Q_queue **queue) {
 	if (queue == NULL) {
@@ -181,4 +183,62 @@ error_msg destroy_fibonacci(Q_queue *queue) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "destroy_fibonacci", "get pointer "};
 	}
 	return destroy_fibonacci_heap(&(queue->fibonacci_h));
+}
+
+error_msg create_skew(Q_queue **queue) {
+	if (queue == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "create_skew", "get pointer nu null"};
+	}
+	SkewHeap *r = &((*queue)->skew_h);
+	error_msg errorMsg = create_skew_heap(&r);
+	*queue = (Q_queue *)r;
+	return errorMsg;
+}
+
+error_msg insert_skew(Q_queue *queue, Application *application) {
+	if (queue == NULL || application == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "insert_skew", "get pointer to null"};
+	}
+	return insert_skew_heap(&(queue->skew_h), application);
+}
+
+error_msg delete_skew(Q_queue *queue, Application **result) {
+	if (queue == NULL || result == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_skew", "get pointer to null"};
+	}
+	return delete_skew_heap(&(queue->skew_h), result);
+}
+
+error_msg merge_skew_with_destroy(Q_queue *first, Q_queue *second, Q_queue **result) {
+	if (first == NULL || second == NULL || result == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "merge_skew_with_destroy", "get pointer to null"};
+	}
+	SkewHeap *res = &((*result)->skew_h);
+	error_msg errorMsg = merge_skew_heap_with_destroy(&(first->skew_h), &(second->skew_h), &res);
+	*result = (Q_queue *)res;
+	return errorMsg;
+}
+
+error_msg merge_skew_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result) {
+	if (first == NULL || second == NULL || result == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "merge_skew_without_destroy", "get pointer to null"};
+	}
+	SkewHeap *res = &((*result)->skew_h);
+	error_msg errorMsg = merge_skew_heap_without_destroy(&(first->skew_h), &(second->skew_h), &res);
+	*result = (Q_queue *)res;
+	return errorMsg;
+}
+
+Application *find_max_priority_elem_skew(const Q_queue *queue) {
+	if (queue == NULL) {
+		return NULL;
+	}
+	return find_max_priority_element_skew_heap(&(queue->skew_h));
+}
+
+error_msg destroy_skew(Q_queue *queue) {
+	if (queue == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, "destroy_skew", "get pointer to null"};
+	}
+	return destroy_skew_heap(&(queue->skew_h));
 }

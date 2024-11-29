@@ -31,7 +31,7 @@ error_msg destroy_binary_heap(BinaryHeap *binaryHeap) {
 	if (binaryHeap == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "destroy_binary_heap", "get pointer to null"};
 	}
-	for (int i = 0; i < binaryHeap->size; ++i) {
+	for (size_t i = 0; i < binaryHeap->size; ++i) {
 		destroy_application(binaryHeap->data[i]);
 	}
 	free(binaryHeap->data);

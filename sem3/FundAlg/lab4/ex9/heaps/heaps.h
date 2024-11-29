@@ -9,11 +9,13 @@
 #include "binary-heap/binary-heap.h"
 #include "binomial-heap/binomial-heap.h"
 #include "fibonacci-heap/fibonacci-heap.h"
+#include "skew-heap/skew-heap.h"
 
 typedef union Q_queue {
 	BinaryHeap bin_h;
 	BinomialHeap binomial_h;
 	FibonacciHeap fibonacci_h;
+	SkewHeap skew_h;
 } Q_queue;
 
 typedef struct V_table {
@@ -59,3 +61,12 @@ error_msg merge_fibonacci_with_destroy(Q_queue * first, Q_queue * second, Q_queu
 error_msg merge_fibonacci_without_destroy(Q_queue * first, Q_queue * second, Q_queue ** result);
 Application *find_max_priority_elem_fibonacci(const Q_queue *queue);
 error_msg destroy_fibonacci(Q_queue* queue);
+
+// Skew heap
+error_msg create_skew(Q_queue **queue);
+error_msg insert_skew(Q_queue *queue, Application *application);
+error_msg delete_skew(Q_queue *queue, Application **result);
+error_msg merge_skew_with_destroy(Q_queue *first, Q_queue *second, Q_queue **result);
+error_msg merge_skew_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result);
+Application *find_max_priority_elem_skew(const Q_queue *queue);
+error_msg destroy_skew(Q_queue *queue);
