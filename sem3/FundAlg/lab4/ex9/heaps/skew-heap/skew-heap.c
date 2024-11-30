@@ -111,7 +111,7 @@ error_msg copy_skew_heap_r(SkewNode * src, SkewNode ** dst){
 
 error_msg copy_skew_heap(SkewHeap * src, SkewHeap ** dst){
 	if(src == NULL || dst == NULL){
-		return (error_msg){INCORRECT_ARG_FUNCTION, "copy_skew_heap", "get pointer null"};
+		return (error_msg){INCORRECT_ARG_FUNCTION, "copy_leftist_heap", "get pointer null"};
 	}
 	SkewHeap * tmp;
 	error_msg errorMsg = create_skew_heap(&tmp);
@@ -208,7 +208,7 @@ error_msg insert_skew_heap(SkewHeap * heap, Application* application){
 
 
 Application * find_max_priority_element_skew_heap(const SkewHeap * skewHeap){
-	if(skewHeap == NULL){
+	if(skewHeap == NULL || skewHeap->head == NULL){
 		return NULL;
 	}
 	return skewHeap->head->application;
@@ -256,3 +256,4 @@ error_msg delete_skew_heap(SkewHeap * heap, Application ** result){
 
 	return (error_msg){SUCCESS, "", ""};
 }
+

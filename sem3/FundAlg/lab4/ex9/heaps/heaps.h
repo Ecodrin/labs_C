@@ -9,6 +9,7 @@
 #include "binary-heap/binary-heap.h"
 #include "binomial-heap/binomial-heap.h"
 #include "fibonacci-heap/fibonacci-heap.h"
+#include "leftist-heap/leftist-heap.h"
 #include "skew-heap/skew-heap.h"
 
 typedef union Q_queue {
@@ -16,6 +17,7 @@ typedef union Q_queue {
 	BinomialHeap binomial_h;
 	FibonacciHeap fibonacci_h;
 	SkewHeap skew_h;
+	LeftistHeap leftist_h;
 } Q_queue;
 
 typedef struct V_table {
@@ -70,3 +72,12 @@ error_msg merge_skew_with_destroy(Q_queue *first, Q_queue *second, Q_queue **res
 error_msg merge_skew_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result);
 Application *find_max_priority_elem_skew(const Q_queue *queue);
 error_msg destroy_skew(Q_queue *queue);
+
+// Leftist heap
+error_msg create_leftist(Q_queue ** queue);
+error_msg insert_leftist(Q_queue * queue, Application * application);
+error_msg delete_leftist(Q_queue * queue, Application ** result);
+error_msg merge_leftist_with_destroy(Q_queue * first, Q_queue * second, Q_queue ** result);
+error_msg merge_leftist_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result);
+Application * find_max_priority_elem_leftist(const Q_queue * queue);
+error_msg destroy_leftist(Q_queue * queue);

@@ -43,6 +43,8 @@ add_executable(ex9
         ex9/heaps/fibonacci-heap/fibonacci-heap.c
         ex9/heaps/fibonacci-heap/fibonacci-heap.h
         ex9/heaps/skew-heap/skew-heap.c
-        ex9/heaps/skew-heap/skew-heap.h)
+        ex9/heaps/skew-heap/skew-heap.h
+        ex9/heaps/leftist-heap/leftist-heap.c
+        ex9/heaps/leftist-heap/leftist-heap.h)
 
 target_link_libraries(ex9 m)

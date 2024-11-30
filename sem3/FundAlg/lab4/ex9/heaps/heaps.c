@@ -1,14 +1,52 @@
 #include "heaps.h"
 
 V_table_queue heaps_functions[] = {
-    {create_binary, insert_binary, delete_binary, merge_binary_with_destroy, merge_binary_without_destroy,
-     destroy_binary, find_max_priority_elem_binary},
-    {create_binomial, insert_binomial, delete_binomial, merge_binomial_with_destroy, merge_binomial_without_destroy,
-     destroy_binomial, find_max_priority_elem_binomial},
-    {create_fibonacci, insert_fibonacci, delete_fibonacci, merge_fibonacci_with_destroy,
-     merge_fibonacci_without_destroy, destroy_fibonacci, find_max_priority_elem_fibonacci},
-    {create_skew, insert_skew, delete_skew, merge_skew_with_destroy, merge_skew_without_destroy, destroy_skew,
-     find_max_priority_elem_skew}};
+        {
+                create_binary,
+                insert_binary,
+                delete_binary,
+                merge_binary_with_destroy,
+                merge_binary_without_destroy,
+                destroy_binary,
+                find_max_priority_elem_binary
+        },
+        {
+                create_binomial,
+                insert_binomial,
+                delete_binomial,
+                merge_binomial_with_destroy,
+                merge_binomial_without_destroy,
+                destroy_binomial,
+                find_max_priority_elem_binomial
+        },
+        {
+                create_fibonacci,
+                insert_fibonacci,
+                delete_fibonacci,
+                merge_fibonacci_with_destroy,
+                merge_fibonacci_without_destroy,
+                destroy_fibonacci,
+                find_max_priority_elem_fibonacci
+        },
+        {
+                create_skew,
+                insert_skew,
+                delete_skew,
+                merge_skew_with_destroy,
+                merge_skew_without_destroy,
+                destroy_skew,
+                find_max_priority_elem_skew
+        },
+        {
+                create_leftist,
+                insert_leftist,
+                delete_leftist,
+                merge_leftist_with_destroy,
+                merge_leftist_without_destroy,
+                destroy_leftist,
+                find_max_priority_elem_leftist
+        }
+};
 
 error_msg create_binary(Q_queue **queue) {
 	if (queue == NULL) {
@@ -35,7 +73,7 @@ error_msg destroy_binary(Q_queue *queue) {
 }
 
 error_msg delete_binary(Q_queue *queue, Application **result) {
-	if (queue == NULL) {
+    if (queue == NULL || result == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_binary", "get pointer to null"};
 	}
 	return delete_binary_heap(&(queue->bin_h), result);
@@ -241,4 +279,62 @@ error_msg destroy_skew(Q_queue *queue) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "destroy_skew", "get pointer to null"};
 	}
 	return destroy_skew_heap(&(queue->skew_h));
+}
+
+error_msg create_leftist(Q_queue **queue) {
+    if (queue == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "create_leftist", "get pointer to null"};
+    }
+    LeftistHeap *leftist_heap = &((*queue)->leftist_h);
+    error_msg errorMsg = create_leftist_heap(&leftist_heap);
+    *queue = (Q_queue *) leftist_heap;
+    return errorMsg;
+}
+
+error_msg insert_leftist(Q_queue *queue, Application *application) {
+    if (queue == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "insert_leftist", "get pointer to null"};
+    }
+    return insert_leftist_heap(&(queue->leftist_h), application);
+}
+
+error_msg delete_leftist(Q_queue *queue, Application **result) {
+    if (queue == NULL || result == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "delete_leftist", "get pointer to null"};
+    }
+    return delete_leftist_heap(&(queue->leftist_h), result);
+}
+
+error_msg merge_leftist_with_destroy(Q_queue *first, Q_queue *second, Q_queue **result) {
+    if (first == NULL || second == NULL || result == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "merge_leftist_with_destroy", "get pointer to null"};
+    }
+    LeftistHeap *res = &((*result)->leftist_h);
+    error_msg errorMsg = merge_leftist_heap_with_destroy(&(first->leftist_h), &(second->leftist_h), &res);
+    *result = (Q_queue *) res;
+    return errorMsg;
+}
+
+error_msg merge_leftist_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result) {
+    if (first == NULL || second == NULL || result == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "merge_leftist_without_destroy", "get pointer to null"};
+    }
+    LeftistHeap *res = &((*result)->leftist_h);
+    error_msg errorMsg = merge_leftist_heap_without_destroy(&(first->leftist_h), &(second->leftist_h), &res);
+    *result = (Q_queue *) res;
+    return errorMsg;
+}
+
+Application *find_max_priority_elem_leftist(const Q_queue *queue) {
+    if (queue == NULL) {
+        return NULL;
+    }
+    return find_max_priority_elem_leftist_heap(&(queue->leftist_h));
+}
+
+error_msg destroy_leftist(Q_queue *queue) {
+    if (queue == NULL) {
+        return (error_msg) {INCORRECT_ARG_FUNCTION, "destroy_leftist", "get pointer to null"};
+    }
+    return destroy_leftist_heap(&(queue->leftist_h));
 }
