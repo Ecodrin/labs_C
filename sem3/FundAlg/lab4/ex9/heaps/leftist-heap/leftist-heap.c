@@ -124,7 +124,7 @@ LeftistNode * merge_leftist_heap_with_destroy_r(LeftistNode * x, LeftistNode *y)
 		return x;
 	}
 
-	if(x->application->priority < y->application->priority){
+	if(x->application->key < y->application->key){
 		swap_leftist_node(&x, &y);
 	}
 
@@ -235,7 +235,7 @@ error_msg delete_leftist_heap(LeftistHeap * heap, Application ** result){
 		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_leftist_heap", "get pointer to null"};
 	}
 	if(heap->head == NULL){
-		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_leftist_heap", "try delete from empty heap"};
+		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_leftist_heap", "try delete from empty head"};
 	}
 	LeftistHeap * tmp1;
 	error_msg errorMsg = create_leftist_heap(&tmp1);

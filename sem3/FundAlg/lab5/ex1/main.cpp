@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include "ex1.hpp"
 
@@ -128,6 +129,9 @@ int main() {
 	test_shift_operations();
 	test_increment_decrement();
 	test_to_part();
+
+	binary_int a{(int)pow(2, 31)};
+	std:: cout << a;
 
 	return 0;
 }

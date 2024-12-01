@@ -73,7 +73,7 @@ error_msg insert_fibonacci_heap(FibonacciHeap* fibonacciHeap, Application* appli
 	new->right = prev_right;
 	prev_right->left = new;
 
-	if (new->application->priority > fibonacciHeap->head->application->priority) {
+	if (new->application->key > fibonacciHeap->head->application->key) {
 		fibonacciHeap->head = new;
 	}
 	fibonacciHeap->size += 1;
@@ -161,7 +161,7 @@ error_msg copy_fibonacci_heap_new(FibonacciHeap* src, FibonacciHeap** dst) {
 			prev_new->right->left = new;
 			prev_new->right = new;
 		}
-		if (new_max->application->priority < new->application->priority) {
+		if (new_max->application->key < new->application->key) {
 			new_max = new;
 		}
 		prev_new = new;
@@ -240,7 +240,7 @@ error_msg merge_fibonacci_heap_with_destroy(FibonacciHeap* first, FibonacciHeap*
 	right->left = left;
 	tmp->size = first->size + second->size;
 	tmp->head = first->head;
-	if (first->head->application->priority < second->head->application->priority) {
+	if (first->head->application->key < second->head->application->key) {
 		tmp->head = second->head;
 	}
 	*result = tmp;
@@ -278,7 +278,7 @@ void union_(FibonacciNode* x, FibonacciNode* y) {
 	if (x == NULL) {
 		return;
 	}
-	//	if(x->application->priority > y->application->priority){
+	//	if(x->application->key > y->application->key){
 	//		FibonacciNode * t = y;
 	//		y = x;
 	//		x = t;
@@ -330,7 +330,7 @@ void union_lists(FibonacciNode** f, FibonacciNode* second) {
 	R->left = second;
 	second->right = R;
 
-	if (first->application->priority < second->application->priority) {
+	if (first->application->key < second->application->key) {
 		*f = second;
 	} else {
 		*f = first;
@@ -350,7 +350,7 @@ void add_root_list(FibonacciHeap* heap, FibonacciNode* node) {
 		node->right = R;
 		R->left = node;
 
-		if (node->application->priority > heap->head->application->priority) {
+		if (node->application->key > heap->head->application->key) {
 			heap->head = node;
 		}
 	}
@@ -372,7 +372,7 @@ error_msg consolidate(FibonacciHeap* heap) {
 		} else {
 			FibonacciNode* conflict = A[current->degree];
 			FibonacciNode *add_to, *adding;
-			if (conflict->application->priority > current->application->priority) {
+			if (conflict->application->key > current->application->key) {
 				add_to = conflict;
 				adding = current;
 			} else {
@@ -385,7 +385,7 @@ error_msg consolidate(FibonacciHeap* heap) {
 			add_to->degree += 1;
 			current = add_to;
 		}
-		if (heap->head->application->priority < current->application->priority) {
+		if (heap->head->application->key < current->application->key) {
 			heap->head = current;
 		}
 	}
@@ -407,10 +407,10 @@ error_msg delete_fibonacci_heap(FibonacciHeap* heap, Application** result) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_fibonacci_heap", "get pointer to null"};
 	}
 	if (heap->size == 0) {
-		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_fibonacci_heap", "try delete from empty heap"};
+		return (error_msg){INCORRECT_ARG_FUNCTION, "delete_fibonacci_heap", "try delete from empty head"};
 	}
 	FibonacciNode* prev_max = heap->head;
-//	union_lists(&(heap->head), heap->head->child);
+//	union_lists(&(head->head), head->head->child);
 	if(heap->head->child){
 		FibonacciNode * child = heap->head->child;
 		FibonacciNode * R = heap->head->right;

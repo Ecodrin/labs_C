@@ -11,6 +11,7 @@
 #include "fibonacci-heap/fibonacci-heap.h"
 #include "leftist-heap/leftist-heap.h"
 #include "skew-heap/skew-heap.h"
+#include "treap/treap.h"
 
 typedef union Q_queue {
 	BinaryHeap bin_h;
@@ -18,6 +19,7 @@ typedef union Q_queue {
 	FibonacciHeap fibonacci_h;
 	SkewHeap skew_h;
 	LeftistHeap leftist_h;
+	Treap treap;
 } Q_queue;
 
 typedef struct V_table {
@@ -37,7 +39,7 @@ typedef struct Queue {
 
 extern V_table_queue heaps_functions[];
 
-// Binary heap
+// Binary head
 error_msg create_binary(Q_queue **queue);
 error_msg insert_binary(Q_queue *queue, Application *application);
 error_msg delete_binary(Q_queue *queue, Application **result);
@@ -46,7 +48,7 @@ error_msg merge_binary_without_destroy(Q_queue *first, Q_queue *second, Q_queue 
 Application *find_max_priority_elem_binary(const Q_queue *queue);
 error_msg destroy_binary(Q_queue *queue);
 
-// Binomial heap
+// Binomial head
 error_msg create_binomial(Q_queue ** queue);
 error_msg insert_binomial(Q_queue * queue, Application * application);
 error_msg delete_binomial(Q_queue * queue, Application ** result);
@@ -55,7 +57,7 @@ error_msg merge_binomial_without_destroy(Q_queue * first, Q_queue * second, Q_qu
 Application *find_max_priority_elem_binomial(const Q_queue *queue);
 error_msg destroy_binomial(Q_queue *queue);
 
-// Fibonacci heap
+// Fibonacci head
 error_msg create_fibonacci(Q_queue **queue);
 error_msg insert_fibonacci(Q_queue *queue, Application *application);
 error_msg delete_fibonacci(Q_queue *queue, Application **result);
@@ -64,7 +66,7 @@ error_msg merge_fibonacci_without_destroy(Q_queue * first, Q_queue * second, Q_q
 Application *find_max_priority_elem_fibonacci(const Q_queue *queue);
 error_msg destroy_fibonacci(Q_queue* queue);
 
-// Skew heap
+// Skew head
 error_msg create_skew(Q_queue **queue);
 error_msg insert_skew(Q_queue *queue, Application *application);
 error_msg delete_skew(Q_queue *queue, Application **result);
@@ -73,7 +75,7 @@ error_msg merge_skew_without_destroy(Q_queue *first, Q_queue *second, Q_queue **
 Application *find_max_priority_elem_skew(const Q_queue *queue);
 error_msg destroy_skew(Q_queue *queue);
 
-// Leftist heap
+// Leftist head
 error_msg create_leftist(Q_queue ** queue);
 error_msg insert_leftist(Q_queue * queue, Application * application);
 error_msg delete_leftist(Q_queue * queue, Application ** result);
@@ -81,3 +83,12 @@ error_msg merge_leftist_with_destroy(Q_queue * first, Q_queue * second, Q_queue 
 error_msg merge_leftist_without_destroy(Q_queue *first, Q_queue *second, Q_queue **result);
 Application * find_max_priority_elem_leftist(const Q_queue * queue);
 error_msg destroy_leftist(Q_queue * queue);
+
+// Treap
+error_msg create_treap_r(Q_queue **queue);
+error_msg insert_treap_r(Q_queue *queue, Application *application);
+error_msg delete_treap_r(Q_queue *queue, Application **result);
+error_msg merge_treap_with_destroy_r(Q_queue *first, Q_queue *second, Q_queue **result);
+error_msg merge_treap_without_destroy_r(Q_queue *first, Q_queue *second, Q_queue **result);
+Application * find_max_priority_elem_treap_r(const Q_queue * queue);
+error_msg destroy_treap_r(Q_queue *queue);

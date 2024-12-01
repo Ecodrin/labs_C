@@ -1,4 +1,7 @@
 
+
+
+
 #include "heaps/heaps.h"
 
 
@@ -50,7 +53,7 @@ int main() {
 	create_application(&r13, t13, 22, 2, &s13);
 
 	// Создаем первую кучу и добавляем элементы
-	Queue q = {NULL, heaps_functions[4]};
+	Queue q = {NULL, heaps_functions[5]};
 	q.v.create_heap(&(q.q));
 	q.v.insert_heap(q.q, r1);
 	q.v.insert_heap(q.q, r2);
@@ -66,97 +69,33 @@ int main() {
 	q.v.insert_heap(q.q, r12);
 	q.v.insert_heap(q.q, r13);
 
-	// Создаем 13 элементов для второй кучи
-	Application *r14, *r15, *r16, *r17, *r18, *r19, *r20, *r21, *r22, *r23, *r24, *r25, *r26;
-	String s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24, s25, s26;
-	Time t14 = {14, 15, 16, 17, 18, 19};
-	Time t15 = {15, 16, 17, 18, 19, 20};
-	Time t16 = {16, 17, 18, 19, 20, 21};
-	Time t17 = {17, 18, 19, 20, 21, 22};
-	Time t18 = {18, 19, 20, 21, 22, 23};
-	Time t19 = {19, 20, 21, 22, 23, 24};
-	Time t20 = {20, 21, 22, 44, 24, 25};
-	Time t21 = {21, 22, 23, 24, 25, 26};
-	Time t22 = {22, 23, 24, 25, 26, 27};
-	Time t23 = {23, 24, 25, 26, 27, 28};
-	Time t24 = {24, 25, 26, 27, 28, 29};
-	Time t25 = {25, 26, 27, 28, 29, 30};
-	Time t26 = {26, 27, 28, 29, 30, 31};
+	error_msg errorMsg;
+	Application * f;
 
-	create_string(&s14, "sad14");
-	create_string(&s15, "sad15");
-	create_string(&s16, "sad16");
-	create_string(&s17, "sad17");
-	create_string(&s18, "sad18");
-	create_string(&s19, "sad19");
-	create_string(&s20, "sad20");
-	create_string(&s21, "sad21");
-	create_string(&s22, "sad22");
-	create_string(&s23, "sad23");
-	create_string(&s24, "sad24");
-	create_string(&s25, "sad25");
-	create_string(&s26, "sad26");
-
-	create_application(&r14, t14, 23, 2, &s14);
-	create_application(&r15, t15, 24, 2, &s15);
-	create_application(&r16, t16, 25, 2, &s16);
-	create_application(&r17, t17, 26, 2, &s17);
-	create_application(&r18, t18, 27, 2, &s18);
-	create_application(&r19, t19, 36, 2, &s19);
-	create_application(&r20, t20, 29, 2, &s20);
-	create_application(&r21, t21, 30, 2, &s21);
-	create_application(&r22, t22, 31, 2, &s22);
-	create_application(&r23, t23, 32, 2, &s23);
-	create_application(&r24, t24, 33, 2, &s24);
-	create_application(&r25, t25, 34, 2, &s25);
-	create_application(&r26, t26, 1, 2, &s26);
-
-	// Создаем вторую кучу и добавляем элементы
-	Queue q2 = {NULL, heaps_functions[4]};
-	q2.v.create_heap(&(q2.q));
-	q2.v.insert_heap(q2.q, r14);
-	q2.v.insert_heap(q2.q, r15);
-	q2.v.insert_heap(q2.q, r16);
-	q2.v.insert_heap(q2.q, r17);
-	q2.v.insert_heap(q2.q, r18);
-	q2.v.insert_heap(q2.q, r19);
-	q2.v.insert_heap(q2.q, r20);
-	q2.v.insert_heap(q2.q, r21);
-	q2.v.insert_heap(q2.q, r22);
-	q2.v.insert_heap(q2.q, r23);
-	q2.v.insert_heap(q2.q, r24);
-	q2.v.insert_heap(q2.q, r25);
-	q2.v.insert_heap(q2.q, r26);
-
-	// Объединяем две кучи в третью
-	Application *f;
-	Queue q3 = {NULL, heaps_functions[4]};
-	error_msg errorMsg = q.v.merge_heap_with_destroy(q.q, q2.q, &(q3.q));
-	if(errorMsg.type){
-		return print_error(errorMsg);
-	}
-	f = q.v.find_max_priority_elem(q3.q);
-	printf("%zu\n", f->priority);
+	f = q.v.find_max_priority_elem(q.q);
+	printf("%zu\n", f->key);
 
 
 	Application * find;
-	errorMsg = q3.v.delete_heap(q3.q, &find);
+	errorMsg = q.v.delete_heap(q.q, &find);
 	if(errorMsg.type){
 		return print_error(errorMsg);
 	}
-	printf("%zu\n", find->priority);
+	printf("%zu\n", find->key);
 	destroy_application(find);
 
-	errorMsg = q3.v.delete_heap(q3.q, &find);
+
+
+	errorMsg = q.v.delete_heap(q.q, &find);
 	if(errorMsg.type){
 		return print_error(errorMsg);
 	}
-	printf("%zu\n", find->priority);
+	printf("%zu\n", find->key);
 
 	destroy_application(find);
-	q.v.destroy_heap(q3.q);
+	q.v.destroy_heap(q.q);
 	// Выводим сообщение о завершении
-	printf("Heaps merged and first heap destroyed.\n");
+	printf("Heaps merged and first head destroyed.\n");
 
 	return 0;
 }

@@ -81,7 +81,7 @@ error_msg sift_down_binary_heap(BinaryHeap *binaryHeap, size_t index) {
 	}
 
 	if (largest != index) {
-		swap(&(binaryHeap->data[index]), &(binaryHeap->data[index]));
+		swap(&(binaryHeap->data[index]), &(binaryHeap->data[largest]));
 
 		errorMsg = sift_down_binary_heap(binaryHeap, largest);
 		if (errorMsg.type) {
@@ -98,7 +98,7 @@ error_msg sift_up_binary_heap(BinaryHeap *binaryHeap) {
 
 	size_t j = get_parent_index(binaryHeap->size - 1);
 	size_t i = binaryHeap->size - 1;
-	while (i > 0 && binaryHeap->data[i]->priority > binaryHeap->data[j]->priority) {
+    while (i > 0 && binaryHeap->data[i]->key > binaryHeap->data[j]->key) {
 		swap(&(binaryHeap->data[i]), &(binaryHeap->data[j]));
 		i = j;
 		j = get_parent_index(j);
@@ -141,7 +141,8 @@ error_msg delete_binary_heap(BinaryHeap *binaryHeap, Application **result) {
 	}
 
 	if (binaryHeap->size == 0) {
-		return (error_msg){INCORRECT_OPTIONS_ERROR, "delete_binary_heap", "attempt to delete an item from binary heap"};
+        return (error_msg) {INCORRECT_OPTIONS_ERROR, "delete_binary_heap",
+                            "attempt to delete an item from binary head"};
 	}
 	*result = binaryHeap->data[0];
 	binaryHeap->size -= 1;
@@ -223,4 +224,12 @@ Application *find_max_priority_elem_binary_heap(const BinaryHeap *binaryHeap) {
 		return NULL;
 	}
 	return binaryHeap->data[0];
+}
+
+
+void print_binary_queue(const BinaryHeap *binaryHeap) {
+    for (int i = 0; i < binaryHeap->size; ++i) {
+        printf("%zu ", binaryHeap->data[i]->key);
+    }
+    printf("\n");
 }

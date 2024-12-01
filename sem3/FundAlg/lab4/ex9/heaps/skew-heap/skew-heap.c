@@ -76,7 +76,7 @@ SkewNode* merge_with_destroy_heap_r(SkewNode* first, SkewNode* second) {
 		return first;
 	}
 
-	if (first->application->priority < second->application->priority) {
+	if (first->application->key < second->application->key) {
 		SkewNode* tmp = first;
 		first = second;
 		second = tmp;
@@ -111,7 +111,7 @@ error_msg copy_skew_heap_r(SkewNode * src, SkewNode ** dst){
 
 error_msg copy_skew_heap(SkewHeap * src, SkewHeap ** dst){
 	if(src == NULL || dst == NULL){
-		return (error_msg){INCORRECT_ARG_FUNCTION, "copy_leftist_heap", "get pointer null"};
+		return (error_msg){INCORRECT_ARG_FUNCTION, "copy_skew_heap", "get pointer null"};
 	}
 	SkewHeap * tmp;
 	error_msg errorMsg = create_skew_heap(&tmp);

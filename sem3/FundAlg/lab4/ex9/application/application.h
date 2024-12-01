@@ -23,7 +23,7 @@ typedef struct Time {
 
 typedef struct Application {
 	Time time_create;
-	size_t priority;
+	size_t key;
 	size_t id_department;
 	String text;
 } Application;

@@ -28,3 +28,6 @@ error_msg sift_up_binary_heap(BinaryHeap* binaryHeap);
 
 error_msg merge_binary_heaps_without_destroy(const BinaryHeap* first, const BinaryHeap* second, BinaryHeap** result);
 error_msg merge_binary_heaps_with_destroy(BinaryHeap* first, BinaryHeap* second, BinaryHeap** result);
+
+
+void print_binary_queue(const BinaryHeap *binaryHeap);

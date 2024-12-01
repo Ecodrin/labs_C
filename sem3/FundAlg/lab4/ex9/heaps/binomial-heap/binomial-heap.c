@@ -76,7 +76,7 @@ error_msg destroy_binomial_heap(BinomialHeap* binomialHeap) {
 }
 
 BinomialNode* merge_trees(BinomialNode* tree1, BinomialNode* tree2) {
-	if (tree1->application->priority < tree2->application->priority) {
+	if (tree1->application->key < tree2->application->key) {
 		BinomialNode* t = tree1;
 		tree1 = tree2;
 		tree2 = t;
@@ -169,7 +169,7 @@ error_msg merge_binomial_heap_with_destroy(BinomialHeap* first, BinomialHeap* se
 	BinomialNode* prev = NULL;
 	while (res_current->brother) {
 		if (res_current->degree == res_current->brother->degree) {
-			if (res_current->application->priority < res_current->brother->application->priority) {
+			if (res_current->application->key < res_current->brother->application->key) {
 				if (prev == NULL) {
 					BinomialNode* t = res_current;
 					BinomialNode* t2 = res_current->brother->brother;
@@ -338,7 +338,7 @@ Application* find_max_priority_elem_binomial_heap(const BinomialHeap* binaryHeap
 	BinomialNode* current = binaryHeap->head;
 	BinomialNode* max_cur = binaryHeap->head;
 	while (current) {
-		if (current->application->priority > max_cur->application->priority) {
+		if (current->application->key > max_cur->application->key) {
 			max_cur = current;
 		}
 		current = current->brother;
@@ -368,7 +368,7 @@ error_msg delete_binomial_heap(BinomialHeap* binomialHeap, Application** applica
 	BinomialNode* cur = binomialHeap->head;
 	BinomialNode* prev = NULL;
 	while (cur) {
-		if (cur->application->priority > cur_max->application->priority) {
+		if (cur->application->key > cur_max->application->key) {
 			prev_max = prev;
 			cur_max = cur;
 		}
