@@ -25,6 +25,6 @@ error_msg insert_skew_heap(SkewHeap * h, Application* application);
 error_msg delete_skew_heap(SkewHeap * heap, Application ** result);
 Application * find_max_priority_element_skew_heap(const SkewHeap * skewHeap);
 error_msg destroy_skew_heap(SkewHeap* heap);
-
-
+int is_empty_skew_heap(const SkewHeap* heap);
+size_t get_size_skew_heap(const SkewHeap* heap);
 error_msg copy_skew_heap(SkewHeap * src, SkewHeap ** dst);

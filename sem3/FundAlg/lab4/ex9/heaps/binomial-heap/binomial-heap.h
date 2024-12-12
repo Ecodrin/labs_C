@@ -25,4 +25,6 @@ error_msg copy_binomial_heap_new(const BinomialHeap* src, BinomialHeap** dst);
 error_msg insert_binomial_heap(BinomialHeap* binomialHeap, Application* application);
 error_msg delete_binomial_heap(BinomialHeap* binomialHeap, Application** application);
 Application* find_max_priority_elem_binomial_heap(const BinomialHeap* binaryHeap);
+int is_empty_binomial_heap(const BinomialHeap* heap);
+size_t get_size_binomial_heap(const BinomialHeap* heap);
 error_msg destroy_binomial_heap(BinomialHeap* binomialHeap);

@@ -31,3 +31,5 @@ error_msg delete_treap(Treap *treap, Application **result);
 error_msg merge_treap_with_destroy(Treap *first, Treap *second, Treap **result);
 error_msg merge_treap_without_destroy(Treap *first, Treap *second, Treap **result);
 error_msg destroy_treap(Treap *treap);
+int is_empty_treap(const Treap *treap);
+size_t get_size_treap(const Treap *treap);

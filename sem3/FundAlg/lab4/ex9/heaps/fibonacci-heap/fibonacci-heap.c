@@ -73,7 +73,10 @@ error_msg insert_fibonacci_heap(FibonacciHeap* fibonacciHeap, Application* appli
 	new->right = prev_right;
 	prev_right->left = new;
 
-	if (new->application->key > fibonacciHeap->head->application->key) {
+	if (new->application->key > fibonacciHeap->head->application->key ||
+	    (new->application->key ==
+	     fibonacciHeap->head->application->key&& compare_time(
+	         &(new->application->time_create), &(fibonacciHeap->head->application->time_create)) == -1)) {
 		fibonacciHeap->head = new;
 	}
 	fibonacciHeap->size += 1;
@@ -350,7 +353,9 @@ void add_root_list(FibonacciHeap* heap, FibonacciNode* node) {
 		node->right = R;
 		R->left = node;
 
-		if (node->application->key > heap->head->application->key) {
+		if (node->application->key > heap->head->application->key ||
+		    (node->application->key == heap->head->application->key &&
+		     compare_time(&(node->application->time_create), &(heap->head->application->time_create)) == -1)) {
 			heap->head = node;
 		}
 	}
@@ -372,7 +377,9 @@ error_msg consolidate(FibonacciHeap* heap) {
 		} else {
 			FibonacciNode* conflict = A[current->degree];
 			FibonacciNode *add_to, *adding;
-			if (conflict->application->key > current->application->key) {
+			if (conflict->application->key > current->application->key ||
+			    (conflict->application->key == current->application->key &&
+			     compare_time(&(conflict->application->time_create), &(current->application->time_create)) == -1)) {
 				add_to = conflict;
 				adding = current;
 			} else {
@@ -385,7 +392,9 @@ error_msg consolidate(FibonacciHeap* heap) {
 			add_to->degree += 1;
 			current = add_to;
 		}
-		if (heap->head->application->key < current->application->key) {
+		if (heap->head->application->key < current->application->key ||
+		    (heap->head->application->key == current->application->key &&
+		     compare_time(&(heap->head->application->time_create), &(current->application->time_create)) == 1)) {
 			heap->head = current;
 		}
 	}
@@ -426,6 +435,10 @@ error_msg delete_fibonacci_heap(FibonacciHeap* heap, Application** result) {
 	L->right = R;
 	R->left = L;
 	if (prev_max->right == prev_max) {
+		heap->size -= 1;
+		if (heap->size == 0) {
+			heap->head = NULL;
+		}
 		*result = prev_max->application;
 		free(prev_max);
 		return (error_msg){SUCCESS, "", ""};
@@ -439,9 +452,15 @@ error_msg delete_fibonacci_heap(FibonacciHeap* heap, Application** result) {
 		return errorMsg;
 	}
 	heap->head->parent = NULL;
-
 	heap->size -= 1;
+	if (heap->size == 0) {
+		heap->head = NULL;
+	}
 	*result = prev_max->application;
 	free(prev_max);
 	return (error_msg){SUCCESS, "", ""};
 }
+
+int is_empty_fibonacci_heap(const FibonacciHeap* heap) { return heap->size == 0; }
+
+size_t get_size_fibonacci_heap(const FibonacciHeap* heap) { return heap->size; }

@@ -33,6 +33,6 @@ error_msg delete_leftist_heap(LeftistHeap * heap, Application ** result);
 Application * find_max_priority_elem_leftist_heap(const LeftistHeap* leftistHeap);
 error_msg destroy_leftist_heap(LeftistHeap * heap);
 
-
-
+int is_empty_leftist_heap(const LeftistHeap* heap);
+size_t get_size_leftist_heap(const LeftistHeap* h);
 error_msg copy_leftist_heap(LeftistHeap * src, LeftistHeap ** dst);

@@ -30,4 +30,6 @@ error_msg merge_binary_heaps_without_destroy(const BinaryHeap* first, const Bina
 error_msg merge_binary_heaps_with_destroy(BinaryHeap* first, BinaryHeap* second, BinaryHeap** result);
 
 
+int binary_queue_is_empty(const BinaryHeap *binaryHeap);
 void print_binary_queue(const BinaryHeap *binaryHeap);
+size_t get_size_binary_queue(const BinaryHeap *binaryHeap);

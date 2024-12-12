@@ -98,7 +98,9 @@ error_msg sift_up_binary_heap(BinaryHeap *binaryHeap) {
 
 	size_t j = get_parent_index(binaryHeap->size - 1);
 	size_t i = binaryHeap->size - 1;
-    while (i > 0 && binaryHeap->data[i]->key > binaryHeap->data[j]->key) {
+	while (i > 0 && (binaryHeap->data[i]->key > binaryHeap->data[j]->key ||
+	                 (binaryHeap->data[i]->key == binaryHeap->data[j]->key &&
+	                  compare_time(&(binaryHeap->data[i]->time_create), &(binaryHeap->data[j]->time_create)) == -1))) {
 		swap(&(binaryHeap->data[i]), &(binaryHeap->data[j]));
 		i = j;
 		j = get_parent_index(j);
@@ -228,8 +230,12 @@ Application *find_max_priority_elem_binary_heap(const BinaryHeap *binaryHeap) {
 
 
 void print_binary_queue(const BinaryHeap *binaryHeap) {
-    for (int i = 0; i < binaryHeap->size; ++i) {
-        printf("%zu ", binaryHeap->data[i]->key);
+	for (size_t i = 0; i < binaryHeap->size; ++i) {
+		printf("%zu ", binaryHeap->data[i]->key);
     }
     printf("\n");
 }
+
+int binary_queue_is_empty(const BinaryHeap *binaryHeap) { return binaryHeap->size == 0; }
+
+size_t get_size_binary_queue(const BinaryHeap *binaryHeap) { return binaryHeap->size; }

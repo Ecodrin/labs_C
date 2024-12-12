@@ -76,7 +76,9 @@ SkewNode* merge_with_destroy_heap_r(SkewNode* first, SkewNode* second) {
 		return first;
 	}
 
-	if (first->application->key < second->application->key) {
+	if (first->application->key < second->application->key ||
+	    (first->application->key == second->application->key &&
+	     compare_time(&(first->application->time_create), &(second->application->time_create)) == 1)) {
 		SkewNode* tmp = first;
 		first = second;
 		second = tmp;
@@ -257,3 +259,5 @@ error_msg delete_skew_heap(SkewHeap * heap, Application ** result){
 	return (error_msg){SUCCESS, "", ""};
 }
 
+int is_empty_skew_heap(const SkewHeap* heap) { return heap->size == 0; }
+size_t get_size_skew_heap(const SkewHeap* heap) { return heap->size; }

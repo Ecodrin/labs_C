@@ -9,7 +9,7 @@ error_msg create_treap_node(TreapNode **node, Application *application) {
 		return (error_msg){MEMORY_ALLOCATED_ERROR, "create_treap_node", "memory allocated in object"};
 	}
 	tmp->application = application;
-	tmp->priority = random();
+	tmp->priority = rand();
 	*node = tmp;
 	return (error_msg){SUCCESS, "", ""};
 }
@@ -79,7 +79,7 @@ error_msg copy_treap(Treap *src, Treap **dst) {
 	return (error_msg){SUCCESS, "", ""};
 }
 
-// Время работы O(h)   h - высота дерева
+// Время работы O(h) h - высота дерева
 PairNode split(TreapNode *node, size_t key) {
 	if (node == NULL) {
 		return (PairNode){NULL, NULL};
@@ -232,3 +232,6 @@ error_msg delete_treap(Treap *treap, Application **result) {
 	treap->size -= 1;
 	return (error_msg){SUCCESS, "", ""};
 }
+
+int is_empty_treap(const Treap *treap) { return treap->size == 0; }
+size_t get_size_treap(const Treap *treap) { return treap->size; }

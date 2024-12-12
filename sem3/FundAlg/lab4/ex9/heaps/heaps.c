@@ -1,60 +1,72 @@
 #include "heaps.h"
 
 V_table_queue heaps_functions[] = {
-        {
-                create_binary,
-                insert_binary,
-                delete_binary,
-                merge_binary_with_destroy,
-                merge_binary_without_destroy,
-                destroy_binary,
-                find_max_priority_elem_binary
-        },
-        {
-                create_binomial,
-                insert_binomial,
-                delete_binomial,
-                merge_binomial_with_destroy,
-                merge_binomial_without_destroy,
-                destroy_binomial,
-                find_max_priority_elem_binomial
-        },
-        {
-                create_fibonacci,
-                insert_fibonacci,
-                delete_fibonacci,
-                merge_fibonacci_with_destroy,
-                merge_fibonacci_without_destroy,
-                destroy_fibonacci,
-                find_max_priority_elem_fibonacci
-        },
-        {
-                create_skew,
-                insert_skew,
-                delete_skew,
-                merge_skew_with_destroy,
-                merge_skew_without_destroy,
-                destroy_skew,
-                find_max_priority_elem_skew
-        },
-        {
-                create_leftist,
-                insert_leftist,
-                delete_leftist,
-                merge_leftist_with_destroy,
-                merge_leftist_without_destroy,
-                destroy_leftist,
-                find_max_priority_elem_leftist
-        },
-        {
-                create_treap_r,
-                insert_treap_r,
-                delete_treap_r,
-                merge_treap_with_destroy_r,
-                merge_treap_without_destroy_r,
-                destroy_treap_r,
-                find_max_priority_elem_treap_r
-        }
+    {
+        create_binary,
+        insert_binary,
+        delete_binary,
+        merge_binary_with_destroy,
+        merge_binary_without_destroy,
+        destroy_binary,
+        find_max_priority_elem_binary,
+        is_empty_binary,
+        get_size_bin
+    },
+    {
+        create_binomial,
+        insert_binomial,
+        delete_binomial,
+        merge_binomial_with_destroy,
+        merge_binomial_without_destroy,
+        destroy_binomial,
+        find_max_priority_elem_binomial,
+        is_empty_binomial,
+        get_size_binomial
+    },
+    {
+        create_fibonacci,
+        insert_fibonacci,
+        delete_fibonacci,
+        merge_fibonacci_with_destroy,
+        merge_fibonacci_without_destroy,
+        destroy_fibonacci,
+        find_max_priority_elem_fibonacci,
+        is_empty_fibonacci,
+        get_size_fibonacci
+    },
+    {
+        create_skew,
+        insert_skew,
+        delete_skew,
+        merge_skew_with_destroy,
+        merge_skew_without_destroy,
+        destroy_skew,
+        find_max_priority_elem_skew,
+        is_empty_skew,
+        get_size_skew
+    },
+    {
+        create_leftist,
+        insert_leftist,
+        delete_leftist,
+        merge_leftist_with_destroy,
+        merge_leftist_without_destroy,
+        destroy_leftist,
+        find_max_priority_elem_leftist,
+        is_empty_leftist,
+        get_size_leftist
+    },
+    {
+        create_treap_r,
+        insert_treap_r,
+        delete_treap_r,
+        merge_treap_with_destroy_r,
+        merge_treap_without_destroy_r,
+        destroy_treap_r,
+        find_max_priority_elem_treap_r,
+        is_empty_tr,
+        get_size_tr
+    }
 };
 
 error_msg create_binary(Q_queue **queue) {
@@ -66,6 +78,91 @@ error_msg create_binary(Q_queue **queue) {
     *queue = (Q_queue *)binaryHeap;
     return errorMsg;
 }
+
+int is_empty_binary(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return binary_queue_is_empty(&(queue->bin_h));
+}
+
+int is_empty_binomial(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return is_empty_binomial_heap(&(queue->binomial_h));
+}
+
+int is_empty_fibonacci(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return is_empty_fibonacci_heap(&(queue->fibonacci_h));
+}
+
+int is_empty_leftist(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return is_empty_leftist_heap(&(queue->leftist_h));
+}
+
+int is_empty_skew(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return is_empty_skew_heap(&(queue->skew_h));
+}
+
+int is_empty_tr(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return is_empty_treap(&(queue->treap));
+}
+
+size_t get_size_bin(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_binary_queue(&(queue->bin_h));
+}
+
+size_t get_size_binomial(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_binomial_heap(&(queue->binomial_h));
+}
+
+size_t get_size_fibonacci(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_fibonacci_heap(&(queue->fibonacci_h));
+}
+
+size_t get_size_leftist(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_leftist_heap(&(queue->leftist_h));
+}
+
+size_t get_size_skew(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_skew_heap(&(queue->skew_h));
+}
+
+size_t get_size_tr(Q_queue *queue) {
+	if (queue == NULL) {
+		return -1;
+	}
+	return get_size_treap(&(queue->treap));
+}
+
 
 error_msg insert_binary(Q_queue *queue, Application *application) {
     if (queue == NULL) {

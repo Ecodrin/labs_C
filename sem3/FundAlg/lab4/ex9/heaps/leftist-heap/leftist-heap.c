@@ -124,7 +124,9 @@ LeftistNode * merge_leftist_heap_with_destroy_r(LeftistNode * x, LeftistNode *y)
 		return x;
 	}
 
-	if(x->application->key < y->application->key){
+	if (x->application->key < y->application->key ||
+	    (x->application->key == y->application->key &&
+	     compare_time(&(x->application->time_create), &(y->application->time_create)) == 1)) {
 		swap_leftist_node(&x, &y);
 	}
 
@@ -269,3 +271,6 @@ error_msg delete_leftist_heap(LeftistHeap * heap, Application ** result){
 	free(res);
 	return (error_msg){SUCCESS, "", ""};
 }
+
+int is_empty_leftist_heap(const LeftistHeap* heap) { return heap->size == 0; }
+size_t get_size_leftist_heap(const LeftistHeap* heap) { return heap->size; }

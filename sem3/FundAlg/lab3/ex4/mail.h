@@ -9,7 +9,6 @@
 #include "../lib/mstring/mstring.h"
 
 
-
 typedef struct Address{
 	String city;
 	String street;

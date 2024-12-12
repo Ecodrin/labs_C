@@ -38,9 +38,7 @@ add_executable(ex4 ex4/main.c
         vector/charvector.c
         vector/charvector.h
         vector/stringvector.c
-        vector/stringvector.h
-        ex4/test.c
-        ex4/test.h)
+        vector/stringvector.h)
 
 add_executable(ex5 ex5/main.c
         ex5/overloads.c
@@ -96,7 +94,6 @@ add_executable(ex10 ex10/ex10.c ex10/ex10.h
 
 target_link_libraries(ex2 m check subunit rt pthread)
 target_link_libraries(ex3 m)
-target_link_libraries(ex4 m check subunit rt pthread)
 target_link_libraries(ex6 check subunit rt pthread)
 target_link_libraries(ex7 m)
 target_link_libraries(ex9 m)

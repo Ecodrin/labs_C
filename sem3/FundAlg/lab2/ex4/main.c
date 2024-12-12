@@ -1,17 +1,17 @@
-#include "test.h"
+#include "ex4.h"
 
 int main()
 {
-	int number_failed;
-	Suite *s;
-	SRunner *sr;
+	StringVector *vec = create_string_vector(1);
+	error_msg error = FindNumbersKarper(vec, 16, 4, "1", "BB", "56", "66");;
+	if(error){
+		return print_error(error);
+	}
 
-	s = ex4_suite();
-	sr = srunner_create(s);
+	for(int i = 0; i < vec->size; ++i){
+		printf("%s\n", vec->data[i]);
+	}
+	destroy_string_vector(vec);
 
-	srunner_run_all(sr, CK_NORMAL);
-	number_failed = srunner_ntests_failed(sr);
-	srunner_free(sr);
-	return (number_failed == 0) ? 0 : 1;
 }
 

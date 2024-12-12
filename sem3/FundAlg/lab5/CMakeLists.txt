@@ -58,3 +58,5 @@ target_link_libraries(test_ex6 ${GTEST_LIBRARIES} pthread)
 target_link_libraries(test_ex7 ${GTEST_LIBRARIES} pthread)
 target_link_libraries(test_ex1 ${GTEST_LIBRARIES} pthread)
 
+add_executable(ex5 ex5/main.cpp
+        ex5/main.cpp)

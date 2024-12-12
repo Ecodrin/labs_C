@@ -33,8 +33,8 @@ error_msg merge_fibonacci_heap_with_destroy(FibonacciHeap * first, FibonacciHeap
 error_msg merge_fibonacci_heap_without_destroy(FibonacciHeap * first, FibonacciHeap * second, FibonacciHeap ** result);
 error_msg destroy_fibonacci_heap(FibonacciHeap* heap);
 
+int is_empty_fibonacci_heap(const FibonacciHeap* heap);
 
 error_msg copy_fibonacci_heap_new(FibonacciHeap * src, FibonacciHeap ** dst);
 
-
-
+size_t get_size_fibonacci_heap(const FibonacciHeap* heap);
