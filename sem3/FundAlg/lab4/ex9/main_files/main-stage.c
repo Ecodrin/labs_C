@@ -33,8 +33,7 @@ error_msg find_most_free_department(DStorage *storage, size_t count_departments,
 }
 
 error_msg modeling(DStorage *storage, Application **mas_applications, size_t size_mas, Time *time_begin, Time *time_end,
-                   size_t min_minutes, size_t max_minutes, [[maybe_unused]] double overload_coefficient,
-                   size_t count_departments, const char *log_filename) {
+                   size_t min_minutes, size_t max_minutes, double overload_coefficient, size_t count_departments, const char *log_filename) {
 	if (mas_applications == NULL || time_begin == NULL || time_end == NULL || storage == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, "modeling", "get pointer to null"};
 	}

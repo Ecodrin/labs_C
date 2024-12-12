@@ -10,14 +10,12 @@
 
 #include "SystemErrors/errors.h"
 
-
 const char SHARED_MEM_NAME[] = "/shared_memory_example";
 const int SHARED_MEM_SIZE = 4096;
 
 const char SEM_NAME[] = "/my_semaphore";
 
 int main(void) {
-
     size_t size = 4096;
     char filename[size];
     ssize_t n;
@@ -25,7 +23,6 @@ int main(void) {
         return print_error((error_msg) {INCORRECT_OPTIONS_ERROR, "main", "didn't read filename"});
     }
     filename[n - 1] = '\0';
-
 
     int shm_fd = shm_open(SHARED_MEM_NAME, O_CREAT | O_RDWR, 0666);
     if (shm_fd == -1) {
@@ -37,7 +34,7 @@ int main(void) {
         return print_error((error_msg) {INPUT_FILE_ERROR, "main", "size shared memory didn't set"});
     }
 
-    char *shared_mem = (char *) mmap(NULL, SHARED_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    double *shared_mem = (double *) mmap(NULL, SHARED_MEM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
     if (shared_mem == MAP_FAILED) {
         shm_unlink(SHARED_MEM_NAME);
         return print_error((error_msg) {INPUT_FILE_ERROR, "main", "mmap didn't work"});
@@ -65,7 +62,6 @@ int main(void) {
             return print_error((error_msg) {INPUT_FILE_ERROR, "main", "can't open file"});
         }
 
-
         if (dup2(fd, STDIN_FILENO) == -1) {
             sem_close(sem);
             shm_unlink(SEM_NAME);
@@ -80,18 +76,26 @@ int main(void) {
         exit(EXIT_FAILURE);
 
     } else {
+        int i = 0;
+        int z;
+        while (1) {
+            sem_getvalue(sem, &z);
+            if(waitpid(pid, NULL, WNOHANG) == pid || z == 2){
+                break;
+            }
+            sem_wait(sem);
 
 
-        sem_wait(sem);
+            printf("%f\n", shared_mem[i]);
+            i++;
+        }
 
-        write(STDOUT_FILENO, shared_mem, strlen(shared_mem));
-
-
+        // Освобождаем ресурсы
         munmap(shared_mem, SHARED_MEM_SIZE);
         shm_unlink(SHARED_MEM_NAME);
         sem_close(sem);
         sem_unlink(SEM_NAME);
-        wait(NULL);
+        wait(NULL); // Ждем завершения дочернего процесса (для очистки)
     }
 
     return 0;
