@@ -85,8 +85,9 @@ int main(void) {
             }
             sem_wait(sem);
 
-
-            printf("%f\n", shared_mem[i]);
+            char out[1000];
+            snprintf(out, 1000, "%f\n", shared_mem[i]);
+            write(STDOUT_FILENO, out, strlen(out));
             i++;
         }
 
