@@ -7,8 +7,6 @@
 #include <sys/mman.h>
 #include <string.h>
 
-#define ALLOCATOR_SIZE (1024 * 1024) // 1 MB
-
 typedef struct Block {
     size_t size;
     struct Block *next;
@@ -21,7 +19,7 @@ typedef struct {
     size_t size;
 } Allocator;
 
-Allocator *allocator_create(size_t size);
+Allocator *allocator_create(void *const memory, const size_t size);
 
 void *allocator_alloc(Allocator *allocator, size_t size);
 
