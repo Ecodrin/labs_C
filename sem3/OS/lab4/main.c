@@ -51,6 +51,7 @@ error_msg init_library(void *library) {
 
 
 int main(int argc, char **argv) {
+
     void *library = NULL;
 
     if (argc == 2) {
