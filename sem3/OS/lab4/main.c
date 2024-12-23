@@ -57,12 +57,11 @@ int main(int argc, char **argv) {
         library = dlopen(argv[1], RTLD_LOCAL | RTLD_NOW);
     }
     if (argc != 2 || library == NULL) {
-        library = dlopen("libfree-block-allocator.so", RTLD_GLOBAL | RTLD_LAZY);
+        library = dlopen("./libfree-block-allocator.so", RTLD_GLOBAL | RTLD_LAZY);
     }
     if (library == NULL) {
         return print_error((error_msg) {INCORRECT_OPTIONS_ERROR, "main", "incorrect count args"});
     }
-
     void *memory = mmap(
             NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0
     );

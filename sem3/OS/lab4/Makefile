@@ -1,8 +1,7 @@
 COMP = gcc
-CFLAGS = -fsanitize=address -g -Wall -Wextra -Werror
+CFLAGS = -fsanitize=address -g -Wall -Wextra
 DIN_FLAGS = -fPIC -shared
 LIB_FLAGS = -L. -lerrors
-TEST_FLAGS = -lcheck -lsubunit -lrt -lpthread `pkg-config --cflags --libs check`
 
 all: al1 al2
 	$(COMP) $(CFLAGS) main.c $(LIB_FLAGS) -ldl -o main
