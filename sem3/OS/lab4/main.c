@@ -81,16 +81,63 @@ int main(int argc, char **argv) {
         return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "allocator didn't create"});
     }
 
-    // Тест
-    int * a = allocator_alloc(allocator, sizeof(int) * 10);
-    if(a == NULL){
+    // Тест 1: Выделение и освобождение памяти
+    printf("Test 1: Allocating and freeing memory...\n");
+    int *a = allocator_alloc(allocator, sizeof(int) * 10);
+    if (a == NULL) {
         return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "memory allocated"});
     }
     a[0] = 13;
     a[9] = 19;
-    printf("%d %d\n", a[0], a[9]);
-
+    printf("a[0] = %d, a[9] = %d\n", a[0], a[9]);
     allocator_free(allocator, a);
+    printf("Test 1 passed.\n\n");
+
+    // Тест 2: Выделение памяти большего размера
+    printf("Test 2: Allocating larger memory block...\n");
+    int *b = allocator_alloc(allocator, sizeof(int) * 1000);
+    if (b == NULL) {
+        return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "memory allocated"});
+    }
+    b[0] = 42;
+    b[999] = 24;
+    printf("b[0] = %d, b[999] = %d\n", b[0], b[999]);
+    allocator_free(allocator, b);
+    printf("Test 2 passed.\n\n");
+
+    // Тест 3: Повторное выделение памяти после освобождения
+    printf("Test 3: Reallocating memory after freeing...\n");
+    int *c = allocator_alloc(allocator, sizeof(int) * 5);
+    if (c == NULL) {
+        return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "memory allocated"});
+    }
+    c[0] = 7;
+    c[4] = 14;
+    printf("c[0] = %d, c[4] = %d\n", c[0], c[4]);
+    allocator_free(allocator, c);
+    printf("Test 3 passed.\n\n");
+
+    // Тест 4: Попытка выделения слишком большого блока памяти
+    printf("Test 4: Attempting to allocate too much memory...\n");
+    int *d = allocator_alloc(allocator, MEMORY_SIZE + 1); // Попытка выделить больше, чем доступно
+    if (d != NULL) {
+        return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "memory allocated unexpectedly"});
+    }
+    printf("Test 4 passed (expected failure).\n\n");
+
+    // Тест 5: Выделение нескольких блоков памяти
+    printf("Test 5: Allocating multiple memory blocks...\n");
+    int *e = allocator_alloc(allocator, sizeof(int) * 10);
+    int *f = allocator_alloc(allocator, sizeof(int) * 20);
+    if (e == NULL || f == NULL) {
+        return print_error((error_msg) {MEMORY_ALLOCATED_ERROR, "main", "memory allocated"});
+    }
+    e[0] = 1;
+    f[0] = 2;
+    printf("e[0] = %d, f[0] = %d\n", e[0], f[0]);
+    allocator_free(allocator, e);
+    allocator_free(allocator, f);
+    printf("Test 5 passed.\n\n");
 
     allocator_destroy(allocator);
 
