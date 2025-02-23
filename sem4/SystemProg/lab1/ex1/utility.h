@@ -9,6 +9,7 @@
 #include "../libs/CustomErrors/errors.h"
 
 #define MAX_LOGIN_LEN 6
+#define SECRET_PASSWORD 12345
 
 typedef struct User {
 	char login[MAX_LOGIN_LEN + 1];
@@ -36,5 +37,5 @@ error_msg get_time_string(char* buffer);
 error_msg register_new_user(Users* users, const char* login, int pin);
 error_msg authentication_user(Users* users, const char* login, int pin);
 
-error_msg auth_and_register_window(Users* users, char* login, int* pin);
+Status auth_and_register_window(Users* users, char* login, int* pin);
 Status command_window(Users* users, const char* login);

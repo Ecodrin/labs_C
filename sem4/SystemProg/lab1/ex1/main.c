@@ -9,15 +9,21 @@ int main(){
 	users.data = tmp;
 
 	while (1){
+		printf("------------------------------------------------------------------------------\n");
 		char login[MAX_LOGIN_LEN + 1];
 		int pin;
-		error_msg errorMsg = auth_and_register_window(&users, login, &pin);
-		if (errorMsg.type){
+		Status status = auth_and_register_window(&users, login, &pin);
+		if (status.errorMsg.type){
 			free(users.data);
-			return print_error(errorMsg);
+			return print_error(status.errorMsg);
 		}
-		Status status = command_window(&users, login);
+		if(status.quit){
+			break;
+		}
+
+		status = command_window(&users, login);
 		if(status.errorMsg.type){
+			free(users.data);
 			return print_error(status.errorMsg);
 		}
 		if(status.quit){

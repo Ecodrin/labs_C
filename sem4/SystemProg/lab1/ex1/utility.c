@@ -111,6 +111,11 @@ error_msg register_new_user(Users* users, const char* login, int pin) {
 	if (pin < 0 || pin > 100000 || !check_correct_login(login)) {
 		return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "incorrect login or pin"};
 	}
+	for(int i = 0; i < users->size; i++){
+		if(strcmp(login, users->data[i].login) == 0) {
+			return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "this login already exists"};
+		}
+	}
 	strcpy(users->data[users->size].login, login);
 	users->data[users->size].pin = pin_hash(pin);
 	users->data[users->size].sanctions = -1;
@@ -134,9 +139,9 @@ error_msg authentication_user(Users* users, const char* login, int pin) {
 	return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "account doesn't exist"};
 }
 
-error_msg auth_and_register_window(Users* users, char* login, int* pin) {
+Status auth_and_register_window(Users* users, char* login, int* pin) {
 	if (login == NULL || pin == NULL || users == NULL) {
-		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
+		return (Status){{INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"}, 0};
 	}
 
 	error_msg (*commands[2])(Users* users, const char* login, int pin) = {
@@ -149,7 +154,10 @@ error_msg auth_and_register_window(Users* users, char* login, int* pin) {
 
 		int com;
 		char com_str[10];
-		fgets(com_str, 10, stdin);
+		char * c = fgets(com_str, 10, stdin);
+		if(c == 0) {
+			return (Status){{SUCCESS, "", ""}, 1};
+		}
 		if (strcmp("Sign in\n", com_str) == 0 || strcmp("1\n", com_str) == 0) {
 			com = 1;
 		} else if (strcmp("Sign up\n", com_str) == 0 || strcmp("2\n", com_str) == 0) {
@@ -180,9 +188,9 @@ error_msg auth_and_register_window(Users* users, char* login, int* pin) {
 				clear_buffer();
 				break;
 			case SUCCESS:
-				return (error_msg){SUCCESS, "", ""};
+				return (Status){{SUCCESS, "", ""}, 0};
 			default:
-				return errorMsg;
+				return (Status){errorMsg, 0};
 		}
 	}
 }
@@ -215,12 +223,9 @@ Command recognize_command(const char* com) {
 	}
 }
 
-error_msg parse_string_howmuch_to_buffer(String* src, String* buf, String* buf2) {
+error_msg parse_string_to_buffer2(String* src, String* buf, String* buf2) {
 	if (src == NULL || buf == NULL || buf2 == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
-	}
-	if (src->size < 22) {
-		return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "Bad params"};
 	}
 	strip(src);
 	int index_first_namespace = -1, index_last_name_space = -1;
@@ -258,6 +263,36 @@ error_msg parse_string_howmuch_to_buffer(String* src, String* buf, String* buf2)
 	return (error_msg){SUCCESS, "", ""};
 }
 
+error_msg selections(Users* users, String* login, String* num) {
+	if (login == NULL || num == NULL || users == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
+	}
+	int x;
+	error_msg errorMsg = string_to_int(num, &x);
+	if (errorMsg.type) {
+		return errorMsg;
+	}
+	int password;
+	printf("if you want to change selection you should write special code: ");
+	scanf("%d", &password);
+	if (password == SECRET_PASSWORD) {
+		int i = -1;
+		for (int j = 0; j < users->size; j++) {
+			if (strcmp(users->data[j].login, login->arr) == 0) {
+				i = j;
+			}
+		}
+		if (i == -1) {
+			return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "Login doesn't exist"};
+		}
+		users->data[i].sanctions = x;
+	} else {
+		return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "Not correct special key"};
+	}
+
+	return (error_msg){SUCCESS, "", ""};
+}
+
 Status command_window(Users* users, const char* login) {
 	if (users == NULL || login == NULL) {
 		return (Status){{INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"}, 0};
@@ -265,7 +300,7 @@ Status command_window(Users* users, const char* login) {
 
 	int i = 0, j = -1;
 	for (; i < users->size; i++) {
-		if (strcmp(users->data->login, login) == 0) {
+		if (strcmp(users->data[i].login, login) == 0) {
 			j = i;
 			break;
 		}
@@ -317,14 +352,16 @@ Status command_window(Users* users, const char* login) {
 				get_time_string(buf);
 				printf("%s\n", buf);
 				break;
+
 			case DATE_C:
 				strcpy(buf, command.arr);
 				get_date_string(buf);
 				printf("%s\n", buf);
 				break;
+
 			case HOW_MUCH_C: {
 			}
-				errorMsg = parse_string_howmuch_to_buffer(&command, &buf1, &buf2);
+				errorMsg = parse_string_to_buffer2(&command, &buf1, &buf2);
 				if (errorMsg.type) {
 					if (errorMsg.type == MEMORY_ALLOCATED_ERROR) {
 						clear_string(&command);
@@ -350,6 +387,24 @@ Status command_window(Users* users, const char* login) {
 				destroy_string(&buf2);
 				return (Status){{SUCCESS, "", ""}, 0};
 
+			case SANCTIONS_C:
+				errorMsg = parse_string_to_buffer2(&command, &buf1, &buf2);
+				if (errorMsg.type) {
+					if (errorMsg.type == MEMORY_ALLOCATED_ERROR) {
+						clear_string(&command);
+						clear_string(&buf1);
+						clear_string(&buf2);
+						return (Status){errorMsg, 0};
+					}
+					printf("%s\n", errorMsg.msg);
+					break;
+				}
+				errorMsg = selections(users, &buf1, &buf2);
+				if (errorMsg.type) {
+					printf("%s\n", errorMsg.msg);
+					break;
+				}
+				break;
 			default:
 				printf("Unrecognized command\n");
 		}
