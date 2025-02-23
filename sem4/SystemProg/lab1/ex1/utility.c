@@ -263,7 +263,7 @@ error_msg parse_string_to_buffer2(String* src, String* buf, String* buf2) {
 	return (error_msg){SUCCESS, "", ""};
 }
 
-error_msg selections(Users* users, String* login, String* num) {
+error_msg sanctions_func(Users* users, String* login, String* num) {
 	if (login == NULL || num == NULL || users == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
 	}
@@ -399,7 +399,7 @@ Status command_window(Users* users, const char* login) {
 					printf("%s\n", errorMsg.msg);
 					break;
 				}
-				errorMsg = selections(users, &buf1, &buf2);
+				errorMsg = sanctions_func(users, &buf1, &buf2);
 				if (errorMsg.type) {
 					printf("%s\n", errorMsg.msg);
 					break;
