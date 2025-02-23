@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/ex1.dir/ex1/main.c.o CMakeFiles/ex1.dir/ex1/utils.c.o CMakeFiles/ex1.dir/libs/CustomErrors/errors.c.o CMakeFiles/ex1.dir/libs/mstring/mstring.c.o CMakeFiles/ex1.dir/libs/vector/charvector.c.o -o ex1 

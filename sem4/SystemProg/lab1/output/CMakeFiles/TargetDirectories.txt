@@ -1,3 +1,0 @@
-/home/matvey/Unik/labs_C/sem4/SystemProg/lab1/output/CMakeFiles/ex1.dir
-/home/matvey/Unik/labs_C/sem4/SystemProg/lab1/output/CMakeFiles/edit_cache.dir
-/home/matvey/Unik/labs_C/sem4/SystemProg/lab1/output/CMakeFiles/rebuild_cache.dir
