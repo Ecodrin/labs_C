@@ -15,7 +15,8 @@ typedef enum type_error{
     INCORRECT_OPTIONS_ERROR,
     UNRECOGNIZED_CHARACTER_ERROR,
 	NUMERAL_SYSTEM_ERROR,
-	INCORRECT_ARG_FUNCTION
+	INCORRECT_ARG_FUNCTION,
+	SEM_ERROR
 } type_error;
 
 typedef struct error_msg{

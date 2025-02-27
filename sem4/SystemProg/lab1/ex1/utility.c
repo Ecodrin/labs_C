@@ -1,10 +1,5 @@
 #include "utility.h"
 
-int pin_hash(int pin) {
-	const short a = 21;
-	const short c = 123;
-	return (a * pin + c) % 100000;
-}
 
 error_msg get_time_string(char* buffer) {
 	if (buffer == NULL) {
@@ -116,8 +111,9 @@ error_msg register_new_user(Users* users, const char* login, int pin) {
 			return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "this login already exists"};
 		}
 	}
-	strcpy(users->data[users->size].login, login);
-	users->data[users->size].pin = pin_hash(pin);
+	strncpy(users->data[users->size].login, login, strlen(login));
+	users->data[users->size].login[strlen(login)] = '\0';
+	users->data[users->size].pin = pin;
 	users->data[users->size].sanctions = -1;
 	users->size += 1;
 	return (error_msg){SUCCESS, "", ""};
@@ -129,7 +125,7 @@ error_msg authentication_user(Users* users, const char* login, int pin) {
 	}
 	for (size_t i = 0; i < users->size; i++) {
 		if (strcmp(users->data[i].login, login) == 0) {
-			if (pin_hash(pin) == users->data[i].pin) {
+			if (pin == users->data[i].pin) {
 				return (error_msg){SUCCESS, "", ""};
 			} else {
 				return (error_msg){INCORRECT_OPTIONS_ERROR, __func__, "incorrect login or pin"};
@@ -163,7 +159,8 @@ Status auth_and_register_window(Users* users, char* login, int* pin) {
 		} else if (strcmp("Sign up\n", com_str) == 0 || strcmp("2\n", com_str) == 0) {
 			com = 2;
 		} else {
-			clear_buffer();
+			printf("Unrecognized command.\n");
+			//			clear_buffer();
 			continue;
 		}
 
@@ -424,4 +421,39 @@ Status command_window(Users* users, const char* login) {
 	destroy_string(&buf1);
 	destroy_string(&buf2);
 	return (Status){{SUCCESS, "", ""}, 1};
+}
+
+error_msg load(const char* filename, Users* users) {
+	if (filename == NULL || users == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
+	}
+	FILE* f = fopen(filename, "rb");
+	if (f == NULL) {
+		return (error_msg){SUCCESS, "", ""};
+	}
+	User user;
+	error_msg errorMsg;
+	while (fread(&user, 1, sizeof(User), f)) {
+		errorMsg = register_new_user(users, user.login, user.pin);
+		if (errorMsg.type) {
+			fclose(f);
+			return errorMsg;
+		}
+	}
+	fclose(f);
+	return (error_msg){SUCCESS, "", ""};
+}
+
+error_msg save(const char* filename, Users* users) {
+	if (filename == NULL || users == NULL) {
+		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
+	}
+	FILE* f = fopen(filename, "wb");
+	if (f == NULL) {
+		return (error_msg){INPUT_FILE_ERROR, __func__, "input file didn't open"};
+	}
+	fwrite(users->data, users->size, sizeof(User), f);
+	fclose(f);
+
+	return (error_msg){SUCCESS, "", ""};
 }

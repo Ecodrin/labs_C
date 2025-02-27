@@ -33,6 +33,8 @@ typedef struct Status{
 int pin_hash(int pin);
 error_msg get_date_string(char* buffer);
 error_msg get_time_string(char* buffer);
+error_msg load(const char* filename, Users* users);
+error_msg save(const char* filename, Users* users);
 
 error_msg register_new_user(Users* users, const char* login, int pin);
 error_msg authentication_user(Users* users, const char* login, int pin);

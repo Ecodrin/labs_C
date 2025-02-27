@@ -120,3 +120,4 @@ error_msg FilesStrStr(int n, StringVector * result, char *string, ...) {
 	destroy_int_vector(pos);
 	return SUCCESS;
 }
+

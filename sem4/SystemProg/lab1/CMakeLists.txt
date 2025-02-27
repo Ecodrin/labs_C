@@ -10,3 +10,13 @@ add_executable(ex1 ex1/main.c
         libs/CustomErrors/errors.c
         libs/mstring/mstring.c
         libs/vector/charvector.c)
+
+add_executable(ex2 ex2/main.c
+        ex2/utility.c
+        ex2/utility.h
+        libs/CustomErrors/errors.c
+        libs/mstring/mstring.c
+        libs/vector/charvector.c)
+
+
+SET(CMAKE_C_FLAGS "-fsanitize=address")

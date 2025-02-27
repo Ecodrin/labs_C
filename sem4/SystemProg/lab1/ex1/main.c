@@ -2,11 +2,17 @@
 
 int main(){
 	Users users = {NULL, 2, 0};
-	User* tmp = (User*)malloc(users.capacity * sizeof(User));
+	User* tmp = (User*)calloc(users.capacity, sizeof(User));
 	if(tmp == NULL) {
 		return print_error((error_msg){MEMORY_ALLOCATED_ERROR, __func__, "memory allocated"});
 	}
 	users.data = tmp;
+
+	error_msg errorMsg = load("storage.bin", &users);
+	if(errorMsg.type){
+		free(users.data);
+		return print_error(errorMsg);
+	}
 
 	while (1){
 		printf("------------------------------------------------------------------------------\n");
@@ -29,6 +35,12 @@ int main(){
 		if(status.quit){
 			break;
 		}
+	}
+
+	errorMsg = save("storage.bin", &users);
+	if(errorMsg.type){
+		free(users.data);
+		return print_error(errorMsg);
 	}
 	free(users.data);
 	return 0;
