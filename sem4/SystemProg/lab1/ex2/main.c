@@ -52,6 +52,9 @@ error_msg find(int i, int index_first_file, char* argv[], int argc) {
 
 	for (int k = index_first_file; k < i; ++k) {
 		pid_t id = fork();
+		if (id == -1) {
+			return (error_msg){FORK_ERROR, __func__, "fork"};
+		}
 		if (id == 0) {
 			FILE* f = fopen(argv[k], "r");
 			if (f == NULL) {
@@ -128,6 +131,10 @@ error_msg copy(int j, int n, char* argv[]) {
 	error_msg errorMsg;
 	for (int k = 0; k < n; ++k) {
 		pid_t id = fork();
+		if (id == -1) {
+			return (error_msg){FORK_ERROR, __func__, "fork"};
+		}
+
 		if (id == 0) {
 			char res[strlen(argv[j]) + 16];
 			errorMsg = generate_filename(argv[j], k + 1, res);
