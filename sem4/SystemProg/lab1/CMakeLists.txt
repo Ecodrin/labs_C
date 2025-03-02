@@ -18,5 +18,12 @@ add_executable(ex2 ex2/main.c
         libs/mstring/mstring.c
         libs/vector/charvector.c)
 
+add_executable(ex3 ex3/main.c
+        ex3/utility.c
+        libs/CustomErrors/errors.c
+        ex3/utility.h
+        libs/mstring/mstring.c)
 
+
+target_link_libraries(ex3 -lpthread)
 SET(CMAKE_C_FLAGS "-fsanitize=address")

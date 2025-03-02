@@ -30,7 +30,6 @@ typedef struct Status{
 	int quit;
 }Status;
 
-int pin_hash(int pin);
 error_msg get_date_string(char* buffer);
 error_msg get_time_string(char* buffer);
 error_msg load(const char* filename, Users* users);

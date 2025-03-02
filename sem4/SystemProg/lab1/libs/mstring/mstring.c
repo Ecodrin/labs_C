@@ -77,7 +77,7 @@ int string_compare(const char *s1, const char*s2){
 int str_to_int(const char *a) {
 	int sum = 0;
 	while (*a){
-		sum *= 10 + (*a - '0');
+		sum = sum * 10 + (*a - '0');
 		a++;
 	}
 	return sum;
