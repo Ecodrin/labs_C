@@ -24,6 +24,22 @@ add_executable(ex3 ex3/main.c
         ex3/utility.h
         libs/mstring/mstring.c)
 
+add_executable(ex4_server ex4/server/server.c
+        ex4/server/utility.c
+        ex4/server/utility.h
+        ex4/tokens.h
+        libs/CustomErrors/errors.c
+        libs/mstring/mstring.c)
+
+add_executable(ex4_client
+        ex4/client/client.c
+        ex4/tokens.h
+        ex4/client/utility.c
+        libs/CustomErrors/errors.c
+        libs/mstring/mstring.c
+        libs/vector/charvector.c)
+
 
 target_link_libraries(ex3 -lpthread)
-SET(CMAKE_C_FLAGS "-fsanitize=address")
+target_link_libraries(ex4_client -Wall -Wextra -Wpedantic -Werror)
+target_link_libraries(ex4_server -Wall -Wextra -Wpedantic -Werror)
