@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 
 	for (int i = 0; i < count_philosophers; ++i) {
 		Philosopher* philosopher = calloc(1, sizeof(Philosopher));
-		if (philosopher == NULL) {
+		if (!philosopher) {
 			for (int j = 0; j < i; ++j) {
 				pthread_join(threads[j], NULL);
 			}

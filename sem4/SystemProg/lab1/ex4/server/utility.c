@@ -143,7 +143,7 @@ error_msg requests_processing(UserStates* users, CommandMsg* input_msg, Response
 	}
 
 	if(user->shores[0][0] == 1 && user->shores[0][1] == 1 && user->shores[0][2] == 1){
-		strcpy(output_msg->result, "You test1.");
+		strcpy(output_msg->result, "You win.");
 		clear_user(user);
 		output_msg->code = VICTORY;
 	}

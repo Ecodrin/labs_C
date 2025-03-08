@@ -29,7 +29,6 @@ int main(int argc, char* argv[]) {
 	while (!feof(file_with_instructions)) {
 		CommandMsg request = {.mtype = getpid(), .command = TAKE, .user_id = getpid()};
 
-
 		errorMsg = processing_file_with_instructions(file_with_instructions, &request);
 		if (errorMsg.type) {
 			fclose(file_with_instructions);
