@@ -39,7 +39,15 @@ add_executable(ex4_client
         libs/mstring/mstring.c
         libs/vector/charvector.c)
 
+add_executable(ex5 ex5/main.c
+        ex5/utility.c
+        ex5/utility.h
+        libs/mstring/mstring.c
+        libs/CustomErrors/errors.c
+
+)
 
 target_link_libraries(ex3 -lpthread)
 target_link_libraries(ex4_client -Wall -Wextra -Wpedantic -Werror)
 target_link_libraries(ex4_server -Wall -Wextra -Wpedantic -Werror)
+

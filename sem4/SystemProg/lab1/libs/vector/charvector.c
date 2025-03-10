@@ -127,7 +127,7 @@ error_msg string_to_int(String* dst, int* res) {
 				return (error_msg ){OVERFLOW_ERROR, "string_to_int", "overflow error"};
 			}
 		}else{
-			return (error_msg ){INCORRECT_OPTIONS_ERROR, "string_to_int", "incorrect data"};
+			return (error_msg ){INCORRECT_OPTIONS_ERROR, "string_to_int", "incorrect shared"};
 		}
 	}
 	if(fl){
@@ -315,7 +315,7 @@ error_msg string_to_u_long(String* src, size_t* res) {
 				return (error_msg){OVERFLOW_ERROR, "string_to_int", "overflow error"};
 			}
 		} else {
-			return (error_msg){INCORRECT_OPTIONS_ERROR, "string_to_int", "incorrect data"};
+			return (error_msg){INCORRECT_OPTIONS_ERROR, "string_to_int", "incorrect shared"};
 		}
 	}
 

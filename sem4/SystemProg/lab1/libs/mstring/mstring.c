@@ -8,7 +8,7 @@ error_msg str_to_k(const char **string, char *separator, char *result) {
 	char b[len_separator + 1];
 	if (len_string == 0) {
 		result = NULL;
-		return (error_msg){INCORRECT_OPTIONS_ERROR, "str_to_k", "incorrect data"};
+		return (error_msg){INCORRECT_OPTIONS_ERROR, "str_to_k", "incorrect shared"};
 	}
 	for (int i = 0; i < len_string; ++i) {
 		//        printf("%s\n", *string);
