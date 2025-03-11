@@ -47,7 +47,13 @@ add_executable(ex5 ex5/main.c
 
 )
 
+add_executable(ex7 ex7/main.c
+        ex7/utility.c
+        ex7/utility.h
+        libs/CustomErrors/errors.c)
+
 target_link_libraries(ex3 -lpthread)
 target_link_libraries(ex4_client -Wall -Wextra -Wpedantic -Werror)
 target_link_libraries(ex4_server -Wall -Wextra -Wpedantic -Werror)
+target_link_libraries(ex7 -Wall -Wextra -Wpedantic -Werror)
 
