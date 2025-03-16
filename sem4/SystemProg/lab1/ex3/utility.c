@@ -23,7 +23,7 @@ void* dinner(void* arg) {
 	int first_fork = min(id, (id + 1) % count);
 	int second_fork = max(id, (id + 1) % count);
 
-	for(int i = 0; i < 4; ++i){
+	for(int i = 0; i < 100; ++i){
 		struct sembuf op1 = {first_fork, -1, 0};
 		semop(semid, &op1, 1);
 		struct sembuf op2 = {second_fork, -1, 0};
@@ -32,10 +32,11 @@ void* dinner(void* arg) {
 		res[id] += 1;
 		printf("Филосов %d поел\n", id);
 
-		struct sembuf op3 = {first_fork, 1, 0};
-		semop(semid, &op3, 1);
 		struct sembuf op4 = {second_fork, 1, 0};
 		semop(semid, &op4, 1);
+		struct sembuf op3 = {first_fork, 1, 0};
+		semop(semid, &op3, 1);
+
 	}
 
 	free(arg);

@@ -18,7 +18,8 @@ typedef enum type_error{
 	INCORRECT_ARG_FUNCTION,
 	SEM_ERROR,
 	FORK_ERROR,
-	TOKEN_ERROR
+	TOKEN_ERROR,
+	SERVER_ERROR
 } type_error;
 
 typedef struct error_msg{

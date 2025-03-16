@@ -21,7 +21,10 @@ int main() {
 		int er = msgrcv(msg_key1, &input_msg, sizeof(input_msg) - sizeof(input_msg.mtype), 0, 0);
 		if (er == -1) {
 			printf("Error in msgrcv");
-			continue;
+
+			msgctl(msg_key1, IPC_RMID, 0);
+			msgctl(msg_key2, IPC_RMID, 0);
+			return 1;
 		}
 
 		// Сервер прекращает работу

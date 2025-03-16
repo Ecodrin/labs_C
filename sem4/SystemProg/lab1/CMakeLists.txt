@@ -47,6 +47,24 @@ add_executable(ex5 ex5/main.c
 
 )
 
+
+add_executable(ex6_client
+        ex6/client/client.c
+        libs/CustomErrors/errors.c
+        ex6/tokens.h
+        ex6/client/utility.c
+        ex6/client/utility.h)
+
+add_executable(ex6_server
+        ex6/server/server.c
+        libs/CustomErrors/errors.c
+        ex6/tokens.h
+        ex6/server/utility.c
+        ex6/server/utility.h
+        libs/mstring/mstring.c
+        libs/vector/stringvector.c)
+
+
 add_executable(ex7 ex7/main.c
         ex7/utility.c
         ex7/utility.h
