@@ -54,6 +54,9 @@ int main(int argc, char* argv[]) {
 			fclose(file);
 			return print_error((error_msg){SERVER_ERROR, __func__, "msgrcv"});
 		}
+		if(msg.filename[0] != '/') {
+			printf("\t");
+		}
 		printf("%s\n", msg.filename);
 	}
 	fclose(file);

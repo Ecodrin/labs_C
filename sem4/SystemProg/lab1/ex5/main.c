@@ -105,6 +105,7 @@ void *man_thread(void *arg) {
 	man_wants_to_enter(data->sem_id, data->n, data->shared);
 	sleep(2);
 	man_leaves(data->sem_id, data->n, data->shared);
+	free(arg);
 	return NULL;
 }
 
@@ -113,6 +114,7 @@ void *woman_thread(void *arg) {
 	woman_wants_to_enter(data->sem_id, data->n, data->shared);
 	sleep(2);
 	woman_leaves(data->sem_id, data->n, data->shared);
+	free(arg);
 	return NULL;
 }
 
@@ -166,7 +168,6 @@ int main(int argc, char *argv[]) {
 	if (errorMsg.type) {
 		return print_error(errorMsg);
 	}
-
 	int semid, shmid;
 	SharedData *shared;
 	errorMsg = init(&semid, &shmid, &shared);

@@ -23,6 +23,7 @@ error_msg processing_catalog(const char* catalog_name) {
 	}
 
 	closedir(dir);
+
 	return (error_msg){SUCCESS, "", ""};
 }
 
