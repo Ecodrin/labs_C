@@ -11,7 +11,7 @@ class List : public Container<T> {
 		Node *prev;
 		Node *next;
 
-		explicit Node(const T &d, Node *prev = nullptr, Node *next = nullptr);
+		explicit Node(const T &d, Node *p = nullptr, Node *n = nullptr);
 	};
 
 	size_t size_ = 0;
@@ -208,9 +208,6 @@ void List<T>::resize(size_t count) {
 
 template <typename T>
 void List<T>::resize(size_t count, const T &value) {
-	if (count == size_) {
-		return;
-	}
 	if (count < size_) {
         size_t x = size_ - count;
 		for (size_t i = 0; i < x; ++i) {

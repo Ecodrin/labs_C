@@ -74,7 +74,7 @@ class List : public Container<T> {
 
 	bool empty() const override;
 	size_t size() const override;
-	size_t max_size() const override;
+	size_t capacity() const override;
 	void clear();
 
 	iterator insert(iterator pos, const T &value);
@@ -127,9 +127,9 @@ template <typename T>
 List<T> &List<T>::operator=(List<T> &&other) noexcept {
 	if (this != &other) {
 		clear();
-		std::swap(head, other.head);
-		std::swap(tail, other.tail);
-		std::swap(size_, other.size_);
+        std::swap(head, other.head);
+        std::swap(tail, other.tail);
+        std::swap(size_, other.size_);
 	}
 	return *this;
 }
@@ -212,12 +212,12 @@ void List<T>::resize(size_t count, const T &value) {
 		return;
 	}
 	if (count < size_) {
-		size_t x = size_ - count;
+        size_t x = size_ - count;
 		for (size_t i = 0; i < x; ++i) {
 			pop_back();
 		}
 	} else if (count > size_) {
-		size_t x = count - size_;
+        size_t x = count - size_;
 		for (size_t i = 0; i < x; ++i) {
 			push_back(value);
 		}
@@ -324,11 +324,11 @@ void List<T>::push_front(T &&val) {
 
 template <typename T>
 void List<T>::push_front(const T &val) {
-	insert(begin(), val);
+	insert(cbegin(), val);
 }
 
 template <typename T>
-size_t List<T>::max_size() const {
+size_t List<T>::capacity() const {
 	return size_;
 }
 

@@ -18,7 +18,7 @@ class StackTest : public ::testing::Test {
 	}
 };
 
-TEST_F(StackTest, DefaultConstructor) {
+TEST_F(StackTest, DefaultConstructor)	 {
 	EXPECT_TRUE(empty_stack.empty());
 	EXPECT_EQ(empty_stack.size(), 0);
 }

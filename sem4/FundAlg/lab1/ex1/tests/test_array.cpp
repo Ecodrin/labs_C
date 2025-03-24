@@ -4,6 +4,17 @@
 
 namespace my_container {
 
+
+class ArrayTest : public ::testing::Test {
+   protected:
+	using IntArray5 = Array<int, 5>;
+	IntArray5 default_array;
+	IntArray5 init_array{1, 2, 3, 4, 5};
+	IntArray5 another_array{6, 7, 8, 9, 10};
+	void SetUp() override {
+	}
+};
+
 template <typename T, size_t N>
 void test_array_content(const Array<T, N>& arr, const std::vector<T>& expected) {
 	for (size_t i = 0; i < expected.size(); ++i) {
@@ -11,19 +22,13 @@ void test_array_content(const Array<T, N>& arr, const std::vector<T>& expected) 
 	}
 }
 
-class ArrayTest : public ::testing::Test {
-   protected:
-	using IntArray5 = Array<int, 5>;
-	IntArray5 default_array;
-	IntArray5 init_array = {1, 2, 3, 4, 5};
-	IntArray5 another_array = {6, 7, 8, 9, 10};
-};
-
-TEST_F(ArrayTest, DefaultConstructor) { test_array_content(default_array, {0, 0, 0, 0, 0}); }
+TEST_F(ArrayTest, DefaultConstructor) {
+	test_array_content(default_array, {0, 0, 0, 0, 0});
+}
 
 TEST_F(ArrayTest, InitializerListConstructor) {
 	test_array_content(init_array, {1, 2, 3, 4, 5});
-	Array<int, 5> short_init = {1, 2};
+	Array<int, 5> short_init{1, 2};
 	test_array_content(short_init, {1, 2, 0, 0, 0});
 }
 
@@ -52,9 +57,9 @@ TEST_F(ArrayTest, SubscriptOperator) {
 }
 
 TEST_F(ArrayTest, ComparisonOperators) {
-	IntArray5 arr1 = {1, 2, 3, 4, 5};
-	IntArray5 arr2 = {1, 2, 3, 4, 5};
-	IntArray5 arr3 = {2, 1, 3, 4, 5};
+	IntArray5 arr1{1, 2, 3, 4, 5};
+	IntArray5 arr2{1, 2, 3, 4, 5};
+	IntArray5 arr3{2, 1, 3, 4, 5};
 
 	EXPECT_EQ(arr1, arr2);
 	EXPECT_NE(arr1, arr3);

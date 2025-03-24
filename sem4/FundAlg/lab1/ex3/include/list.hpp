@@ -11,7 +11,7 @@ class List : public Container<T> {
 		Node *prev;
 		Node *next;
 
-		explicit Node(const T &d, Node *prev = nullptr, Node *next = nullptr);
+		explicit Node(const T &d, Node *p = nullptr, Node *n = nullptr);
 	};
 
 	size_t size_ = 0;
@@ -127,9 +127,9 @@ template <typename T>
 List<T> &List<T>::operator=(List<T> &&other) noexcept {
 	if (this != &other) {
 		clear();
-        std::swap(head, other.head);
-        std::swap(tail, other.tail);
-        std::swap(size_, other.size_);
+		std::swap(head, other.head);
+		std::swap(tail, other.tail);
+		std::swap(size_, other.size_);
 	}
 	return *this;
 }
@@ -208,16 +208,14 @@ void List<T>::resize(size_t count) {
 
 template <typename T>
 void List<T>::resize(size_t count, const T &value) {
-	if (count == size_) {
-		return;
-	}
+
 	if (count < size_) {
-        size_t x = size_ - count;
+		size_t x = size_ - count;
 		for (size_t i = 0; i < x; ++i) {
 			pop_back();
 		}
 	} else if (count > size_) {
-        size_t x = count - size_;
+		size_t x = count - size_;
 		for (size_t i = 0; i < x; ++i) {
 			push_back(value);
 		}
@@ -324,7 +322,7 @@ void List<T>::push_front(T &&val) {
 
 template <typename T>
 void List<T>::push_front(const T &val) {
-	insert(cbegin(), val);
+	insert(begin(), val);
 }
 
 template <typename T>

@@ -26,7 +26,7 @@ class Array final : public Container<T> {
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
 	Array() = default;
-	Array(std::initializer_list<T> init);
+	Array(std::initializer_list<T> init) ;
 	~Array() = default;
 	Array(const Array<T, N>& other);
 	Array(Array<T, N>&& other) noexcept;
@@ -65,7 +65,7 @@ class Array final : public Container<T> {
 	std::strong_ordering operator<=>(const Array<T, N>& rhs) const;
 };
 
-// Реализация методов класса Array
+
 template <typename T, size_t N>
 Array<T, N>::Array(std::initializer_list<T> init) {
 	size_t copy_size = std::min(init.size(), N);

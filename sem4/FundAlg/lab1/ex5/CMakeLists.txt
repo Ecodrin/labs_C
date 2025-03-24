@@ -37,9 +37,11 @@ FetchContent_MakeAvailable(googletest)
 # Основная библиотека
 add_library(my_lib
         include/deque.hpp
-        src/deque.cpp
         include/list.hpp
-        include/container.hpp)
+        include/container.hpp
+        src/vector.cpp
+        include/vector.hpp
+)
 target_include_directories(my_lib PUBLIC include)
 target_compile_options(my_lib PRIVATE
         ${COMMON_FLAGS}
@@ -50,7 +52,7 @@ target_link_options(my_lib PRIVATE
 )
 
 
-add_executable(tests tests/test_deque.cpp)
+add_executable(tests tests/test_vector.cpp)
 target_link_libraries(tests PRIVATE my_lib GTest::gtest_main)
 target_compile_options(tests PRIVATE
         ${COMMON_FLAGS}

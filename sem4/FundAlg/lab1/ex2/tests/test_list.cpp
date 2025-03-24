@@ -3,6 +3,14 @@
 #include "../include/list.hpp"
 
 namespace my_container {
+
+class ListTest : public ::testing::Test {
+   protected:
+	List<int> empty_int_list;
+	List<int> int_list = {1, 2, 3, 4};
+	List<std::string> str_list = {"one", "two", "three"};
+};
+
 template <typename T>
 void test_list_content(const List<T> &list, const std::vector<T> &expected) {
 	ASSERT_EQ(list.size(), expected.size());
@@ -12,13 +20,6 @@ void test_list_content(const List<T> &list, const std::vector<T> &expected) {
 		++it;
 	}
 }
-
-class ListTest : public ::testing::Test {
-   protected:
-	List<int> empty_int_list;
-	List<int> int_list = {1, 2, 3, 4};
-	List<std::string> str_list = {"one", "two", "three"};
-};
 
 TEST_F(ListTest, DefaultConstructor) {
 	EXPECT_TRUE(empty_int_list.empty());
