@@ -7,8 +7,8 @@ namespace my_container {
 class StackTest : public ::testing::Test {
    protected:
 	Stack<int> empty_stack;
-	Stack<int> int_stack = {3, 2, 1};
-	Stack<std::string> str_stack = {"hello", "world"};
+	Stack<int> int_stack{3, 2, 1};
+	Stack<std::string> str_stack{"hello", "world"};
 
 	void SetUp() override {
 		while (!int_stack.empty()) int_stack.pop();
@@ -18,7 +18,7 @@ class StackTest : public ::testing::Test {
 	}
 };
 
-TEST_F(StackTest, DefaultConstructor)	 {
+TEST_F(StackTest, DefaultConstructor) {
 	EXPECT_TRUE(empty_stack.empty());
 	EXPECT_EQ(empty_stack.size(), 0);
 }

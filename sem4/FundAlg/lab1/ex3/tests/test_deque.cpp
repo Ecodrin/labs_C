@@ -6,8 +6,8 @@ namespace my_container {
 class DequeTest : public ::testing::Test {
    protected:
 	Deque<int> empty_deque;
-	Deque<int> int_deque = {1, 2, 3, 4, 5};
-	Deque<std::string> str_deque = {"a", "bb", "ccc"};
+	Deque<int> int_deque{1, 2, 3, 4, 5};
+	Deque<std::string> str_deque{"a", "bb", "ccc"};
 };
 
 TEST_F(DequeTest, DefaultConstructor) {
@@ -16,7 +16,7 @@ TEST_F(DequeTest, DefaultConstructor) {
 }
 
 TEST_F(DequeTest, InitializerListConstructor) {
-	Deque<int> d = {10, 20, 30};
+	Deque<int> d{10, 20, 30};
 	EXPECT_EQ(d.size(), 3);
 	EXPECT_EQ(d[0], 10);
 	EXPECT_EQ(d[2], 30);

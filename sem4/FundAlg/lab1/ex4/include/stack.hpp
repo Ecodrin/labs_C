@@ -4,7 +4,7 @@
 
 namespace my_container {
 template <typename T>
-class Stack {
+class Stack final {
    private:
 	Deque<T> data;
 
@@ -12,7 +12,7 @@ class Stack {
 	Stack();
 	Stack(const Stack<T> &other);
 	Stack(Stack<T> &&other) noexcept;
-	Stack(const std::initializer_list<T> &init);
+	explicit Stack(const std::initializer_list<T> &init);
 	~Stack() = default;
 
 	Stack<T> &operator=(const Stack<T> &other);

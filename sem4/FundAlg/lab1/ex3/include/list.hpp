@@ -55,8 +55,8 @@ class List : public Container<T> {
 
 	List();
 	List(const List<T> &other);
-	List(List<T> &&other) noexcept;
-	List(const std::initializer_list<T> &t);
+	List(List<T> &&other) noexcept ;
+	explicit List(const std::initializer_list<T> &t);
 	~List() override;
 	List<T> &operator=(const List<T> &other);
 	List<T> &operator=(List<T> &&other) noexcept;
@@ -75,7 +75,7 @@ class List : public Container<T> {
 	bool empty() const override;
 	size_t size() const override;
 	size_t max_size() const override;
-	void clear();
+	void clear() noexcept;
 
 	iterator insert(iterator pos, const T &value);
 	iterator insert(iterator pos, T &&value);
@@ -180,7 +180,7 @@ List<T>::List(const std::initializer_list<T> &t) : List() {
 }
 
 template <typename T>
-List<T>::List(List<T> &&other) noexcept : List() {
+List<T>::List(List<T> &&other) noexcept: List() {
 	for (const auto &elem : other) {
 		push_back(elem);
 	}
@@ -247,8 +247,16 @@ List<T>::~List() {
 }
 
 template <typename T>
-void List<T>::clear() {
-	erase(begin(), end());
+void List<T>::clear() noexcept {
+	Node* current = head->next;
+	while (current != tail) {
+		Node* next = current->next;
+		delete current;
+		current = next;
+	}
+	head->next = tail;
+	tail->prev = head;
+	size_ = 0;
 }
 
 template <typename T>

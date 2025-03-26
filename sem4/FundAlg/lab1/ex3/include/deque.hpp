@@ -8,7 +8,7 @@ template <typename T>
 class Deque : public List<T> {
    public:
 	Deque();
-	Deque(const std::initializer_list<T> &init);
+	explicit Deque(const std::initializer_list<T> &init);
 	Deque(const Deque<T> &other);
 	Deque(Deque<T> &&other) noexcept;
 

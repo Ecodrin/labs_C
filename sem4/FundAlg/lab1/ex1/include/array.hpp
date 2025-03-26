@@ -26,7 +26,7 @@ class Array final : public Container<T> {
 	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
 	Array() = default;
-	Array(std::initializer_list<T> init) ;
+	explicit Array(std::initializer_list<T> init) ;
 	~Array() = default;
 	Array(const Array<T, N>& other);
 	Array(Array<T, N>&& other) noexcept;
