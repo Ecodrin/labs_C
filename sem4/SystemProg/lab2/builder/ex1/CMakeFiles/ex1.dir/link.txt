@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/ex1.dir/tests/test_logger.cpp.o -o ex1  libliblogger.a 

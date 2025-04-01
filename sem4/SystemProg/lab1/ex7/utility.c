@@ -1,5 +1,6 @@
 #include "utility.h"
 
+
 error_msg processing_catalog(const char* catalog_name) {
 	if (catalog_name == NULL) {
 		return (error_msg){INCORRECT_ARG_FUNCTION, __func__, "get pointer to null"};
@@ -122,13 +123,13 @@ error_msg processing_file(const char* file_name, char* result) {
 		return (error_msg){INPUT_FILE_ERROR, __func__, "stat file"};
 	}
 
-	char rights[11] = "\0";
+	char rights[21] = "\0";
 	memset(rights, '\0', 10);
 	error_msg errorMsg = access_rights(rights, &file_info);
 	if (errorMsg.type) {
 		return errorMsg;
 	}
-	rights[10] = '\0';
+	rights[20] = '\0';
 	sprintf(result, "%s ", rights);
 	sprintf(result + strlen(result), "%2lu %s %s %6lu", file_info.st_nlink, getpwuid(file_info.st_uid)->pw_name,
 	        getgrgid(file_info.st_gid)->gr_name, file_info.st_size);

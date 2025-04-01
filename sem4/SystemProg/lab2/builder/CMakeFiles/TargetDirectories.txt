@@ -1,0 +1,6 @@
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/CMakeFiles/edit_cache.dir
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/CMakeFiles/rebuild_cache.dir
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/ex1/CMakeFiles/liblogger.dir
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/ex1/CMakeFiles/ex1.dir
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/ex1/CMakeFiles/edit_cache.dir
+/home/matvey/Unik/labs_C/sem4/SystemProg/lab2/builder/ex1/CMakeFiles/rebuild_cache.dir

@@ -181,10 +181,9 @@ List<T>::List(const std::initializer_list<T> &t) : List() {
 
 template <typename T>
 List<T>::List(List<T> &&other) noexcept : List() {
-	for (const auto &elem : other) {
-		push_back(elem);
-	}
-	other.clear();
+	std::swap(head, other.head);
+	std::swap(tail, other.tail);
+	std::swap(size_, other.size_);
 }
 
 template <typename T>
