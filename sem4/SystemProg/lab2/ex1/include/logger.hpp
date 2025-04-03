@@ -55,6 +55,8 @@ public:
 
     void addHandler(std::unique_ptr<LogHandler> handler);
     void setHandler(LevelLogger level);
+
+    void close_logger();
 };
 
 

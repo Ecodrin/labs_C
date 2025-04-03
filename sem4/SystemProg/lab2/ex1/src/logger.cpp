@@ -77,11 +77,17 @@ Logger::Logger(std::string logger_n, Logger::LevelLogger logger_level) : logger_
 
 }
 
+void Logger::close_logger() {
+    handlers.clear();
+
+}
+
 StreamLoggerHandler::StreamLoggerHandler(std::ostream &stream) : stream_{stream} {}
 
 void StreamLoggerHandler::write(const std::string &message) {
     stream_ << message << std::endl;
 }
+
 
 Logger *LoggerBuilder::build(const std::string &logger_name, Logger::LevelLogger logger_level) {
     return new Logger{logger_name, logger_level};
