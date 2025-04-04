@@ -293,8 +293,8 @@ TEST_F(BigIntTest, AdditionWithCarryOverMultipleDigits) {
 TEST_F(BigIntTest, SubtractionWithMultipleBorrows) {
     BigInt a("1000000000000000000000000");
     BigInt b("1");
-    a -= b;
-    EXPECT_EQ(a.to_string(), "999999999999999999999999");
+    b -= a;
+    EXPECT_EQ(b.to_string(), "-999999999999999999999999");
 }
 
 TEST_F(BigIntTest, MultiplyByZeroAfterSignChange) {
@@ -373,6 +373,41 @@ TEST_F(BigIntTest, SubtractWithCarryPropagationInHighDigits) {
     a -= b;
 
     EXPECT_EQ(a.to_string(), "99");
+}
+
+TEST_F(BigIntTest, AdditionBothNegative) {
+    BigInt a("-10000000000");
+    BigInt b("-20000000000");
+    a += b;
+    EXPECT_EQ(a.to_string(), "-30000000000");
+}
+
+TEST_F(BigIntTest, AdditionThisNegativeNumPositive) {
+    BigInt a("-5000000000");
+    BigInt b("3000000000");
+    a += b;
+    EXPECT_EQ(a.to_string(), "-2000000000");
+}
+
+TEST_F(BigIntTest, AdditionThisPositiveNumNegative) {
+    BigInt a("7000000000");
+    BigInt b("-3000000000");
+    a += b;
+    EXPECT_EQ(a.to_string(), "4000000000");
+}
+
+TEST_F(BigIntTest, AdditionWithCarryOverflow) {
+    BigInt a("9999999999");
+    BigInt b("1");
+    a += b;
+    EXPECT_EQ(a.to_string(), "10000000000");
+}
+
+TEST_F(BigIntTest, AdditionEdgeCaseWithEmptyBranches) {
+    BigInt a{"99999999999999999999"};
+    BigInt b("1");
+    a += b;
+    EXPECT_EQ(a.to_string(), "100000000000000000000");
 }
 
 int main(int argc, char **argv) {

@@ -51,6 +51,7 @@ target_link_options(my_lib PRIVATE
         $<$<CONFIG:Debug>:${COVERAGE_FLAGS}>
 )
 
+
 add_executable(tests
         tests/test_big_int.cpp)
 target_link_libraries(tests PRIVATE my_lib GTest::gtest_main)

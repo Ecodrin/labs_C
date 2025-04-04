@@ -72,12 +72,11 @@ BigInt &BigInt::operator=(const BigInt &other) {
 }
 
 BigInt &BigInt::operator=(BigInt &&other) noexcept {
-    if (this == &other) {
-        return *this;
+    if (this != &other) {
+        *this = other;
+        other.data.clear();
+        other.is_negative = false;
     }
-    *this = other;
-    other.data.clear();
-    other.is_negative = false;
     return *this;
 }
 
@@ -123,9 +122,7 @@ void BigInt::change_base(unsigned long long int new_base) {
 }
 
 void BigInt::reload_from_string(const std::string &in) {
-    if (in.empty()) {
-        return;
-    }
+
     if (!is_correct_string(in)) {
         throw std::invalid_argument("incorrect input");
     }
@@ -292,9 +289,6 @@ BigInt& BigInt::operator-=(const BigInt& num) {
     for (size_t i = 0; i < num.data.size() || carry; ++i) {
         const long long num_digit = (i < num.data.size()) ? num.data[i] : 0;
 
-        if (i >= data.size()) {
-            data.resize(i + 1, 0);
-        }
 
         long long diff = data[i] - num_digit - carry;
         carry = 0;
@@ -307,17 +301,6 @@ BigInt& BigInt::operator-=(const BigInt& num) {
         data[i] = diff;
     }
 
-    // Обработка оставшихся разрядов
-    size_t i = num.data.size();
-    while (carry && i < data.size()) {
-        if (data[i] == 0) {
-            data[i] = base - 1;
-        } else {
-            data[i] -= 1;
-            carry = 0;
-        }
-        i++;
-    }
 
     remove_leading_zeros();
     return *this;
