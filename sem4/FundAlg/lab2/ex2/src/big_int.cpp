@@ -179,6 +179,18 @@ bool operator==(const BigInt &lhs, const BigInt &rhs) {
     return (lhs <=> rhs) == std::strong_ordering::equal;
 }
 
+BigInt mod_exp(const BigInt &base, const BigInt &exp, const BigInt &mod) {
+    if (exp.is_null()) {
+        return BigInt{1};
+    }
+    BigInt a = mod_exp(base % mod, exp / BigInt(2), mod) % mod;
+    if (exp % BigInt{2} == BigInt{0}){
+        return (a * a) % mod;
+    } else {
+        return ((base % mod) * ((a * a) % mod)) % mod;
+    }
+}
+
 BigInt BigInt::operator+(const BigInt &num) const {
     BigInt tmp{*this};
     return tmp += num;
@@ -353,32 +365,28 @@ BigInt &BigInt::operator/=(const BigInt &num) {
     if (num.is_null()) {
         throw std::invalid_argument("denominator should be not 0");
     }
-    BigInt dividend{*this};
-    BigInt divisor{num};
+    BigInt tmp1{*this};
+    BigInt tmp2{num};
     if (is_negative) {
         if (num.is_negative) {
-            *this = (-dividend) / (-divisor);
+            *this = (-tmp1) / (-tmp2);
             remove_leading_zeros();
             return *this;
         }
-        *this = -((-dividend) / divisor);
+        *this = -((-tmp1) / tmp2);
         remove_leading_zeros();
         return *this;
     } else if (num.is_negative) {
-        *this = -(dividend / (-divisor));
+        *this = -(tmp1 / (-tmp2));
         remove_leading_zeros();
         return *this;
     }
 
-
-
     BigInt res;
-
-    while (dividend >= divisor) {
-        dividend= dividend - divisor;
+    while (tmp1 >= tmp2) {
+        tmp1 = tmp1 - tmp2;
         res = res + 1;
     }
-
     *this = res;
     remove_leading_zeros();
     return *this;
@@ -417,9 +425,4 @@ BigInt BigInt::operator%(const BigInt &num) const {
     BigInt tmp{*this};
     return tmp %= num;
 }
-
-void BigInt::shift_left(size_t k) {
-    data.insert(data.begin(), k, 0);
-}
-
 

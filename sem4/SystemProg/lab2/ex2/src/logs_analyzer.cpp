@@ -1,0 +1,1 @@
+#include "../include/logs_analyzer.hpp"

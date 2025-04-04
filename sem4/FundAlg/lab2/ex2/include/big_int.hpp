@@ -13,7 +13,6 @@ private:
 
     void remove_leading_zeros();
     static bool is_correct_string(const std::string &str);
-    void shift_left(size_t k);
 public:
     BigInt();
     BigInt(const BigInt &other);
@@ -56,3 +55,5 @@ public:
 
     bool is_null() const;
 };
+
+BigInt mod_exp(const BigInt& base, const BigInt& exp, const BigInt& mod);
