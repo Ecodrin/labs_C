@@ -1,8 +1,14 @@
 #include "../include/logs_generator.hpp"
+#include "../include/logs_analyzer.hpp"
 #include "../include/logger.hpp"
+#include "../include/safe_queue.hpp"
+
 
 int main() {
-    Logger* l = LoggerBuilder::build("asdas");
-    l->addHandler(std::make_unique<FileLoggerHandler>("asd.log"));
-    l->LogWarning("govno");
+    SafeQueue<std::string> q;
+    LogsGenerator a{q, "Traffic", Logger::LOG_DEBUG};
+    a.start_traffic(3);
+
+
+
 }

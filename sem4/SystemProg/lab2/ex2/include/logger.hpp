@@ -47,7 +47,7 @@ private:
 
     static std::string get_datetime();
 public:
-    Logger(std::string  logger_n, Logger::LevelLogger logger_level = Logger::LOG_DEBUG);
+    explicit Logger(std::string  logger_n, Logger::LevelLogger logger_level = Logger::LOG_DEBUG);
     void Log(LevelLogger level, const std::string &log);
     void LogError(const std::string &log);
     void LogCritic(const std::string &log);

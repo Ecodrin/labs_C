@@ -107,6 +107,9 @@ bool BigInt::is_correct_string(const std::string &str) {
 }
 
 void BigInt::change_base(unsigned long long int new_base) {
+    if(new_base == base) {
+        return;
+    }
     if (new_base == 0) {
         throw std::invalid_argument("base cannot be zero");
     }
@@ -184,7 +187,7 @@ BigInt BigInt::mod_exp(const BigInt &base, const BigInt &exp, const BigInt &mod)
         return BigInt{1};
     }
     BigInt a = mod_exp(base % mod, exp / BigInt(2), mod) % mod;
-    if (exp % BigInt{2} == BigInt{0}){
+    if (exp % BigInt{2} == BigInt{0}) {
         return (a * a) % mod;
     } else {
         return ((base % mod) * ((a * a) % mod)) % mod;
@@ -415,7 +418,7 @@ BigInt BigInt::operator--(int) {
 BigInt &BigInt::operator%=(const BigInt &num) {
     BigInt tmp = *this / num;
     *this = *this - tmp * num;
-    if(is_negative and num.is_negative) {
+    if (is_negative and num.is_negative) {
         is_negative = false;
     }
     return *this;
@@ -426,3 +429,110 @@ BigInt BigInt::operator%(const BigInt &num) const {
     return tmp %= num;
 }
 
+BigInt BigInt::fft_multiply(const BigInt &a) const {
+    BigInt lhs{*this};
+    BigInt rhs{a};
+
+    if (lhs.is_negative) {
+        if (rhs.is_negative) {
+            lhs.is_negative = false;
+            return lhs.fft_multiply(-rhs);
+        } else {
+            lhs.is_negative = false;
+            return -lhs.fft_multiply(rhs);
+        }
+    } else if (rhs.is_negative) {
+        return -lhs.fft_multiply(-rhs);
+    }
+
+    rhs.change_base(lhs.base);
+    size_t n = 1;
+    size_t total_size = lhs.data.size() + rhs.data.size();
+    while (n < total_size) n <<= 1;
+
+    auto dft1 = fft(n, fft_transform(lhs.data, n), omega(n, -1));
+    auto dft2 = fft(n, fft_transform(rhs.data, n), omega(n, -1));
+
+    std::vector<std::complex<double>> tmp_res(n);
+    for (size_t i = 0; i < n; ++i) {
+        tmp_res[i] = dft1[i] * dft2[i];
+    }
+
+    auto dft3 = fft(n, tmp_res, omega(n, 1));
+    for (auto& x : dft3) x /= n;
+
+    BigInt res;
+    res.data = fft_reset(dft3, lhs.base);
+    res.base = lhs.base;
+    return res;
+}
+
+
+std::vector<std::complex<double>> BigInt::fft(size_t n, std::vector<std::complex<double>> f, std::complex<double> w) {
+    if (n == 1) {
+        return f;
+    }
+
+    std::vector<std::complex<double>> r1(n / 2), r2(n / 2);
+    std::complex<double> current_w(1, 0);
+    for (size_t i = 0; i < n / 2; ++i) {
+        r1[i] = f[i] + f[i + n / 2];
+        r2[i] = (f[i] - f[i + n / 2]) * current_w;
+        current_w *= w;
+    }
+    std::vector<std::complex<double>> a = fft(n / 2, r1, w * w);
+    std::vector<std::complex<double>> b = fft(n / 2, r2, w * w);
+
+
+    std::vector<std::complex<double>> res;
+    for(size_t i = 0; i < n / 2; ++i) {
+        res.push_back(a[i]);
+        res.push_back(b[i]);
+    }
+
+    return res;
+}
+
+std::complex<double> BigInt::omega(int n, int k) {
+    double angle = 2 * M_PI * k / n;
+    return {cos(angle), sin(angle)};
+}
+
+std::vector<std::complex<double>> BigInt::fft_transform(const std::vector<unsigned long long>& input, size_t n) {
+    std::vector<std::complex<double>> complex_arr(n);
+    for (size_t i = 0; i < input.size(); ++i) {
+        complex_arr[i] = input[input.size() - 1 - i];
+    }
+    return complex_arr;
+}
+
+std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<double>>& input, size_t base) {
+    std::vector<unsigned long long> res;
+    for (auto el : input) {
+        long long value = std::llround(el.real());
+        res.push_back(value);
+    }
+    while (!res.empty() && res.back() == 0) res.pop_back();
+    std::reverse(res.begin(), res.end());
+    BigInt tmp;
+    tmp.base = base;
+    tmp.data = res;
+    tmp.normalize();
+    return tmp.data;
+}
+
+void BigInt::normalize() {
+    unsigned long long carry = 0;
+    for (size_t i = 0; i < data.size(); ++i) {
+        data[i] += carry;
+        carry = data[i] / base;
+        data[i] %= base;
+    }
+    while (carry > 0) {
+        data.push_back(carry % base);
+        carry /= base;
+    }
+    while (!data.empty() && data.back() == 0) {
+        data.pop_back();
+    }
+}

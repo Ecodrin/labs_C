@@ -25,11 +25,10 @@ void Logger::Log(Logger::LevelLogger level, const std::string &log) {
 
     std::string log_msg = "[" + get_datetime() + "][" + logger_name + "]"
                           + level_str[level] + " " + log;
-    mutex.lock();
+    std::lock_guard<std::mutex> lock(mutex);
     for(auto& handler : handlers) {
         handler->write(log_msg);
     }
-    mutex.unlock();
 }
 
 void Logger::LogError(const std::string &log) {

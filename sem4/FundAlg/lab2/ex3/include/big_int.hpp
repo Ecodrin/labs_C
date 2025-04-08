@@ -4,6 +4,8 @@
 #include <vector>
 #include <cmath>
 #include <iomanip>
+#include <complex>
+#include <cmath>
 
 class BigInt {
 private:
@@ -13,6 +15,11 @@ private:
 
     void remove_leading_zeros();
     static bool is_correct_string(const std::string &str);
+
+    static std::vector<std::complex<double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
+    static std::vector<unsigned long long> fft_reset(const std::vector<std::complex<double>>& input, size_t base);
+    void normalize();
+
 public:
     BigInt();
     BigInt(const BigInt &other);
@@ -56,6 +63,11 @@ public:
     [[nodiscard]] bool is_null() const;
 
     static BigInt mod_exp(const BigInt& base, const BigInt& exp, const BigInt& mod);
+
+    BigInt fft_multiply(const BigInt& a) const;
+
+    static std::complex<double> omega(int n, int k);
+    static std::vector<std::complex<double>> fft(size_t n, std::vector<std::complex<double>> f, std::complex<double> w);
 };
 
 

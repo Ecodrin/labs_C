@@ -472,31 +472,31 @@ TEST_F(BigIntTest, ZeroHandlingModulo) {
 }
 
 TEST_F(BigIntTest, ModExpBasic) {
-    EXPECT_EQ(mod_exp(BigInt(3), BigInt(4), BigInt(5)), BigInt(1));
-    EXPECT_EQ(mod_exp(BigInt(2), BigInt(5), BigInt(10)), BigInt(2));
-    EXPECT_EQ(mod_exp(BigInt(5), BigInt(3), BigInt(13)), BigInt(8));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(3), BigInt(4), BigInt(5)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(2), BigInt(5), BigInt(10)), BigInt(2));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(5), BigInt(3), BigInt(13)), BigInt(8));
 }
 
 TEST_F(BigIntTest, ModExpEdgeCases) {
-    EXPECT_EQ(mod_exp(BigInt(5), BigInt(0), BigInt(7)), BigInt(1));
-    EXPECT_EQ(mod_exp(BigInt(0), BigInt(0), BigInt(2)), BigInt(1));
-    EXPECT_EQ(mod_exp(BigInt(7), BigInt(1), BigInt(3)), BigInt(1));
-    EXPECT_EQ(mod_exp(BigInt(10), BigInt(5), BigInt(1)), BigInt(0));
-    EXPECT_EQ(mod_exp(BigInt(0), BigInt(5), BigInt(7)), BigInt(0));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(5), BigInt(0), BigInt(7)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(0), BigInt(0), BigInt(2)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(7), BigInt(1), BigInt(3)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(10), BigInt(5), BigInt(1)), BigInt(0));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(0), BigInt(5), BigInt(7)), BigInt(0));
 }
 
 TEST_F(BigIntTest, ModExpNegativeBase) {
-    EXPECT_EQ(mod_exp(BigInt(-2), BigInt(3), BigInt(5)), BigInt(-3));
-    EXPECT_EQ(mod_exp(BigInt(-3), BigInt(2), BigInt(4)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(-2), BigInt(3), BigInt(5)), BigInt(-3));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(-3), BigInt(2), BigInt(4)), BigInt(1));
 }
 
 TEST_F(BigIntTest, ModExpModComparison) {
-    EXPECT_EQ(mod_exp(BigInt(3), BigInt(4), BigInt(10)), BigInt(1));
-    EXPECT_EQ(mod_exp(BigInt(7), BigInt(2), BigInt(5)), BigInt(4));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(3), BigInt(4), BigInt(10)), BigInt(1));
+    EXPECT_EQ(BigInt::mod_exp(BigInt(7), BigInt(2), BigInt(5)), BigInt(4));
 }
 
 TEST_F(BigIntTest, ModExpInvalidMod) {
-    EXPECT_THROW(mod_exp(BigInt(2), BigInt(3), BigInt(0)), std::invalid_argument);
+    EXPECT_THROW(BigInt::mod_exp(BigInt(2), BigInt(3), BigInt(0)), std::invalid_argument);
 }
 
 int main(int argc, char **argv) {
