@@ -16,10 +16,9 @@ private:
     void remove_leading_zeros();
     static bool is_correct_string(const std::string &str);
 
-    static std::vector<std::complex<double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
-    static std::vector<unsigned long long> fft_reset(const std::vector<std::complex<double>>& input, size_t base);
+    static std::vector<std::complex<long double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
+    static std::vector<unsigned long long> fft_reset(const std::vector<std::complex<long double>>& input, size_t base);
     void normalize();
-
 public:
     BigInt();
     BigInt(const BigInt &other);
@@ -27,7 +26,6 @@ public:
     explicit BigInt(long long l);
     explicit BigInt(const std::string &in);
     ~BigInt() = default;
-
 
     BigInt &operator=(const BigInt &other);
     BigInt &operator=(BigInt &&other) noexcept;
@@ -66,8 +64,8 @@ public:
 
     BigInt fft_multiply(const BigInt& a) const;
 
-    static std::complex<double> omega(int n, int k);
-    static std::vector<std::complex<double>> fft(size_t n, std::vector<std::complex<double>> f, std::complex<double> w);
+    static std::complex<long double> omega(int n, int k);
+    static std::vector<std::complex<long double>> fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w);
 };
 
 

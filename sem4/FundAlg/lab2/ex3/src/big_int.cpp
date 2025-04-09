@@ -448,17 +448,17 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
     rhs.change_base(lhs.base);
     size_t n = 1;
     size_t total_size = lhs.data.size() + rhs.data.size();
-    while (n < total_size) n <<= 1;
+    while (n < 2 * total_size) n <<= 1;
 
-    auto dft1 = fft(n, fft_transform(lhs.data, n), omega(n, -1));
-    auto dft2 = fft(n, fft_transform(rhs.data, n), omega(n, -1));
+    auto dft1 = fft(n, fft_transform(lhs.data, n), omega(n, 1));
+    auto dft2 = fft(n, fft_transform(rhs.data, n), omega(n, 1));
 
-    std::vector<std::complex<double>> tmp_res(n);
+    std::vector<std::complex<long double>> tmp_res(n);
     for (size_t i = 0; i < n; ++i) {
         tmp_res[i] = dft1[i] * dft2[i];
     }
 
-    auto dft3 = fft(n, tmp_res, omega(n, 1));
+    auto dft3 = fft(n, tmp_res, omega(n, -1));
     for (auto& x : dft3) x /= n;
 
     BigInt res;
@@ -468,23 +468,23 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
 }
 
 
-std::vector<std::complex<double>> BigInt::fft(size_t n, std::vector<std::complex<double>> f, std::complex<double> w) {
+std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w) {
     if (n == 1) {
         return f;
     }
 
-    std::vector<std::complex<double>> r1(n / 2), r2(n / 2);
-    std::complex<double> current_w(1, 0);
+    std::vector<std::complex<long double>> r1(n / 2), r2(n / 2);
+    std::complex<long double> current_w(1, 0);
     for (size_t i = 0; i < n / 2; ++i) {
         r1[i] = f[i] + f[i + n / 2];
         r2[i] = (f[i] - f[i + n / 2]) * current_w;
         current_w *= w;
     }
-    std::vector<std::complex<double>> a = fft(n / 2, r1, w * w);
-    std::vector<std::complex<double>> b = fft(n / 2, r2, w * w);
+    std::vector<std::complex<long double>> a = fft(n / 2, r1, w * w);
+    std::vector<std::complex<long double>> b = fft(n / 2, r2, w * w);
 
 
-    std::vector<std::complex<double>> res;
+    std::vector<std::complex<long double>> res;
     for(size_t i = 0; i < n / 2; ++i) {
         res.push_back(a[i]);
         res.push_back(b[i]);
@@ -493,27 +493,26 @@ std::vector<std::complex<double>> BigInt::fft(size_t n, std::vector<std::complex
     return res;
 }
 
-std::complex<double> BigInt::omega(int n, int k) {
-    double angle = 2 * M_PI * k / n;
+std::complex<long double> BigInt::omega(int n, int k) {
+    long double angle = -2 * M_PIl * k / n;
     return {cos(angle), sin(angle)};
 }
 
-std::vector<std::complex<double>> BigInt::fft_transform(const std::vector<unsigned long long>& input, size_t n) {
-    std::vector<std::complex<double>> complex_arr(n);
+std::vector<std::complex<long double>> BigInt::fft_transform(const std::vector<unsigned long long>& input, size_t n) {
+    std::vector<std::complex<long double>> complex_arr(n);
     for (size_t i = 0; i < input.size(); ++i) {
-        complex_arr[i] = input[input.size() - 1 - i];
+        complex_arr[i] = input[i];
     }
     return complex_arr;
 }
 
-std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<double>>& input, size_t base) {
+std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<long double>>& input, size_t base) {
     std::vector<unsigned long long> res;
     for (auto el : input) {
-        long long value = std::llround(el.real());
+
+        unsigned long long value = std::llround(el.real() + 1e-8L);
         res.push_back(value);
     }
-    while (!res.empty() && res.back() == 0) res.pop_back();
-    std::reverse(res.begin(), res.end());
     BigInt tmp;
     tmp.base = base;
     tmp.data = res;
@@ -532,7 +531,6 @@ void BigInt::normalize() {
         data.push_back(carry % base);
         carry /= base;
     }
-    while (!data.empty() && data.back() == 0) {
-        data.pop_back();
-    }
+    remove_leading_zeros();
 }
+

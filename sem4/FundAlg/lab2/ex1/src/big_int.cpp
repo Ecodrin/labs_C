@@ -422,4 +422,3 @@ void BigInt::shift_left(size_t k) {
     data.insert(data.begin(), k, 0);
 }
 
-
