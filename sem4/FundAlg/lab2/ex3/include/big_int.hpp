@@ -19,6 +19,10 @@ private:
     static std::vector<std::complex<long double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
     static std::vector<unsigned long long> fft_reset(const std::vector<std::complex<long double>>& input, size_t base);
     void normalize();
+
+    void shift_left(int k);
+
+    static std::pair<BigInt, BigInt> divide(const BigInt & lhs, const BigInt & rhs);
 public:
     BigInt();
     BigInt(const BigInt &other);
@@ -56,7 +60,6 @@ public:
     BigInt operator++(int);
     BigInt operator--(int);
 
-    BigInt operator+(long long num) const;
 
     [[nodiscard]] bool is_null() const;
 

@@ -13,7 +13,12 @@ private:
 
     void remove_leading_zeros();
     static bool is_correct_string(const std::string &str);
-    void shift_left(size_t k);
+    void shift_left(int k);
+
+    static std::pair<BigInt, BigInt> divide(const BigInt & lhs, const BigInt & rhs);
+    void normalize();
+
+
 public:
     BigInt();
     BigInt(const BigInt &other);
@@ -52,7 +57,6 @@ public:
     BigInt operator++(int);
     BigInt operator--(int);
 
-    BigInt operator+(long long num) const;
 
     bool is_null() const;
 };

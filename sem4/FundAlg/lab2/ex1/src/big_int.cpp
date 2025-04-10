@@ -209,10 +209,6 @@ bool BigInt::is_null() const {
     return (data.size() == 1 and data[0] == 0) or data.size() == 0;
 }
 
-BigInt BigInt::operator+(const long long int num) const {
-    BigInt tmp{num};
-    return *this + tmp;
-}
 
 BigInt::BigInt() : base(1000000000), data({0}), is_negative(false) {}
 
@@ -349,10 +345,6 @@ BigInt &BigInt::operator*=(const BigInt &num) {
 }
 
 BigInt &BigInt::operator/=(const BigInt &num) {
-//        Алгоритм самый просто, так как сложные алгоритмы заключены в следующих заданиях
-    if (num.is_null()) {
-        throw std::invalid_argument("denominator should be not 0");
-    }
     BigInt dividend{*this};
     BigInt divisor{num};
     if (is_negative) {
@@ -369,17 +361,9 @@ BigInt &BigInt::operator/=(const BigInt &num) {
         remove_leading_zeros();
         return *this;
     }
-
-
-
-    BigInt res;
-
-    while (dividend >= divisor) {
-        dividend= dividend - divisor;
-        res = res + 1;
-    }
-
-    *this = res;
+    divisor.change_base(dividend.base);
+    std::pair<BigInt, BigInt> res = divide(dividend, divisor);
+    *this = res.first;
     remove_leading_zeros();
     return *this;
 }
@@ -418,7 +402,70 @@ BigInt BigInt::operator%(const BigInt &num) const {
     return tmp %= num;
 }
 
-void BigInt::shift_left(size_t k) {
-    data.insert(data.begin(), k, 0);
+void BigInt::shift_left(int k) {
+    if(k > 0) {
+        data.insert(data.begin(), k, 0);
+    } else if(k < 0) {
+        for (int i = 0; i < abs(k); ++i) {
+            data.erase(data.begin());
+        }
+    }
+}
+
+/*
+ * 4234324
+ * 369____
+ *  54
+ */
+
+std::pair<BigInt, BigInt> BigInt::divide(const BigInt &lhs, const BigInt &rhs) {
+    if (rhs.is_null()) {
+        throw std::invalid_argument("denominator should be not 0");
+    }
+    BigInt remainder;
+    BigInt quotient;
+    quotient.change_base(lhs.base);
+    remainder.change_base(lhs.base);
+
+    BigInt dividend{lhs};
+    BigInt divisor{rhs};
+
+    while (true) {
+
+        if(dividend < rhs) {
+            break;
+        }
+        divisor.shift_left(dividend.data.size() - divisor.data.size());
+        while (dividend < divisor) {
+            quotient.data.push_back(0);
+            divisor.shift_left(-1);
+        }
+        BigInt tmp{divisor};
+        size_t k = 1;
+        while (divisor + tmp <= dividend) {
+            divisor += tmp;
+            ++k;
+        }
+        dividend -= divisor;
+        quotient.data.push_back(k);
+        divisor = rhs;
+    }
+    std::reverse(quotient.data.begin(), quotient.data.end());
+    quotient.normalize();
+    remainder = dividend;
+    return {quotient, remainder};
+}
+
+void BigInt::normalize() {
+    unsigned long long carry = 0;
+    for (size_t i = 0; i < data.size() or carry; ++i) {
+        if(i == data.size()) {
+            data.push_back(0);
+        }
+        data[i] += carry;
+        carry = data[i] / base;
+        data[i] %= base;
+    }
+    remove_leading_zeros();
 }
 

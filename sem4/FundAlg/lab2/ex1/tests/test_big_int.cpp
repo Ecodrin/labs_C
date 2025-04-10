@@ -76,10 +76,15 @@ TEST_F(BigIntTest, MultiplicationOperations) {
 }
 
 TEST_F(BigIntTest, DivisionOperations) {
-    BigInt dividend("12345678901234567890123490");
-    BigInt divisor("12345678900000000000000");
 
-    EXPECT_EQ(dividend / divisor, BigInt("1000"));
+    BigInt s1{42345};
+    BigInt s2{123};
+    EXPECT_EQ(s1 / s2, BigInt{344});
+
+    BigInt dividend("12345678901234567890123491323");
+    BigInt divisor("1234567890000001231243032");
+
+    EXPECT_EQ(dividend / divisor, BigInt("10000"));
     EXPECT_THROW(a / zero, std::invalid_argument);
 }
 
@@ -152,6 +157,12 @@ TEST_F(BigIntTest, DivisionByOne) {
     BigInt a("1234");
     EXPECT_EQ(a / BigInt(1), a);
     EXPECT_EQ((-a) / BigInt(1), -a);
+}
+
+
+TEST_F(BigIntTest, DivisionByNull) {
+    BigInt a("1234");
+    EXPECT_THROW(a / BigInt(0), std::invalid_argument);
 }
 
 TEST_F(BigIntTest, MixedSignOperations) {
@@ -439,7 +450,7 @@ TEST_F(BigIntTest, PostfixIncrementDecrement) {
 TEST_F(BigIntTest, ModuloOperations) {
     EXPECT_EQ((BigInt(17) % BigInt(5)).to_string(), "2");
     EXPECT_EQ((BigInt(-23) % BigInt(7)).to_string(), "-2");
-    EXPECT_EQ((BigInt(5) % BigInt(17)).to_string(), "5");\
+    EXPECT_EQ((BigInt(5) % BigInt(17)).to_string(), "5");
 }
 
 

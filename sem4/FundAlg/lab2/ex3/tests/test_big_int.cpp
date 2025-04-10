@@ -95,10 +95,15 @@ TEST_F(BigIntTest, MultiplicationOperations) {
 }
 
 TEST_F(BigIntTest, DivisionOperations) {
-    BigInt dividend("12345678901234567890123490");
-    BigInt divisor("12345678900000000000000");
 
-    EXPECT_EQ(dividend / divisor, BigInt("1000"));
+    BigInt s1{42345};
+    BigInt s2{123};
+    EXPECT_EQ(s1 / s2, BigInt{344});
+
+    BigInt dividend("12345678901234567890123491323");
+    BigInt divisor("1234567890000001231243032");
+
+    EXPECT_EQ(dividend / divisor, BigInt("10000"));
     EXPECT_THROW(a / zero, std::invalid_argument);
 }
 
