@@ -1,16 +1,15 @@
 #pragma once
 
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <pthread.h>
+
+#include <csignal>
 #include <iostream>
+#include <random>
 
 #include "logger.hpp"
 #include "safe_queue.hpp"
-
-
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <random>
-
 
 struct tcp_traffic_pkg {
     in_port_t src_port;
@@ -26,11 +25,11 @@ struct tcp_traffic {
 };
 
 
-class LogQueueHandler : public LogHandler {
+class QueueLoggerHandler : public LogHandler {
 protected:
     SafeQueue<std::string> &queue;
 public:
-    explicit LogQueueHandler(SafeQueue<std::string> &q) : queue(q) {};
+    explicit QueueLoggerHandler(SafeQueue<std::string> &q) : queue(q) {};
     void write(const std::string &str) override;
 };
 
@@ -39,13 +38,10 @@ private:
     Logger *logger;
     SafeQueue<std::string> &queue;
 
+public:
     static std::string ip_to_string(in_addr_t ip);
 
-public:
     explicit LogsGenerator(SafeQueue<std::string> &q, const std::string &logger_name,
                            Logger::LevelLogger logger_level);
-
     static void* generate_sample_traffic(void * arg);
-
-    void start_traffic(size_t count_threads = 3);
 };

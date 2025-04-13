@@ -1,14 +1,12 @@
-#include "../include/logs_generator.hpp"
-#include "../include/logs_analyzer.hpp"
-#include "../include/logger.hpp"
-#include "../include/safe_queue.hpp"
-
+#include "../include/traffic.hpp"
 
 int main() {
-    SafeQueue<std::string> q;
-    LogsGenerator a{q, "Traffic", Logger::LOG_DEBUG};
-    a.start_traffic(3);
+    Traffic tr{3, 3};
+	pthread_t p[2];
+    pthread_create(&p[0], nullptr, Traffic::start_traffic, &tr);
+    pthread_create(&p[1], nullptr, Traffic::analyze_traffic, &tr);
 
-
-
+    for (unsigned long i : p) {
+        pthread_join(i, nullptr);
+    }
 }

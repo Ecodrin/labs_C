@@ -1,33 +1,50 @@
 #pragma once
 
-
-#include <map>
 #include <iostream>
+#include <map>
+#include <algorithm>
+#include <sstream>
+#include <string>
 
 #include "logs_generator.hpp"
 
+struct Stats {
+    size_t total_received = 0;
+    size_t total_sent = 0;
+    std::map<in_addr_t, tcp_traffic> connected;
+    std::vector<in_addr_t> disconnected;
+};
+
 class LogsAnalyzer {
 private:
-    SafeQueue<std::string> &queue;
-    static in_addr_t string_to_api(const std::string &ip_str);
 
-    struct IPStats {
-        size_t total_sent = 0;
-        size_t total_received = 0;
-        size_t connections = 0;
-        std::map<in_addr_t, std::map<in_port_t, size_t>> connected_ips;
-    };
+    SafeQueue<std::string> &queue;
+    std::map<in_addr_t, Stats> info;
+
+    Logger *logger;
+
+
+    static void connect(LogsAnalyzer *analyzer, in_addr_t dst_addr, in_port_t dst_port, in_addr_t src_addr,
+                        in_port_t src_port);
+
+    static void disconnect(LogsAnalyzer *analyzer, in_addr_t dst_addr, in_port_t dst_port, in_addr_t src_addr,
+                           in_port_t src_port);
+
+    static void
+    get(LogsAnalyzer *analyzer, in_addr_t dst_addr, in_port_t dst_port, in_addr_t src_addr, in_port_t src_port,
+        size_t size_information);
+
+    static void post(LogsAnalyzer *analyzer, in_addr_t dst_addr, in_port_t dst_port, in_addr_t src_addr,
+                     in_port_t src_port, size_t size_information);
+
 public:
+
+    [[nodiscard]] std::map<in_addr_t, Stats> get_info() const;
+    [[nodiscard]] std::map<in_addr_t, Stats> get_info(in_addr_t ip);
     explicit LogsAnalyzer(SafeQueue<std::string> &queue);
 
-    static void *analyzing_traffic(void *arg) {
-        auto analyzer = static_cast<LogsAnalyzer *>(arg);
-        if (analyzer == nullptr) {
-            return nullptr;
-        }
+    static void *analyzing_traffic(void *arg);
 
-        std::map<in_addr_t, tcp_traffic> data;
-
-    }
-
+    static in_addr_t string_to_api(const std::string &ip_str);
+    static std::vector<std::string> split(const std::string &s, char delimiter);
 };

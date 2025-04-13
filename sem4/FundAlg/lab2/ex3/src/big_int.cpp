@@ -228,19 +228,19 @@ bool BigInt::is_null() const {
 BigInt::BigInt() : base(1000000000), data({0}), is_negative(false) {}
 
 BigInt &BigInt::operator+=(const BigInt &num) {
-    BigInt tmp{num};
-    tmp.change_base(base);
+    BigInt rhs{num};
+    rhs.change_base(base);
 
-    BigInt tmp2{*this};
+    BigInt lhs{*this};
     if (is_negative) {
-        if (tmp.is_negative) {
-            *this = -((-tmp2) + (-tmp));
+        if (rhs.is_negative) {
+            *this = -((-rhs) + (-lhs));
             return *this;
         }
-        *this = tmp - (-tmp2);
+        *this = rhs - (-lhs);
         return *this;
-    } else if (tmp.is_negative) {
-        *this = tmp2 - (-tmp);
+    } else if (rhs.is_negative) {
+        *this = lhs - (-rhs);
         return *this;
     }
     BigInt res;
@@ -249,16 +249,16 @@ BigInt &BigInt::operator+=(const BigInt &num) {
 
     unsigned long long carry = 0;
     size_t i = 0;
-    for (; i < std::max(tmp.data.size(), data.size()); ++i) {
-        if (i < tmp.data.size() && i < data.size()) {
-            res.data.push_back((tmp.data[i] + data[i] + carry) % base);
-            carry = (tmp.data[i] + data[i] + carry) / base;
+    for (; i < std::max(rhs.data.size(), data.size()); ++i) {
+        if (i < rhs.data.size() && i < data.size()) {
+            res.data.push_back((rhs.data[i] + data[i] + carry) % base);
+            carry = (rhs.data[i] + data[i] + carry) / base;
         } else if (i < data.size()) {
             res.data.push_back((data[i] + carry) % base);
             carry = (data[i] + carry) / base;
         } else {
-            res.data.push_back((tmp.data[i] + carry) % base);
-            carry = (tmp.data[i] + carry) / base;
+            res.data.push_back((rhs.data[i] + carry) % base);
+            carry = (rhs.data[i] + carry) / base;
         }
     }
     while (carry > 0) {

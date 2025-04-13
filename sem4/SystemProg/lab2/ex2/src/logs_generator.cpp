@@ -1,11 +1,13 @@
 #include "../include/logs_generator.hpp"
 
+
 LogsGenerator::LogsGenerator(SafeQueue<std::string> &q, const std::string &logger_name,
                              Logger::LevelLogger logger_level)
         : queue{q} {
     logger = LoggerBuilder::build(logger_name, logger_level);
-    logger->addHandler(std::make_unique<LogQueueHandler>(q));
-    logger->addHandler(std::make_unique<FileLoggerHandler>("s.log"));
+    logger->addHandler(std::make_unique<QueueLoggerHandler>(q));
+	logger->addHandler(std::make_unique<FileLoggerHandler>("out.log"));
+//	logger->addHandler(std::make_unique<StreamLoggerHandler>(std::cout));
 }
 
 std::string LogsGenerator::ip_to_string(in_addr_t ip) {
@@ -33,7 +35,6 @@ void *LogsGenerator::generate_sample_traffic(void *arg) {
     traffic.src_addr = ip_dist(gen);
     traffic.pkgs_sz = 2 + gen() % 10;
 
-    const char *what_pk[5] = {"POST ", "GET "};
 
     traffic.pkgs = new tcp_traffic_pkg[traffic.pkgs_sz];
 
@@ -47,9 +48,12 @@ void *LogsGenerator::generate_sample_traffic(void *arg) {
                        std::to_string(ntohs(tmp_pkg.src_port)) + " → " +
                        ip_to_string(tmp_pkg.dst_addr) + ":" +
                        std::to_string(ntohs(tmp_pkg.dst_port));
+   std::string tmp2 = ip_to_string(tmp_pkg.dst_addr) + ":" +
+	                   std::to_string(ntohs(tmp_pkg.dst_port)) + " ← " +
+	                  ip_to_string(traffic.src_addr) + ":" +
+	                   std::to_string(ntohs(tmp_pkg.src_port));
 
-
-    for (size_t i = 0; i < traffic.pkgs_sz; ++i) {
+   for (size_t i = 0; i < traffic.pkgs_sz; ++i) {
         traffic.pkgs[i] = tmp_pkg;
         traffic.pkgs[i].sz = size_dist(gen);
         if (i == 0) {
@@ -58,40 +62,31 @@ void *LogsGenerator::generate_sample_traffic(void *arg) {
                     tmp1
             );
         } else if (i != traffic.pkgs_sz - 1) {
-            instance->logger->LogInfo(
-                    what_pk[what_pkgs(gen)] +
-                    tmp1 +
-                    " (" + std::to_string(traffic.pkgs[i].sz) + " bytes)"
-            );
+			if(what_pkgs(gen) == 0) {
+				instance->logger->LogInfo("POST " + tmp1 + " (" + std::to_string(size_dist(gen)) + ")");
+			} else {
+				instance->logger->LogInfo("GET " + tmp2 + " (" + std::to_string(size_dist(gen)) + ")");
+			}
         } else {
             instance->logger->LogInfo(
-                    "STOP " +
+                    "DISCONNECT " +
                     tmp1
             );
         }
         if (is_fatal(gen) == 0) {
             instance->logger->LogError(
-                    "STOP " +
+                    "DISCONNECT " +
                     tmp1
             );
             break;
         }
+		usleep(1000000);
     }
-    delete traffic.pkgs;
+    delete []traffic.pkgs;
     return nullptr;
 }
 
-void LogsGenerator::start_traffic(size_t count_threads) {
-    pthread_t threads[count_threads];
-    for (int i = 0; i < count_threads; ++i) {
-        pthread_create(&threads[i], nullptr, &LogsGenerator::generate_sample_traffic, this);
-    }
 
-    for (int i = 0; i < count_threads; ++i) {
-        pthread_join(threads[i], nullptr);
-    }
-}
-
-void LogQueueHandler::write(const std::string &str) {
+void QueueLoggerHandler::write(const std::string &str) {
     queue.push(str);
 }

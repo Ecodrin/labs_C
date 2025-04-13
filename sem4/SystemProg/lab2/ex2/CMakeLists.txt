@@ -13,4 +13,6 @@ add_executable(ex2 tests/main.cpp
         src/logs_analyzer.cpp
         src/logger.cpp
         include/logger.hpp
-        src/safe_queue.cpp)
+        src/safe_queue.cpp
+        src/traffic.cpp
+        include/traffic.hpp)

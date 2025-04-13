@@ -65,6 +65,9 @@ TEST_F(BigIntTest, ComparisonOperators) {
 }
 
 TEST_F(BigIntTest, AdditionOperations) {
+    BigInt t{9};
+    t.change_base(10);
+    EXPECT_EQ(t + BigInt{9}, BigInt{18});
     EXPECT_EQ(a + zero, a);
     EXPECT_EQ(a + b, BigInt("-864197532086419753208641975320"));
     EXPECT_EQ(a + BigInt("99999999999999999999"),

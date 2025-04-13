@@ -16,10 +16,9 @@ public:
     ~SafeQueue() = default;
     void push(const T &el);
     void push(T &&el);
-    void pop();
-    T &top();
+	T pop();
 
-    bool empty();
+	bool empty();
 };
 
 template<typename T>
@@ -29,17 +28,12 @@ bool SafeQueue<T>::empty() {
 }
 
 template<typename T>
-T &SafeQueue<T>::top() {
-    std::lock_guard<std::mutex> lock(mutex);
-    T &el = data.front();
-    return el;
-}
-
-template<typename T>
-void SafeQueue<T>::pop() {
-    std::lock_guard<std::mutex> lock(mutex);
+T SafeQueue<T>::pop() {
+	std::unique_lock<std::mutex> lock(mutex);
     cv.wait(lock, [this] { return !data.empty(); });
-    data.pop();
+	T tmp = data.front();
+	data.pop();
+	return tmp;
 }
 
 template<typename T>

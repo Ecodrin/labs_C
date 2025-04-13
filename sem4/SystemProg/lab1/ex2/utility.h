@@ -1,14 +1,15 @@
 #pragma once
 
+#include <fcntl.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/ipc.h>
-#include <sys/sem.h>
 #include <sys/msg.h>
+#include <sys/sem.h>
 #include <sys/stat.h>
-#include <fcntl.h>
+#include <unistd.h>
 
 #include "../libs/CustomErrors/errors.h"
 #include "../libs/mstring/mstring.h"

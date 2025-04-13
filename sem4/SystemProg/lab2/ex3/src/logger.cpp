@@ -66,6 +66,7 @@ Logger::Logger(std::string logger_n, Logger::LevelLogger logger_level) : logger_
 
 void Logger::close_logger() {
     handlers.clear();
+
 }
 
 StreamLoggerHandler::StreamLoggerHandler(std::ostream &stream) : stream_{stream} {}
