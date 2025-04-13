@@ -124,6 +124,8 @@ void LogsAnalyzer::post(LogsAnalyzer *analyzer, in_addr_t dst_addr, in_port_t ds
 void LogsAnalyzer::disconnect(LogsAnalyzer *analyzer, in_addr_t dst_addr, [[maybe_unused]] in_port_t dst_port,
                               in_addr_t src_addr,
                               [[maybe_unused]] in_port_t src_port) {
+    analyzer->info[dst_addr].disconnected.push_back(src_addr);
+    analyzer->info[src_addr].disconnected.push_back(dst_addr);
     if (analyzer->info.find(dst_addr) == analyzer->info.end() or
         analyzer->info[dst_addr].connected.find(src_addr) == analyzer->info[dst_addr].connected.end()) {
         return;
@@ -132,11 +134,9 @@ void LogsAnalyzer::disconnect(LogsAnalyzer *analyzer, in_addr_t dst_addr, [[mayb
     delete[] analyzer->info[src_addr].connected[dst_addr].pkgs;
     analyzer->info[dst_addr].connected.erase(src_addr);
     analyzer->info[src_addr].connected.erase(dst_addr);
-    analyzer->info[dst_addr].disconnected.push_back(src_addr);
-    analyzer->info[src_addr].disconnected.push_back(dst_addr);
 }
 
-std::map<in_addr_t, Stats> LogsAnalyzer::get_info() const {
+std::map<in_addr_t, Stats> LogsAnalyzer::get_info() {
     logger->LogWarning("get_info is not safe thread functions. Use with coverage.");
     return info;
 }

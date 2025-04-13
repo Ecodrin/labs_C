@@ -20,7 +20,6 @@ private:
 
     SafeQueue<std::string> &queue;
     std::map<in_addr_t, Stats> info;
-
     Logger *logger;
 
 
@@ -39,7 +38,7 @@ private:
 
 public:
 
-    [[nodiscard]] std::map<in_addr_t, Stats> get_info() const;
+    [[nodiscard]] std::map<in_addr_t, Stats> get_info();
     [[nodiscard]] std::map<in_addr_t, Stats> get_info(in_addr_t ip);
     explicit LogsAnalyzer(SafeQueue<std::string> &queue);
 
