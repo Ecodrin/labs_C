@@ -35,12 +35,17 @@ class QueueLoggerHandler : public LogHandler {
 
 class LogsGenerator {
    private:
-	Logger *logger;
+	Logger *logger = nullptr;
 	SafeQueue<std::string> &queue;
 
    public:
+    bool stop = false;
 	static std::string ip_to_string(in_addr_t ip);
 
 	explicit LogsGenerator(SafeQueue<std::string> &q, const std::string &logger_name, Logger::LevelLogger logger_level);
+    explicit LogsGenerator(SafeQueue<std::string> &q, Logger * logger);
+    LogsGenerator(LogsGenerator&& other) noexcept;
+    LogsGenerator& operator=(LogsGenerator&& other) noexcept;
+    ~LogsGenerator();
 	static void *generate_sample_traffic(void *arg);
 };

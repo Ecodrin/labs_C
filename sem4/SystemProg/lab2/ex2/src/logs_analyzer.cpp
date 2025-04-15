@@ -32,7 +32,7 @@ void *LogsAnalyzer::analyzing_traffic(void *arg) {
 	if (analyzer == nullptr) {
 		return nullptr;
 	}
-	for (int i = 0; i < 100; ++i) {
+	while (!analyzer->stop) {
 		std::string src = analyzer->queue.pop();
 		std::vector<std::string> input = split(src, ' ');
 		if (input.size() != 7 and input.size() != 8) {
@@ -71,7 +71,11 @@ void *LogsAnalyzer::analyzing_traffic(void *arg) {
 			disconnect(analyzer, second_addr, second_port, first_addr, first_port);
 		}
 	}
-
+	for(auto & el : analyzer->info) {
+		for(auto & c : el.second.connected) {
+			delete[]c.second.pkgs;
+		}
+	}
 	return nullptr;
 }
 
@@ -139,4 +143,18 @@ std::map<in_addr_t, Stats> LogsAnalyzer::get_info() {
 std::map<in_addr_t, Stats> LogsAnalyzer::get_info(const in_addr_t ip) {
 	logger->LogWarning("get_info is not safe thread functions. Use with coverage.");
 	return {{ip, info[ip]}};
+}
+
+LogsAnalyzer::~LogsAnalyzer() { delete logger; }
+
+LogsAnalyzer::LogsAnalyzer(LogsAnalyzer &&other) noexcept
+    : queue{other.queue}, logger{std::exchange(other.logger, nullptr)}, stop(std::exchange(other.stop, false)) {}
+
+LogsAnalyzer &LogsAnalyzer::operator=(LogsAnalyzer &&other) noexcept {
+	if (this != &other) {
+		delete logger;
+		logger = std::exchange(other.logger, nullptr);
+		stop = std::exchange(other.stop, false);
+	}
+	return *this;
 }

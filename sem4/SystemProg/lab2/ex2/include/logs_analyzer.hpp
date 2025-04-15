@@ -34,10 +34,13 @@ class LogsAnalyzer {
 	                 in_port_t src_port, size_t size_information);
 
    public:
+    bool stop = false;
 	[[nodiscard]] std::map<in_addr_t, Stats> get_info();
 	[[nodiscard]] std::map<in_addr_t, Stats> get_info(in_addr_t ip);
 	explicit LogsAnalyzer(SafeQueue<std::string> &queue);
-
+    ~LogsAnalyzer();
+    LogsAnalyzer(LogsAnalyzer && other) noexcept;
+    LogsAnalyzer& operator=(LogsAnalyzer &&other) noexcept;
 	static void *analyzing_traffic(void *arg);
 
 	static in_addr_t string_to_api(const std::string &ip_str);

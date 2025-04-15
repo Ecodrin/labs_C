@@ -3,7 +3,7 @@
 Traffic::Traffic(size_t count_generate_threads, size_t count_analyze_threads)
     : count_analyze_threads(count_analyze_threads), count_generate_threads(count_generate_threads) {
 	for (int i = 0; i < count_generate_threads; ++i) {
-		generators.emplace_back(q, "Generator " + std::to_string(i + 1), Logger::LOG_DEBUG);
+	generators.emplace_back(q, "Generator " + std::to_string(i + 1), Logger::LOG_DEBUG);
 	}
 	for (int i = 0; i < count_analyze_threads; ++i) {
 		analyzers.emplace_back(q);
@@ -121,23 +121,32 @@ void *Traffic::dialog(void *arg) {
 		return nullptr;
 	}
 	std::string line;
-	std::cout << "Write: \n1. get all\n2. get <addr>\n";
+	std::cout << "Write: \n1. get all\n2. get <addr>\n3. stop\n";
 	while (getline(std::cin, line)) {
-		if (line == "get all") {
-			Traffic::print_and_delete_info(a->get_info());
-		} else {
-			auto vec = LogsAnalyzer::split(line, ' ');
-			if (vec.size() == 2 and vec[0] == "get") {
-				in_addr_t t = LogsAnalyzer::string_to_api(vec[1]);
-				Traffic::print_and_delete_info(a->get_info(t));
+        if (line == "stop") {
+            for (int i = 0; i < a->count_generate_threads; ++i) {
+                a->generators[i].stop = true;
+            }
+            for (int i = 0; i < a->count_analyze_threads; ++i) {
+                a->analyzers[i].stop = true;
+            }
+            break;
+        } else {
+            if (line == "get all") {
+                Traffic::print_and_delete_info(a->get_info());
+            } else {
+                auto vec = LogsAnalyzer::split(line, ' ');
+                if (vec.size() == 2 and vec[0] == "get") {
+                    in_addr_t t = LogsAnalyzer::string_to_api(vec[1]);
+                    Traffic::print_and_delete_info(a->get_info(t));
 
-			} else {
-				std::cout << "Incorrect command\n";
-			}
-		}
-		std::cout << "Write: \n1. get all\n2. get <addr>\n";
+                } else {
+                    std::cout << "Incorrect command\n";
+                }
+            }
+        }
+        std::cout << "Write: \n1. get all\n2. get <addr>\n3. stop\n";
 	}
-	std::cout << "stop " << std::endl;
 	return nullptr;
 }
 

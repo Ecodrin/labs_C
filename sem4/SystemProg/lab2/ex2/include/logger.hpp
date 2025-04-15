@@ -46,6 +46,7 @@ class Logger {
 
    public:
 	explicit Logger(std::string logger_n, Logger::LevelLogger logger_level = Logger::LOG_DEBUG);
+    ~Logger() = default;
 	void Log(LevelLogger level, const std::string &log);
 	void LogError(const std::string &log);
 	void LogCritic(const std::string &log);
