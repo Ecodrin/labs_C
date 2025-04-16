@@ -3,7 +3,7 @@
 Traffic::Traffic(size_t count_generate_threads, size_t count_analyze_threads)
     : count_analyze_threads(count_analyze_threads), count_generate_threads(count_generate_threads) {
 	for (int i = 0; i < count_generate_threads; ++i) {
-	generators.emplace_back(q, "Generator " + std::to_string(i + 1), Logger::LOG_DEBUG);
+		generators.emplace_back(q, "Generator " + std::to_string(i + 1), Logger::LOG_DEBUG);
 	}
 	for (int i = 0; i < count_analyze_threads; ++i) {
 		analyzers.emplace_back(q);

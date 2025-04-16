@@ -13,12 +13,9 @@ BigInt::BigInt(long long int l) : BigInt() {
         data.push_back(l % base);
         l /= base;
     }
-} // LCOV_EXCL_LINE
+}  // LCOV_EXCL_LINE
 
-BigInt::BigInt(const std::string &in) : BigInt() {
-    reload_from_string(in);
-}
-
+BigInt::BigInt(const std::string &in) : BigInt() { reload_from_string(in); }
 
 std::ostream &operator<<(std::ostream &out, const BigInt &num) {
     out << num.to_string();
@@ -107,7 +104,7 @@ bool BigInt::is_correct_string(const std::string &str) {
 }
 
 void BigInt::change_base(unsigned long long int new_base) {
-    if(new_base == base) {
+    if (new_base == base) {
         return;
     }
     if (new_base == 0) {
@@ -125,7 +122,6 @@ void BigInt::change_base(unsigned long long int new_base) {
 }
 
 void BigInt::reload_from_string(const std::string &in) {
-
     if (!is_correct_string(in)) {
         throw std::invalid_argument("incorrect input");
     }
@@ -178,9 +174,7 @@ std::strong_ordering operator<=>(const BigInt &lhs, const BigInt &rhs) {
     return std::strong_ordering::equal;
 }
 
-bool operator==(const BigInt &lhs, const BigInt &rhs) {
-    return (lhs <=> rhs) == std::strong_ordering::equal;
-}
+bool operator==(const BigInt &lhs, const BigInt &rhs) { return (lhs <=> rhs) == std::strong_ordering::equal; }
 
 BigInt BigInt::mod_exp(const BigInt &base, const BigInt &exp, const BigInt &mod) {
     if (exp.is_null()) {
@@ -220,10 +214,7 @@ BigInt BigInt::operator/(const BigInt &num) const {
     return tmp /= num;
 }
 
-bool BigInt::is_null() const {
-    return (data.size() == 1 and data[0] == 0) or data.size() == 0;
-}
-
+bool BigInt::is_null() const { return (data.size() == 1 and data[0] == 0) or data.size() == 0; }
 
 BigInt::BigInt() : base(1000000000), data({0}), is_negative(false) {}
 
@@ -300,7 +291,6 @@ BigInt &BigInt::operator-=(const BigInt &num) {
     for (size_t i = 0; i < num.data.size() || carry; ++i) {
         const long long num_digit = (i < num.data.size()) ? num.data[i] : 0;
 
-
         long long diff = data[i] - num_digit - carry;
         carry = 0;
 
@@ -311,7 +301,6 @@ BigInt &BigInt::operator-=(const BigInt &num) {
 
         data[i] = diff;
     }
-
 
     remove_leading_zeros();
     return *this;
@@ -383,25 +372,21 @@ BigInt &BigInt::operator/=(const BigInt &num) {
     return *this;
 }
 
-BigInt &BigInt::operator++() {
-    return *this += BigInt(1);
-}
+BigInt &BigInt::operator++() { return *this += BigInt(1); }
 
-BigInt &BigInt::operator--() {
-    return *this -= BigInt(1);
-}
+BigInt &BigInt::operator--() { return *this -= BigInt(1); }
 
 BigInt BigInt::operator++(int) {
     BigInt tmp{*this};
     *this += BigInt(1);
     return tmp;
-} // LCOV_EXCL_LINE
+}  // LCOV_EXCL_LINE
 
 BigInt BigInt::operator--(int) {
     BigInt tmp{*this};
     *this -= BigInt(1);
     return tmp;
-} // LCOV_EXCL_LINE
+}  // LCOV_EXCL_LINE
 
 BigInt &BigInt::operator%=(const BigInt &num) {
     BigInt tmp = *this / num;
@@ -447,7 +432,7 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
     }
 
     auto dft3 = fft(n, tmp_res, omega(n, -1));
-    for (auto& x : dft3) x /= n;
+    for (auto &x: dft3) x /= n;
 
     BigInt res;
     res.data = fft_reset(dft3, lhs.base);
@@ -455,8 +440,65 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
     return res;
 }
 
+BigInt BigInt::nnt_multiply(const BigInt &a, unsigned long long m) const {
+    if(m <= 1) {
+        throw std::invalid_argument("mod must be more 1");
+    }
+    BigInt lhs{*this};
+    BigInt rhs{a};
 
-std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w) {
+    if (lhs.is_negative) {
+        if (rhs.is_negative) {
+            lhs.is_negative = false;
+            return lhs.nnt_multiply(-rhs, m);
+        } else {
+            lhs.is_negative = false;
+            return -lhs.nnt_multiply(rhs, m);
+        }
+    } else if (rhs.is_negative) {
+        return -lhs.nnt_multiply(-rhs, m);
+    }
+
+    rhs.change_base(lhs.base);
+    size_t n = 1;
+    size_t total_size = lhs.data.size() + rhs.data.size();
+    while (n < 2 * total_size) n <<= 1;
+    lhs.data.resize(n);
+    rhs.data.resize(n);
+
+
+    unsigned long long w = find_primitive_root(m);
+    auto dft1 = nnt(n, lhs.data, w, m);
+    auto dft2 = nnt(n, rhs.data, w, m);
+
+    std::vector<unsigned long long > tmp_res(n);
+    for (size_t i = 0; i < n; ++i) {
+        tmp_res[i] = (dft1[i] * dft2[i]) % m;
+    }
+
+    auto dft3 = nnt(n, tmp_res, w, m);
+
+    unsigned long long carry = 0;
+    for (auto& coeff : dft3) {
+        coeff += carry;
+        carry = coeff / base;
+        coeff %= base;
+    }
+    while (carry > 0) {
+        dft3.push_back(carry % base);
+        carry /= base;
+    }
+
+    BigInt res;
+    res.data = dft3;
+    res.base = lhs.base;
+
+    res.remove_leading_zeros();
+    return res;
+}
+
+std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::complex<long double>> f,
+                                                   std::complex<long double> w) {
     if (n == 1) {
         return f;
     }
@@ -471,9 +513,8 @@ std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::co
     std::vector<std::complex<long double>> a = fft(n / 2, r1, w * w);
     std::vector<std::complex<long double>> b = fft(n / 2, r2, w * w);
 
-
     std::vector<std::complex<long double>> res;
-    for(size_t i = 0; i < n / 2; ++i) {
+    for (size_t i = 0; i < n / 2; ++i) {
         res.push_back(a[i]);
         res.push_back(b[i]);
     }
@@ -481,12 +522,37 @@ std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::co
     return res;
 }
 
+std::vector<unsigned long long>
+BigInt::nnt(size_t n, std::vector<unsigned long long int> f, unsigned long long int w, unsigned long long int m) {
+    if (n == 1) {
+        return f;
+    }
+    std::vector<unsigned long long> r1(n / 2), r2(n / 2);
+    unsigned long long current_w = 1;
+    for (size_t i = 0; i < n / 2; ++i) {
+        r1[i] = (f[i] + f[i + n / 2]) % m;
+        r2[i] = ((f[i] - f[i + n / 2]) * current_w) % m;
+        current_w *= w;
+    }
+    auto a = nnt(n / 2, r1, (w * w) % m, m);
+    auto b = nnt(n / 2, r2, (w * w) % m, m);
+
+    std::vector<unsigned long long> res;
+    for (size_t i = 0; i < n / 2; ++i) {
+        res.push_back(a[i]);
+        res.push_back(b[i]);
+    }
+    return res;
+}
+
+
+
 std::complex<long double> BigInt::omega(int n, int k) {
     long double angle = -2 * M_PIl * k / n;
     return {cos(angle), sin(angle)};
 }
 
-std::vector<std::complex<long double>> BigInt::fft_transform(const std::vector<unsigned long long>& input, size_t n) {
+std::vector<std::complex<long double>> BigInt::fft_transform(const std::vector<unsigned long long> &input, size_t n) {
     std::vector<std::complex<long double>> complex_arr(n);
     for (size_t i = 0; i < input.size(); ++i) {
         complex_arr[i] = input[i];
@@ -494,10 +560,9 @@ std::vector<std::complex<long double>> BigInt::fft_transform(const std::vector<u
     return complex_arr;
 }
 
-std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<long double>>& input, size_t base) {
+std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<long double>> &input, size_t base) {
     std::vector<unsigned long long> res;
     for (auto el : input) {
-
         unsigned long long value = std::llround(el.real() + 1e-8L);
         res.push_back(value);
     }
@@ -523,9 +588,9 @@ void BigInt::normalize() {
 }
 
 void BigInt::shift_left(int k) {
-    if(k > 0) {
+    if (k > 0) {
         data.insert(data.begin(), k, 0);
-    } else if(k < 0) {
+    } else if (k < 0) {
         for (int i = 0; i < abs(k); ++i) {
             data.erase(data.begin());
         }
@@ -551,8 +616,7 @@ std::pair<BigInt, BigInt> BigInt::divide(const BigInt &lhs, const BigInt &rhs) {
     BigInt divisor{rhs};
 
     while (true) {
-
-        if(dividend < rhs) {
+        if (dividend < rhs) {
             break;
         }
         divisor.shift_left(dividend.data.size() - divisor.data.size());
@@ -574,4 +638,109 @@ std::pair<BigInt, BigInt> BigInt::divide(const BigInt &lhs, const BigInt &rhs) {
     quotient.normalize();
     remainder = dividend;
     return {quotient, remainder};
+}
+
+bool BigInt::is_correct_mod(unsigned long long int m) {
+    if(m <= 1) {
+        return false;
+    }
+    if(m == 2 or m == 4) {
+        return false;
+    }
+
+    if(m % 2 != 0) {
+        return is_prime_power(m);
+    }
+    unsigned long long odd_part = m / 2;
+    return (odd_part % 2 != 0) && is_prime_power(odd_part);
+}
+
+bool BigInt::is_simple(unsigned long long int m) {
+    if(m == 2) {
+        return true;
+    }
+    for (unsigned long long i = 2; i * i <= m; ++i) {
+        if(m % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool BigInt::is_prime_power(unsigned long long n) {
+    if (n <= 1) return false;
+
+    std::vector<unsigned long long > factors;
+    for (unsigned long long i = 2; i * i <= n; ++i) {
+        if (n % i == 0) {
+            factors.push_back(i);
+            while (n % i == 0) n /= i;
+        }
+    }
+    if (n > 1) factors.push_back(n);
+
+    return factors.size() == 1;
+}
+
+unsigned long long BigInt::find_primitive_root(unsigned long long int m) {
+    if(!is_correct_mod(m)) {
+        throw std::invalid_argument("incorrect mod");
+    }
+    if (m == 2) return 1;
+    if (m == 4) return 3;
+    unsigned long long phi = euler_phi(m);
+    std::vector<unsigned long long > factors = get_factors(phi);
+    for(unsigned long long g = 2; g < m; ++g) {
+        if(std::gcd(g, m) != 1) {
+            continue;
+        }
+        bool is_root = true;
+        for (auto q : factors) {
+            if (mod_pow(g, phi / q, m) == 1) {
+                is_root = false;
+                break;
+            }
+        }
+        if (is_root) return g;
+    }
+
+    return 0;
+}
+
+unsigned long long BigInt::euler_phi(unsigned long long m) {
+    if (m == 1) return 0;
+    unsigned long long result = m;
+    for (unsigned long long p = 2; p * p <= m; ++p) {
+        if (m % p == 0) {
+            while (m % p == 0) m /= p;
+            result -= result / p;
+        }
+    }
+    if (m > 1) result -= result / m;
+    return result;
+}
+
+std::vector<unsigned long long> BigInt::get_factors(unsigned long long int n) {
+    std::vector<unsigned long long > factors;
+    for (unsigned long long i = 2; i * i <= n; ++i) {
+        if (n % i == 0) {
+            factors.push_back(i);
+            while (n % i == 0) n /= i;
+        }
+    }
+    if (n > 1) factors.push_back(n);
+    return factors;
+}
+
+unsigned long long BigInt::mod_pow(unsigned long long int a, unsigned long long int n, unsigned long long int mod) {
+    unsigned long long res = 1;
+    a %= mod;
+    while (n > 0) {
+        if(n & 1) {
+            res = (res * a) % mod;
+        }
+        a = (a * a) % mod;
+        n >>= 1;
+    }
+    return res;
 }

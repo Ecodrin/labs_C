@@ -1,8 +1,10 @@
 #include "../include/logs_analyzer.hpp"
 
 LogsAnalyzer::LogsAnalyzer(SafeQueue<std::string> &queue) : queue(queue) {
-	logger = LoggerBuilder::build("analyzer", Logger::LOG_WARNING);
-	logger->addHandler(std::make_unique<FileLoggerHandler>("analyzer.log"));
+	logger = Logger::Builder()
+	             .setName("analyzer")
+	             .setLevel(Logger::LOG_WARNING)
+	             .build();
 }
 
 in_addr_t LogsAnalyzer::string_to_api(const std::string &ip_str) {

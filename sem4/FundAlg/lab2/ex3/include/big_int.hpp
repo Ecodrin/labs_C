@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <iomanip>
+#include <numeric>
 #include <complex>
 #include <cmath>
 
@@ -66,9 +67,19 @@ public:
     static BigInt mod_exp(const BigInt& base, const BigInt& exp, const BigInt& mod);
 
     BigInt fft_multiply(const BigInt& a) const;
+    BigInt nnt_multiply(const BigInt &a, unsigned long long m) const;
+    static unsigned long long find_primitive_root(unsigned long long m);
+
+    [[nodiscard]] static bool is_correct_mod(unsigned long long m);
+    [[nodiscard]] static bool is_simple(unsigned long long m);
+    static bool is_prime_power(unsigned long long n);
+    static unsigned long long euler_phi(unsigned long long m);
+    static std::vector<unsigned long long > get_factors(unsigned long long n);
+    static unsigned long long mod_pow(unsigned long long a, unsigned long long n, unsigned long long mod);
 
     static std::complex<long double> omega(int n, int k);
     static std::vector<std::complex<long double>> fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w);
+    static std::vector<unsigned long long > nnt(size_t n, std::vector<unsigned long long > f, unsigned long long w, unsigned long long m);
 };
 
 

@@ -2,8 +2,6 @@
 #include <chrono>
 #include "../include/big_int.hpp"
 
-
-#include "../include/big_int.hpp"
 #include <gtest/gtest.h>
 
 class BigIntTest : public ::testing::Test {
@@ -18,8 +16,22 @@ protected:
     BigInt num1;
     BigInt num2;
     FFTTest() {
-        std::ifstream a("../tests/num1");
-        std::ifstream b("../tests/num2");
+        std::ifstream a("tests/num1");
+        std::ifstream b("tests/num2");
+        a >> num1;
+        b >> num2;
+        a.close();
+        b.close();
+    }
+};
+
+class NNTTest: public ::testing::Test {
+protected:
+    BigInt num1;
+    BigInt num2;
+    NNTTest() {
+        std::ifstream a("tests/num1");
+        std::ifstream b("tests/num2");
         a >> num1;
         b >> num2;
         a.close();
@@ -565,7 +577,47 @@ TEST_F(FFTTest, BigNumbersBase100BothNegative) {
 }
 
 
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+//TEST_F(NNTTest, BigNumbersBase10) {
+//    BigInt tmp{num1};
+//    tmp.change_base(10);
+//    EXPECT_EQ(tmp.nnt_multiply(num2, 54), tmp * num2);
+//}
+//
+//TEST_F(FFTTest, BigNumbersBase100) {
+//    BigInt tmp{num1};
+//    tmp.change_base(100);
+//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
+//}
+//
+//TEST_F(FFTTest, BigNumbersBase1000) {
+//
+//    BigInt tmp{num1};
+//    tmp.change_base(1000);
+//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
+//}
+//
+//TEST_F(FFTTest, BigNumbersBase1000Negative) {
+//    BigInt tmp{-num1};
+//    tmp.change_base(1000);
+//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
+//}
+//
+//TEST_F(FFTTest, BigNumbersBase100Negative) {
+//    BigInt tmp{num1};
+//    tmp.change_base(100);
+//    EXPECT_EQ(tmp.fft_multiply(-num2), (-tmp) * num2);
+//}
+//
+//TEST_F(FFTTest, BigNumbersBase100BothNegative) {
+//    BigInt tmp{-num1};
+//    BigInt tmp2{-num2};
+//    tmp.change_base(100);
+//    EXPECT_EQ(tmp.fft_multiply(tmp2), tmp * tmp2);
+//}
+
+
+int main() {
+    BigInt a{123};
+    BigInt b{1123};
+    std::cout << a.nnt_multiply(b, 7) << std::endl << a * b << std::endl;
 }

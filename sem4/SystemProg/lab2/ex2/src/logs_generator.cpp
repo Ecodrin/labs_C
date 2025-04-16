@@ -3,18 +3,15 @@
 LogsGenerator::LogsGenerator(SafeQueue<std::string> &q, const std::string &logger_name,
                              Logger::LevelLogger logger_level)
     : queue{q} {
-	logger = LoggerBuilder::build(logger_name, logger_level);
-	logger->addHandler(std::make_unique<QueueLoggerHandler>(q));
-	//	logger->addHandler(std::make_unique<StreamLoggerHandler>(std::cout));
+	logger = Logger::Builder()
+	             .setName(logger_name)
+	             .setLevel(logger_level)
+	             .addHandler(std::make_unique<QueueLoggerHandler>(q))
+	             .addHandler(std::make_unique<FileLoggerHandler>("generate.log"))
+	             .build();
 }
 
-LogsGenerator::LogsGenerator(SafeQueue<std::string> &q, Logger * logger)
-        : queue{q} {
-    logger = logger;
-    logger->addHandler(std::make_unique<QueueLoggerHandler>(q));
-    logger->addHandler(std::make_unique<FileLoggerHandler>("out.log"));
-    //	logger->addHandler(std::make_unique<StreamLoggerHandler>(std::cout));
-}
+LogsGenerator::LogsGenerator(SafeQueue<std::string> &q, Logger *logger) : queue{q} {}
 
 std::string LogsGenerator::ip_to_string(in_addr_t ip) {
 	struct in_addr addr {};
@@ -100,6 +97,5 @@ LogsGenerator::LogsGenerator(LogsGenerator &&other) noexcept
         : logger(std::exchange(other.logger, nullptr)),
           queue(other.queue),
           stop(std::exchange(other.stop, false)) {}
-
 
 void QueueLoggerHandler::write(const std::string &str) { queue.push(str); }

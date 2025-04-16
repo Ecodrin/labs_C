@@ -2,18 +2,27 @@
 
 #include "../include/logger.hpp"
 
+Logger::Builder &Logger::Builder::setName(const std::string &name) {
+    name_ = name;
+    return *this;
+}
 
-std::string Logger::get_datetime() {
-    auto now = std::chrono::system_clock::now();
-    auto time = std::chrono::system_clock::to_time_t(now);
-    std::tm timeBuf{};
+Logger::Builder &Logger::Builder::setLevel(Logger::LevelLogger level) {
+    level_ = level;
+    return *this;
+}
 
-    localtime_r(&time, &timeBuf);
+Logger::Builder &Logger::Builder::addHandler(std::unique_ptr<LogHandler> handler) {
+    handlers_.push_back(std::move(handler));
+    return *this;
+}
 
-    std::ostringstream timeStream;
-    timeStream << std::put_time(&timeBuf, "%Y-%m-%d %H:%M:%S");
-    std::string timeStr = timeStream.str();
-    return timeStr;
+Logger *Logger::Builder::build() {
+    auto* logger = new Logger(name_, level_);
+    for(auto& handler : handlers_) {
+        logger->addHandler(std::move(handler));
+    }
+    return logger;
 }
 
 void Logger::Log(Logger::LevelLogger level, const std::string &log) {
@@ -44,62 +53,39 @@ void Logger::Log(Logger::LevelLogger level, const std::string &log) {
     }
 }
 
-void Logger::LogError(const std::string &log) {
-    Log(LOG_ERROR, log);
+std::string Logger::get_datetime() {
+    auto now = std::chrono::system_clock::now();
+    auto time = std::chrono::system_clock::to_time_t(now);
+    std::stringstream ss;
+    ss << std::put_time(std::localtime(&time), "%Y-%m-%d %X");
+    return ss.str();
 }
 
-void Logger::LogCritic(const std::string &log) {
-    Log(LOG_CRITICAL, log);
-}
+void Logger::LogError(const std::string &log) { Log(LOG_ERROR, log); }
 
-void Logger::LogWarning(const std::string &log) {
-    Log(LOG_WARNING, log);
-}
+void Logger::LogCritic(const std::string &log) { Log(LOG_CRITICAL, log); }
 
-void Logger::LogInfo(const std::string &log) {
-    Log(LOG_INFO, log);
-}
+void Logger::LogWarning(const std::string &log) { Log(LOG_WARNING, log); }
 
-void Logger::LogDebug(const std::string &log) {
-    Log(LOG_DEBUG, log);
-}
+void Logger::LogInfo(const std::string &log) { Log(LOG_INFO, log); }
 
-void Logger::addHandler(std::unique_ptr<LogHandler> handler) {
-    handlers.push_back(std::move(handler));
-}
-
-void Logger::setHandler(Logger::LevelLogger level) {
-    log_level = level;
-}
-
-Logger::Logger(std::string logger_n, Logger::LevelLogger logger_level) : logger_name(std::move(logger_n)),
-                                                                                log_level(logger_level) {
-
-}
+void Logger::LogDebug(const std::string &log) { Log(LOG_DEBUG, log); }
 
 void Logger::close_logger() {
     handlers.clear();
-
 }
 
-StreamLoggerHandler::StreamLoggerHandler(std::ostream &stream) : stream_{stream} {}
-
-void StreamLoggerHandler::write(const std::string &message) {
-    stream_ << message << std::endl;
+Logger &Logger::addHandler(std::unique_ptr<LogHandler> handler) {
+    handlers.push_back(std::move(handler));
+    return *this;
 }
 
+StreamLoggerHandler::StreamLoggerHandler(std::ostream &stream) : stream_(stream) {}
 
-Logger *LoggerBuilder::build(const std::string &logger_name, Logger::LevelLogger logger_level) {
-    return new Logger{logger_name, logger_level};
-}
+void StreamLoggerHandler::write(const std::string &message) { stream_ << message << std::endl; }
 
-void FileLoggerHandler::write(const std::string &message) {
-    out << message << std::endl;
-}
+FileLoggerHandler::FileLoggerHandler(const std::string &filename) { out.open(filename); }
 
-FileLoggerHandler::FileLoggerHandler(const std::string &filename) : out(filename, std::ios::app) {
-}
+void FileLoggerHandler::write(const std::string &message) { out << message << std::endl; }
 
-FileLoggerHandler::~FileLoggerHandler() {
-    out.close();
-}
+FileLoggerHandler::~FileLoggerHandler() { if(out.is_open()) out.close(); }

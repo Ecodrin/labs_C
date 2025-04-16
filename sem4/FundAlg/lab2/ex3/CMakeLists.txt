@@ -3,6 +3,7 @@ project(MyProject)
 set(CMAKE_CXX_STANDARD 20)
 
 
+INCLUDE_DIRECTORIES('/tests/')
 
 enable_testing()
 
