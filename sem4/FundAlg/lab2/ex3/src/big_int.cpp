@@ -1,3 +1,4 @@
+#include <cassert>
 #include "../include/big_int.hpp"
 
 BigInt::BigInt(long long int l) : BigInt() {
@@ -406,17 +407,7 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
     BigInt lhs{*this};
     BigInt rhs{a};
 
-    if (lhs.is_negative) {
-        if (rhs.is_negative) {
-            lhs.is_negative = false;
-            return lhs.fft_multiply(-rhs);
-        } else {
-            lhs.is_negative = false;
-            return -lhs.fft_multiply(rhs);
-        }
-    } else if (rhs.is_negative) {
-        return -lhs.fft_multiply(-rhs);
-    }
+    bool result_negative = lhs.is_negative != rhs.is_negative;
 
     rhs.change_base(lhs.base);
     size_t n = 1;
@@ -437,62 +428,63 @@ BigInt BigInt::fft_multiply(const BigInt &a) const {
     BigInt res;
     res.data = fft_reset(dft3, lhs.base);
     res.base = lhs.base;
+
+    res.is_negative = result_negative;
     return res;
 }
 
 BigInt BigInt::nnt_multiply(const BigInt &a, unsigned long long m) const {
-    if(m <= 1) {
-        throw std::invalid_argument("mod must be more 1");
+    if (!is_correct_mod(m)) {
+        throw std::invalid_argument("incorrect mode");
     }
     BigInt lhs{*this};
     BigInt rhs{a};
 
-    if (lhs.is_negative) {
-        if (rhs.is_negative) {
-            lhs.is_negative = false;
-            return lhs.nnt_multiply(-rhs, m);
-        } else {
-            lhs.is_negative = false;
-            return -lhs.nnt_multiply(rhs, m);
-        }
-    } else if (rhs.is_negative) {
-        return -lhs.nnt_multiply(-rhs, m);
-    }
+    bool result_negative = lhs.is_negative != rhs.is_negative;
 
     rhs.change_base(lhs.base);
     size_t n = 1;
     size_t total_size = lhs.data.size() + rhs.data.size();
     while (n < 2 * total_size) n <<= 1;
-    lhs.data.resize(n);
-    rhs.data.resize(n);
+
+    lhs.data.resize(n, 0);
+    rhs.data.resize(n, 0);
 
 
-    unsigned long long w = find_primitive_root(m);
+    unsigned long long w = mod_pow(find_primitive_root(m), euler_phi(m) / n, m);
     auto dft1 = nnt(n, lhs.data, w, m);
     auto dft2 = nnt(n, rhs.data, w, m);
+
 
     std::vector<unsigned long long > tmp_res(n);
     for (size_t i = 0; i < n; ++i) {
         tmp_res[i] = (dft1[i] * dft2[i]) % m;
     }
+    unsigned long long inv_w = mod_inverse(w, m);
+    unsigned long long inv_n = mod_inverse(n, m);
 
-    auto dft3 = nnt(n, tmp_res, w, m);
+    auto dft3 = nnt(n, tmp_res, inv_w, m);
 
     unsigned long long carry = 0;
+    std::vector<unsigned long long> result_data;
     for (auto& coeff : dft3) {
-        coeff += carry;
-        carry = coeff / base;
-        coeff %= base;
+        unsigned long long scaled = coeff * inv_n % m + carry;
+
+        carry = scaled / lhs.base;
+        result_data.push_back(scaled % lhs.base);
     }
+
     while (carry > 0) {
-        dft3.push_back(carry % base);
-        carry /= base;
+        result_data.push_back(carry % lhs.base);
+        carry /= lhs.base;
     }
 
     BigInt res;
-    res.data = dft3;
+    res.data = result_data;
     res.base = lhs.base;
+    res.normalize();
 
+    res.is_negative = result_negative;
     res.remove_leading_zeros();
     return res;
 }
@@ -523,16 +515,18 @@ std::vector<std::complex<long double>> BigInt::fft(size_t n, std::vector<std::co
 }
 
 std::vector<unsigned long long>
-BigInt::nnt(size_t n, std::vector<unsigned long long int> f, unsigned long long int w, unsigned long long int m) {
+BigInt::nnt(size_t n, std::vector<unsigned long long> f, unsigned long long w, unsigned long long m) {
     if (n == 1) {
         return f;
     }
+
     std::vector<unsigned long long> r1(n / 2), r2(n / 2);
     unsigned long long current_w = 1;
+
     for (size_t i = 0; i < n / 2; ++i) {
         r1[i] = (f[i] + f[i + n / 2]) % m;
-        r2[i] = ((f[i] - f[i + n / 2]) * current_w) % m;
-        current_w *= w;
+        r2[i] = ((f[i] - f[i + n / 2] + m) * current_w) % m;
+        current_w = (current_w * w) % m;
     }
     auto a = nnt(n / 2, r1, (w * w) % m, m);
     auto b = nnt(n / 2, r2, (w * w) % m, m);
@@ -542,6 +536,7 @@ BigInt::nnt(size_t n, std::vector<unsigned long long int> f, unsigned long long 
         res.push_back(a[i]);
         res.push_back(b[i]);
     }
+
     return res;
 }
 
@@ -655,31 +650,16 @@ bool BigInt::is_correct_mod(unsigned long long int m) {
     return (odd_part % 2 != 0) && is_prime_power(odd_part);
 }
 
-bool BigInt::is_simple(unsigned long long int m) {
-    if(m == 2) {
-        return true;
-    }
-    for (unsigned long long i = 2; i * i <= m; ++i) {
-        if(m % i == 0) {
-            return false;
-        }
-    }
-    return true;
-}
 
 bool BigInt::is_prime_power(unsigned long long n) {
     if (n <= 1) return false;
 
-    std::vector<unsigned long long > factors;
     for (unsigned long long i = 2; i * i <= n; ++i) {
         if (n % i == 0) {
-            factors.push_back(i);
-            while (n % i == 0) n /= i;
+            return false;
         }
     }
-    if (n > 1) factors.push_back(n);
-
-    return factors.size() == 1;
+    return true;
 }
 
 unsigned long long BigInt::find_primitive_root(unsigned long long int m) {
@@ -701,10 +681,12 @@ unsigned long long BigInt::find_primitive_root(unsigned long long int m) {
                 break;
             }
         }
-        if (is_root) return g;
+        if (is_root) {
+            return g;
+        }
     }
 
-    return 0;
+    return 0; // LCOV_EXCL_LINE
 }
 
 unsigned long long BigInt::euler_phi(unsigned long long m) {
@@ -721,18 +703,25 @@ unsigned long long BigInt::euler_phi(unsigned long long m) {
 }
 
 std::vector<unsigned long long> BigInt::get_factors(unsigned long long int n) {
-    std::vector<unsigned long long > factors;
-    for (unsigned long long i = 2; i * i <= n; ++i) {
-        if (n % i == 0) {
-            factors.push_back(i);
-            while (n % i == 0) n /= i;
+    std::vector<unsigned long long> factors;
+    if (n % 2 == 0) {
+        factors.push_back(2);
+        while (n % 2 == 0) n /= 2;
+    }
+    for (unsigned long long p = 3; p * p <= n; p += 2) {
+        if (n % p == 0) {
+            factors.push_back(p);
+            while (n % p == 0) n /= p;
         }
     }
     if (n > 1) factors.push_back(n);
     return factors;
-}
+}  // LCOV_EXCL_LINE
 
 unsigned long long BigInt::mod_pow(unsigned long long int a, unsigned long long int n, unsigned long long int mod) {
+    if (mod == 1) {
+        return 0;
+    }
     unsigned long long res = 1;
     a %= mod;
     while (n > 0) {
@@ -743,4 +732,23 @@ unsigned long long BigInt::mod_pow(unsigned long long int a, unsigned long long 
         n >>= 1;
     }
     return res;
+}
+
+unsigned long long BigInt::mod_inverse(long long int w, long long int m) {
+    auto t = extended_gcd(w, m);
+
+    return (t[1] % m + m) % m;
+}
+
+std::vector<long long> BigInt::extended_gcd(long long int a, long long int b) {
+    // ax + by = gcd(a, b); ==== return {gcd, x, y}
+    if (b == 0) {
+        return {a, 1, 0};
+    }
+    auto t = extended_gcd(b, a % b);
+    return {t[0], t[2], t[1] - (a / b) * t[2]};
+}
+
+std::vector<unsigned long long> &BigInt::get_data() {
+    return data;
 }

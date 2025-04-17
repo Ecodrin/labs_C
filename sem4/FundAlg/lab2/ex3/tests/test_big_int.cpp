@@ -4,6 +4,19 @@
 
 #include <gtest/gtest.h>
 
+template<typename T>
+bool test_content(const std::vector<T> &a, const std::vector<T> &b) {
+    if (a.size() != b.size()) {
+        return false;
+    }
+    for(size_t i = 0; i < a.size(); ++i){
+        if(a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 class BigIntTest : public ::testing::Test {
 protected:
     BigInt a = BigInt("123456789012345678901234567890");
@@ -16,8 +29,8 @@ protected:
     BigInt num1;
     BigInt num2;
     FFTTest() {
-        std::ifstream a("tests/num1");
-        std::ifstream b("tests/num2");
+        std::ifstream a("../tests/num1");
+        std::ifstream b("../tests/num2");
         a >> num1;
         b >> num2;
         a.close();
@@ -577,47 +590,73 @@ TEST_F(FFTTest, BigNumbersBase100BothNegative) {
 }
 
 
-//TEST_F(NNTTest, BigNumbersBase10) {
-//    BigInt tmp{num1};
-//    tmp.change_base(10);
-//    EXPECT_EQ(tmp.nnt_multiply(num2, 54), tmp * num2);
-//}
-//
-//TEST_F(FFTTest, BigNumbersBase100) {
-//    BigInt tmp{num1};
-//    tmp.change_base(100);
-//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
-//}
-//
-//TEST_F(FFTTest, BigNumbersBase1000) {
-//
-//    BigInt tmp{num1};
-//    tmp.change_base(1000);
-//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
-//}
-//
-//TEST_F(FFTTest, BigNumbersBase1000Negative) {
-//    BigInt tmp{-num1};
-//    tmp.change_base(1000);
-//    EXPECT_EQ(tmp.fft_multiply(num2), tmp * num2);
-//}
-//
-//TEST_F(FFTTest, BigNumbersBase100Negative) {
-//    BigInt tmp{num1};
-//    tmp.change_base(100);
-//    EXPECT_EQ(tmp.fft_multiply(-num2), (-tmp) * num2);
-//}
-//
-//TEST_F(FFTTest, BigNumbersBase100BothNegative) {
-//    BigInt tmp{-num1};
-//    BigInt tmp2{-num2};
-//    tmp.change_base(100);
-//    EXPECT_EQ(tmp.fft_multiply(tmp2), tmp * tmp2);
-//}
+TEST_F(NNTTest, BigNumbersBaseBothNegative) {
+    BigInt tmp{-11232};
+    BigInt tmp2{-45321};
+    EXPECT_EQ(tmp.nnt_multiply(tmp2, 1224736769), tmp * tmp2);
+}
+
+TEST_F(NNTTest, IncorrectMode) {
+    BigInt tmp{11232};
+    BigInt tmp2{45321};
+    EXPECT_THROW(tmp.nnt_multiply(tmp2, 1), std::invalid_argument);
+}
+
+TEST_F(NNTTest, ModPow) {
+    EXPECT_EQ(BigInt::mod_pow(1, 2, 1), 0);
+}
+
+TEST_F(NNTTest, GetFactors) {
+    auto t = BigInt::get_factors(27);
+    EXPECT_TRUE(test_content({3}, t));
+}
+
+TEST_F(NNTTest, EilerPhi) {
+    // 1 2 4 5 6 7 10 11 13 14 15 16 17 19 23 24 25 26
+    auto t = BigInt::euler_phi(27);
+    EXPECT_EQ(t, 18);
+
+    // 1 5
+    t = BigInt::euler_phi(6);
+    EXPECT_EQ(t, 2);
+}
+
+TEST_F(NNTTest, FindPrimitiveRoot) {
+    EXPECT_THROW(BigInt::find_primitive_root(1), std::invalid_argument);
+
+    auto t = BigInt::find_primitive_root(7);
+    EXPECT_EQ(t, 3);
+}
+
+TEST_F(NNTTest, IsPromePower) {
+
+    auto t = BigInt::is_prime_power(7);
+    EXPECT_TRUE(t);
+
+    t = BigInt::is_prime_power(6);
+    EXPECT_FALSE(t);
+}
+
+TEST_F(NNTTest, IsCorrectMode) {
+
+    auto t = BigInt::is_correct_mod(2);
+    EXPECT_FALSE(t);
+
+    t = BigInt::is_correct_mod(8);
+    EXPECT_FALSE(t);
+}
+
+TEST_F(BigIntTest, Normalize) {
+    BigInt b;
+    b.change_base(10);
+    b.get_data() = {1233};
+    b.normalize();
+    EXPECT_TRUE(test_content({3, 3, 2, 1}, b.get_data()));
+
+}
 
 
-int main() {
-    BigInt a{123};
-    BigInt b{1123};
-    std::cout << a.nnt_multiply(b, 7) << std::endl << a * b << std::endl;
+int main(int argc, char *argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

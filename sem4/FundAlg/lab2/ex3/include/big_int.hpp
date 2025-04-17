@@ -19,7 +19,6 @@ private:
 
     static std::vector<std::complex<long double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
     static std::vector<unsigned long long> fft_reset(const std::vector<std::complex<long double>>& input, size_t base);
-    void normalize();
 
     void shift_left(int k);
 
@@ -60,6 +59,8 @@ public:
     BigInt& operator--();
     BigInt operator++(int);
     BigInt operator--(int);
+    std::vector<unsigned long long > &get_data();
+    void normalize();
 
 
     [[nodiscard]] bool is_null() const;
@@ -71,11 +72,12 @@ public:
     static unsigned long long find_primitive_root(unsigned long long m);
 
     [[nodiscard]] static bool is_correct_mod(unsigned long long m);
-    [[nodiscard]] static bool is_simple(unsigned long long m);
     static bool is_prime_power(unsigned long long n);
     static unsigned long long euler_phi(unsigned long long m);
     static std::vector<unsigned long long > get_factors(unsigned long long n);
     static unsigned long long mod_pow(unsigned long long a, unsigned long long n, unsigned long long mod);
+    static unsigned long long mod_inverse( long long w,  long long m);
+    static std::vector<long long> extended_gcd(long long a, long long b);
 
     static std::complex<long double> omega(int n, int k);
     static std::vector<std::complex<long double>> fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w);
