@@ -1,0 +1,106 @@
+#include "../include/shared_memory.hpp"
+
+SharedMemory::SharedMemory(const char *ftok_shm_file, int ftok_shm_id, const char *ftok_sem_file, int ftok_sem_id,
+                           size_t shm_size, int count_sems) : size{shm_size}, count_sems{count_sems} {
+    key_t shm_key = ftok(ftok_shm_file, ftok_shm_id);
+    if (shm_key == -1) {
+        throw std::invalid_argument("ftok shared memory returned -1");
+    }
+    shm_id = shmget(shm_key, shm_size, IPC_CREAT | 0666);
+    if (shm_id == -1) {
+        throw std::invalid_argument("shmget returned -1");
+    }
+
+    key_t sem_key = ftok(ftok_sem_file, ftok_sem_id);
+    if (sem_key == -1) {
+        shmctl(sem_id, 0, IPC_RMID);
+        throw std::invalid_argument("ftok sem returned -1");
+    }
+    sem_id = semget(sem_key, count_sems, IPC_CREAT | 0666);
+    if (sem_id == -1) {
+        shmctl(sem_id, 0, IPC_RMID);
+        throw std::invalid_argument("shmget returned -1");
+    }
+
+    data = shmat(shm_id, nullptr, 0);
+    if (data == nullptr) {
+        throw std::invalid_argument("shmat returned nullptr");
+    }
+}
+
+SharedMemory::~SharedMemory() {
+    shmdt(data);
+    semctl(sem_id, 0, IPC_RMID, 0);
+    shmctl(shm_id, 0, IPC_RMID);
+}
+
+void SharedMemory::set_sem_val(unsigned short *op) const {
+    union semun init = {.array = op};
+    int err = semctl(sem_id, 0, SETALL, init);
+    if (err == -1) {
+        throw std::invalid_argument("semctl returned -1");
+    }
+}
+
+void SharedMemory::get_sem_val(unsigned short *res) const {
+    int err = semctl(sem_id, 0, GETALL, res);
+    if (err == -1) {
+        throw std::invalid_argument("semctl returned -1");
+    }
+}
+
+void SharedMemory::change_sem_val(short *op) const {
+    for (unsigned short i = 0; i < count_sems; ++i) {
+        struct sembuf buf = {
+                .sem_num = i,
+                .sem_op = op[i],
+                .sem_flg = 0
+        };
+        int err = semop(sem_id, &buf, 1);
+        if (err == -1) {
+            throw std::invalid_argument("semop returned -1");
+        }
+    }
+}
+
+void SharedMemory::change_sem_val(short op, unsigned short num_sem) const {
+    struct sembuf buf = {num_sem, op, 0};
+    int err = semop(sem_id, &buf, 1);
+    if (err == -1) {
+        throw std::invalid_argument("semop returned -1");
+    }
+}
+
+void SharedMemory::send(const SharedMemory::Msg *msg, SharedMemory::TypeUser type,
+                        const short *server_block_read,
+                        const short *server_block_write,
+                        const short *user_block_read,
+                        const short *user_block_write) {
+    // Считаем что память уже заблокирована
+    std::memmove(data, (void *) msg, sizeof(Msg));
+    switch (type) {
+        case SERVER:
+            change_sem_val((short *) server_block_write);
+            break;
+        case CLIENT:
+            change_sem_val((short *) user_block_write);
+            break;
+    }
+}
+
+void SharedMemory::rcv(const SharedMemory::Msg *msg, SharedMemory::TypeUser type,
+                       const short *server_block_read,
+                       const short *server_block_write,
+                       const short *user_block_read,
+                       const short *user_block_write) {
+    // Считаем что память уже заблокирована
+    std::memmove((void *) msg, data, sizeof(SharedMemory::Msg));
+    switch (type) {
+        case SERVER:
+            change_sem_val((short *) server_block_read);
+            break;
+        case CLIENT:
+            change_sem_val((short *) user_block_read);
+            break;
+    }
+}

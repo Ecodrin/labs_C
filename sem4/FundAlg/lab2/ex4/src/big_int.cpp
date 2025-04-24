@@ -456,7 +456,7 @@ BigInt BigInt::ntt_multiply(const BigInt &a, unsigned long long m) const {
     auto dft2 = nnt(n, rhs.data, w, m);
 
 
-    std::vector<unsigned long long > tmp_res(n);
+    std::vector<unsigned long long> tmp_res(n);
     for (size_t i = 0; i < n; ++i) {
         tmp_res[i] = (dft1[i] * dft2[i]) % m;
     }
@@ -467,7 +467,7 @@ BigInt BigInt::ntt_multiply(const BigInt &a, unsigned long long m) const {
 
     unsigned long long carry = 0;
     std::vector<unsigned long long> result_data;
-    for (auto& coeff : dft3) {
+    for (auto &coeff: dft3) {
         unsigned long long scaled = coeff * inv_n % m + carry;
 
         carry = scaled / lhs.base;
@@ -541,7 +541,6 @@ BigInt::nnt(size_t n, std::vector<unsigned long long> f, unsigned long long w, u
 }
 
 
-
 std::complex<long double> BigInt::omega(int n, int k) {
     long double angle = -2 * M_PIl * k / n;
     return {cos(angle), sin(angle)};
@@ -557,7 +556,7 @@ std::vector<std::complex<long double>> BigInt::fft_transform(const std::vector<u
 
 std::vector<unsigned long long> BigInt::fft_reset(const std::vector<std::complex<long double>> &input, size_t base) {
     std::vector<unsigned long long> res;
-    for (auto el : input) {
+    for (auto el: input) {
         unsigned long long value = std::llround(el.real() + 1e-8L);
         res.push_back(value);
     }
@@ -636,14 +635,14 @@ std::pair<BigInt, BigInt> BigInt::divide(const BigInt &lhs, const BigInt &rhs) {
 }
 
 bool BigInt::is_correct_mod(unsigned long long int m) {
-    if(m <= 1) {
+    if (m <= 1) {
         return false;
     }
-    if(m == 2 or m == 4) {
+    if (m == 2 or m == 4) {
         return false;
     }
 
-    if(m % 2 != 0) {
+    if (m % 2 != 0) {
         return is_prime_power(m);
     }
     unsigned long long odd_part = m / 2;
@@ -663,19 +662,19 @@ bool BigInt::is_prime_power(unsigned long long n) {
 }
 
 unsigned long long BigInt::find_primitive_root(unsigned long long int m) {
-    if(!is_correct_mod(m)) {
+    if (!is_correct_mod(m)) {
         throw std::invalid_argument("incorrect mod");
     }
     if (m == 2) return 1;
     if (m == 4) return 3;
     unsigned long long phi = euler_phi(m);
-    std::vector<unsigned long long > factors = get_factors(phi);
-    for(unsigned long long g = 2; g < m; ++g) {
-        if(std::gcd(g, m) != 1) {
+    std::vector<unsigned long long> factors = get_factors(phi);
+    for (unsigned long long g = 2; g < m; ++g) {
+        if (std::gcd(g, m) != 1) {
             continue;
         }
         bool is_root = true;
-        for (auto q : factors) {
+        for (auto q: factors) {
             if (mod_pow(g, phi / q, m) == 1) {
                 is_root = false;
                 break;
@@ -725,7 +724,7 @@ unsigned long long BigInt::mod_pow(unsigned long long int a, unsigned long long 
     unsigned long long res = 1;
     a %= mod;
     while (n > 0) {
-        if(n & 1) {
+        if (n & 1) {
             res = (res * a) % mod;
         }
         a = (a * a) % mod;
@@ -751,4 +750,74 @@ std::vector<long long> BigInt::extended_gcd(long long int a, long long int b) {
 
 std::vector<unsigned long long> &BigInt::get_data() {
     return data;
+}
+
+BigInt BigInt::karatsuba_multiply(const BigInt &a) const {
+    BigInt lhs{*this};
+    BigInt rhs{a};
+    rhs.change_base(base);
+    bool res_is_negative = is_negative != a.is_negative;
+    lhs.is_negative = false;
+    rhs.is_negative = false;
+
+    size_t n = 1;
+    while (std::max(lhs.data.size(), rhs.data.size()) > n) n <<= 1;
+    rhs.data.resize(n);
+    lhs.data.resize(n);
+
+    BigInt res = karatsuba(lhs, rhs);
+
+    res.is_negative = res_is_negative;
+    return res;
+}
+
+BigInt BigInt::karatsuba(const BigInt &f, const BigInt &g) {
+    size_t n = f.data.size();
+
+    if (n == 1) {
+        size_t product = f.data[0] * g.data[0];
+        BigInt res;
+        res.base = f.base;
+        if (product == 0) {
+            return res;
+        }
+        res.data.erase(res.data.begin());
+        while (product > 0) {
+            res.data.insert(res.data.end(), product % f.base);
+            product /= f.base;
+        }
+        return res;
+    }
+
+    BigInt f1, f2, g1, g2;
+    f1.data.erase(f1.data.begin());
+    f2.data.erase(f2.data.begin());
+    g1.data.erase(g1.data.begin());
+    g2.data.erase(g2.data.begin());
+    f1.base = f.base;
+    f2.base = f.base;
+    g1.base = f.base;
+    g2.base = f.base;
+    for (size_t i = 0; i < n / 2; ++i) {
+        f1.data.push_back(f.data[i]);
+        f2.data.push_back(f.data[i + n / 2]);
+    }
+    for (size_t i = 0; i < n / 2; ++i) {
+        g1.data.push_back(g.data[i]);
+        g2.data.push_back(g.data[i + n / 2]);
+    }
+
+
+    BigInt part1 = karatsuba(g1, f1);
+    BigInt part2 = karatsuba(f2, g2);
+    BigInt part3 = karatsuba(f1 + f2, g1 + g2);
+
+    BigInt &res1 = part1;
+    BigInt res2 = (part3 - part1 - part2);
+    res2.shift_left((int) n / 2);
+    BigInt res3 = part2;
+    res3.shift_left((int) n);
+    BigInt res = res1 + res2 + res3;
+    res.remove_leading_zeros();
+    return res;
 }

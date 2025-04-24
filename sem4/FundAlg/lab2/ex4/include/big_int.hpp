@@ -82,6 +82,9 @@ public:
     static std::complex<long double> omega(int n, int k);
     static std::vector<std::complex<long double>> fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w);
     static std::vector<unsigned long long > nnt(size_t n, std::vector<unsigned long long > f, unsigned long long w, unsigned long long m);
+
+    BigInt karatsuba_multiply(const BigInt& a) const;
+    static BigInt karatsuba(const BigInt &f, const BigInt &g);
 };
 
 

@@ -52,6 +52,13 @@ protected:
     }
 };
 
+
+class KaratsubaTest: public ::testing::Test {
+protected:
+    BigInt num1{"1231231231231231"};
+    BigInt num2{"-98782384234823"};
+};
+
 TEST_F(BigIntTest, DefaultConstructor) {
     BigInt num;
     EXPECT_EQ(num.to_string(), "0");
@@ -655,8 +662,23 @@ TEST_F(BigIntTest, Normalize) {
 
 }
 
+TEST_F(KaratsubaTest, LargeNumbers) {
+    EXPECT_EQ(num1.karatsuba_multiply(num2), num1 * num2);
+}
+
+TEST_F(KaratsubaTest, LargeNegativeNumbers) {
+    EXPECT_EQ(num1.karatsuba_multiply(-num2), num1 * (-num2));
+}
+
+TEST_F(KaratsubaTest, LargeNumbersOneNull) {
+    BigInt b{0};
+    EXPECT_EQ(num1.karatsuba_multiply(b), num1 * (b));
+}
+
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
+//    testing::GTEST_FLAG(filter) = "KaratsubaTest.*";
+
     return RUN_ALL_TESTS();
 }
