@@ -84,7 +84,7 @@ public:
     static std::vector<unsigned long long > nnt(size_t n, std::vector<unsigned long long > f, unsigned long long w, unsigned long long m);
 
     BigInt karatsuba_multiply(const BigInt& a) const;
-    static BigInt karatsuba(const BigInt &f, const BigInt &g);
+    static BigInt karatsuba(BigInt f, BigInt g);
 };
 
 

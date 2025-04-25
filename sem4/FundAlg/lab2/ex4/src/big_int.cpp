@@ -753,6 +753,9 @@ std::vector<unsigned long long> &BigInt::get_data() {
 }
 
 BigInt BigInt::karatsuba_multiply(const BigInt &a) const {
+    if(is_null() or a.is_null()) {
+        return BigInt{0};
+    }
     BigInt lhs{*this};
     BigInt rhs{a};
     rhs.change_base(base);
@@ -760,19 +763,25 @@ BigInt BigInt::karatsuba_multiply(const BigInt &a) const {
     lhs.is_negative = false;
     rhs.is_negative = false;
 
-    size_t n = 1;
-    while (std::max(lhs.data.size(), rhs.data.size()) > n) n <<= 1;
-    rhs.data.resize(n);
-    lhs.data.resize(n);
-
     BigInt res = karatsuba(lhs, rhs);
 
     res.is_negative = res_is_negative;
     return res;
 }
 
-BigInt BigInt::karatsuba(const BigInt &f, const BigInt &g) {
-    size_t n = f.data.size();
+BigInt BigInt::karatsuba(BigInt f,  BigInt g) {
+    size_t n = std::max(f.data.size(), g.data.size());
+    f.data.resize(n, 0);
+    g.data.resize(n, 0);
+    if ((n & (n - 1)) != 0) {
+        size_t new_n = 1;
+        while (new_n < n) new_n <<= 1;
+        BigInt f_padded = f;
+        BigInt g_padded = g;
+        f_padded.data.resize(new_n, 0);
+        g_padded.data.resize(new_n, 0);
+        return karatsuba(f_padded, g_padded);
+    }
 
     if (n == 1) {
         size_t product = f.data[0] * g.data[0];
@@ -794,21 +803,16 @@ BigInt BigInt::karatsuba(const BigInt &f, const BigInt &g) {
     f2.data.erase(f2.data.begin());
     g1.data.erase(g1.data.begin());
     g2.data.erase(g2.data.begin());
-    f1.base = f.base;
-    f2.base = f.base;
-    g1.base = f.base;
-    g2.base = f.base;
+    f1.base = f2.base = g1.base = g2.base = f.base;
     for (size_t i = 0; i < n / 2; ++i) {
         f1.data.push_back(f.data[i]);
         f2.data.push_back(f.data[i + n / 2]);
-    }
-    for (size_t i = 0; i < n / 2; ++i) {
+
         g1.data.push_back(g.data[i]);
         g2.data.push_back(g.data[i + n / 2]);
     }
 
-
-    BigInt part1 = karatsuba(g1, f1);
+    BigInt part1 = karatsuba(f1, g1);
     BigInt part2 = karatsuba(f2, g2);
     BigInt part3 = karatsuba(f1 + f2, g1 + g2);
 

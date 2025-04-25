@@ -55,8 +55,18 @@ protected:
 
 class KaratsubaTest: public ::testing::Test {
 protected:
-    BigInt num1{"1231231231231231"};
-    BigInt num2{"-98782384234823"};
+    BigInt num1{"12312312323423423432423423423423423423432341231231"};
+    BigInt num2{"-9878238423423423423423423422323423423423423424823"};
+    BigInt large1;
+    BigInt large2;
+    KaratsubaTest() {
+        std::ifstream a("../tests/num1");
+        std::ifstream b("../tests/num2");
+        a >> large1;
+        b >> large2;
+        a.close();
+        b.close();
+    }
 };
 
 TEST_F(BigIntTest, DefaultConstructor) {
@@ -675,10 +685,15 @@ TEST_F(KaratsubaTest, LargeNumbersOneNull) {
     EXPECT_EQ(num1.karatsuba_multiply(b), num1 * (b));
 }
 
+TEST_F(KaratsubaTest, BigLargeNumbers) {
+    BigInt tmp{large1};
+    EXPECT_EQ(tmp.karatsuba_multiply(large2), tmp * large2);
+}
+
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
-//    testing::GTEST_FLAG(filter) = "KaratsubaTest.*";
+    testing::GTEST_FLAG(filter) = "KaratsubaTest.*";
 
     return RUN_ALL_TESTS();
 }
