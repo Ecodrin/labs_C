@@ -770,18 +770,11 @@ BigInt BigInt::karatsuba_multiply(const BigInt &a) const {
 }
 
 BigInt BigInt::karatsuba(BigInt f,  BigInt g) {
-    size_t n = std::max(f.data.size(), g.data.size());
+    size_t n = 1;
+    size_t max_size = std::max(f.data.size(), g.data.size());
+    while (n < max_size) n <<= 1;
     f.data.resize(n, 0);
     g.data.resize(n, 0);
-    if ((n & (n - 1)) != 0) {
-        size_t new_n = 1;
-        while (new_n < n) new_n <<= 1;
-        BigInt f_padded = f;
-        BigInt g_padded = g;
-        f_padded.data.resize(new_n, 0);
-        g_padded.data.resize(new_n, 0);
-        return karatsuba(f_padded, g_padded);
-    }
 
     if (n == 1) {
         size_t product = f.data[0] * g.data[0];
