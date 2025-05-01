@@ -690,6 +690,12 @@ TEST_F(KaratsubaTest, BigLargeNumbers) {
     EXPECT_EQ(tmp.karatsuba_multiply(large2), tmp * large2);
 }
 
+TEST_F(BigIntTest, ModExpWithDefault) {
+    BigInt a {1234};
+    BigInt b{45};
+    EXPECT_EQ(BigInt::mod_exp(a, BigInt{1}, b), (a % b));
+}
+
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

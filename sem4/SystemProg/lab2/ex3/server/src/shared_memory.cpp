@@ -71,36 +71,32 @@ void SharedMemory::change_sem_val(short op, unsigned short num_sem) const {
     }
 }
 
-void SharedMemory::send(const SharedMemory::Msg *msg, SharedMemory::TypeUser type,
-                        const short *server_block_read,
-                        const short *server_block_write,
-                        const short *user_block_read,
-                        const short *user_block_write) {
-    // Считаем что память уже заблокирована
-    std::memmove(data, (void *) msg, sizeof(Msg));
-    switch (type) {
-        case SERVER:
-            change_sem_val((short *) server_block_write);
-            break;
-        case CLIENT:
-            change_sem_val((short *) user_block_write);
-            break;
+void SharedMemory::send(const SharedMemory::Msg *msg) {
+
+    short op[2];
+
+    if (msg == nullptr) {
+        Msg d{};
+        std::memmove(data, (void *) &d, sizeof(Msg));
+    } else {
+        std::memmove(data, (void *) msg, sizeof(Msg));
     }
+    op[0] = 1;
+    op[1] = 1;
+
+    change_sem_val(op);
+
 }
 
-void SharedMemory::rcv(const SharedMemory::Msg *msg, SharedMemory::TypeUser type,
-                       const short *server_block_read,
-                       const short *server_block_write,
-                       const short *user_block_read,
-                       const short *user_block_write) {
-    // Считаем что память уже заблокирована
-    std::memmove((void *) msg, data, sizeof(SharedMemory::Msg));
-    switch (type) {
-        case SERVER:
-            change_sem_val((short *) server_block_read);
-            break;
-        case CLIENT:
-            change_sem_val((short *) user_block_read);
-            break;
-    }
+void SharedMemory::rcv(const SharedMemory::Msg *msg) {
+
+    short op[2];
+    op[0] = -1;
+    op[1] = 0;
+
+
+    change_sem_val(op);
+
+    std::memmove((void *) msg, data, sizeof(Msg));
+
 }

@@ -1,6 +1,9 @@
 
 #include <iostream>
 
+#include "include/server.hpp"
+
 int main() {
-    std::cout << "Hello world!\n";
+    Server server;
+    server.work();
 }

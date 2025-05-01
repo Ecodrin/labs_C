@@ -27,7 +27,7 @@ void BigInt::remove_leading_zeros() {
     if (is_null() and is_negative) {
         is_negative = false;
     }
-    for (int i = data.size() - 1; i > 0; --i) {
+    for (long long i = data.size() - 1; i > 0; --i) {
         if (data[i] == 0) {
             data.pop_back();
         } else {
@@ -42,7 +42,7 @@ std::string BigInt::to_string() const {
         output << "-";
     }
     auto len_base = (int) log10l(base);
-    for (int i = data.size() - 1; i >= 0; --i) {
+    for (long long i = data.size() - 1; i >= 0; --i) {
         if ((size_t) i != data.size() - 1) {
             output << std::setw(len_base) << std::setfill('0') << data[i];
         } else {
