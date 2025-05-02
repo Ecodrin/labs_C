@@ -1,9 +1,12 @@
-[2025-05-01 12:33:38][Server][INFO] Initial server
-[2025-05-01 12:33:38][Server][INFO] Start server
-[2025-05-01 12:34:46][Server][INFO] Client Ecodrin register
-[2025-05-01 12:34:46][Server][INFO] Client Ecodrin connect
-[2025-05-01 12:34:51][Server][INFO] Client admin connect
-[2025-05-01 12:35:49][Server][INFO] Client Ecodrin exit
-[2025-05-01 12:36:18][Server][INFO] Client Ecodrin connect
-[2025-05-01 12:36:35][Server][INFO] Client admin exit
-[2025-05-01 12:36:44][Server][INFO] Client Ecodrin exit
+[2025-05-02 16:52:29][Server][INFO] Initial server
+[2025-05-02 16:52:29][Server][INFO] Start server
+[2025-05-02 16:52:36][Server][INFO] Client Ecodrin register
+[2025-05-02 16:52:36][Server][INFO] Client Ecodrin connect
+[2025-05-02 16:52:40][Server][INFO] Client admin connect
+[2025-05-02 16:53:43][Server][INFO] Client Bebra register
+[2025-05-02 16:53:43][Server][INFO] Client Bebra connect
+[2025-05-02 16:55:06][Server][INFO] Client Bobr register
+[2025-05-02 16:55:06][Server][INFO] Client Bobr connect
+[2025-05-02 16:55:25][Server][INFO] Client admin exit
+[2025-05-02 16:55:29][Server][INFO] Client Bobr exit
+[2025-05-02 16:55:33][Server][INFO] Client Ecodrin exit

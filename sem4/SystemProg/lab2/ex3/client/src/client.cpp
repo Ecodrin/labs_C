@@ -2,6 +2,7 @@
 // Created by matvey on 4/20/25.
 //
 
+#include <algorithm>
 #include "../include/client.hpp"
 
 
@@ -200,6 +201,11 @@ void Client::get_msgs(SharedMemory *personal_client_memory, size_t count_pkgs) {
 
 
 void Client::print_dialog(const std::string &who) {
+    std::sort(chats[who].begin(), chats[who].end(), [&](
+            const std::tuple<int, size_t, std::string>& a,
+            const std::tuple<int, size_t, std::string>& b)->bool {
+        return std::get<1>(a) < std::get<1>(b);
+    });
     for (const auto &w: chats[who]) {
         if (std::get<0>(w) == 0) {
             std::cout << get_datetime(std::get<1>(w)) << " " << login << ": " << std::get<2>(w) << std::endl;
