@@ -172,9 +172,11 @@ void *Server::processing(void *arg) {
                     break;
                 }
                 clients[get.login_recipient].chats[get.login_sender].emplace_back(1, get.time, get.data);
-                session.chats[get.login_recipient].emplace_back(0, get.time, get.data);
-                if (clients[get.login_recipient].online) {
-                    clients[get.login_recipient].queue_msgs.push({get.login_sender, get.time, get.data});
+                if(strcmp(get.login_sender, get.login_recipient) != 0) {
+                    session.chats[get.login_recipient].emplace_back(0, get.time, get.data);
+                    if (clients[get.login_recipient].online) {
+                        clients[get.login_recipient].queue_msgs.push({get.login_sender, get.time, get.data});
+                    }
                 }
                 personal_client_memory.send(&send);
                 break;

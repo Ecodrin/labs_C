@@ -273,4 +273,3 @@ void Client::update_info(SharedMemory *personal_shared_memory) {
     } while (response.count_pkgs);
 }
 
-
