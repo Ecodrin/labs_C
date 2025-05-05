@@ -126,8 +126,8 @@ void Client::processing_dialog(SharedMemory *personal_shared_memory) {
         std::system("clear");
         print_dialog(r_login);
         std::string command;
-        std::cin.clear();
         std::getline(std::cin, command);
+        command = command.substr(0, 2048);
 
         if(command.empty()) {
             continue;
@@ -223,11 +223,11 @@ std::string Client::get_datetime(time_t t) {
 }
 
 SharedMemory::Msg::Type Client::sign_in_or_up() {
-    std::cout << "You can\n1.sign in\n2.sign up\n3.exit\n";
+    std::cout << "You can\n1.sign in\n2.sign up\n3.exit" << std::endl;
     size_t d = 0;
     std::cin >> d;
     while ((d == 0 or d >= 4)) {
-        std::cout << "Incorrect Command.\nYou can\n1.sign in.\n2.sign up" << std::endl;
+        std::cout << "You can\n1.sign in\n2.sign up\n3.exit" << std::endl;
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cin >> d;

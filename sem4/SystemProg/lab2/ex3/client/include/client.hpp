@@ -25,7 +25,6 @@ private:
     void add_msg(SharedMemory::Msg * msg, bool you);
     void update_info(SharedMemory * personal_shared_memory);
 
-
 public:
     explicit Client(const char *ftok_shm_file = "/tmp", int ftok_shm_id = 0,
                     const char *ftok_sem_file = "/tmp", int ftok_sem_id=0,
