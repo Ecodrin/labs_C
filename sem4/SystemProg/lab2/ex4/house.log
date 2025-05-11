@@ -1,0 +1,316 @@
+[2025-05-11 23:47:42][House][INFO] House init
+[2025-05-11 23:47:43][House][INFO] Tick 4 elevator 1 Floor 2 up
+[2025-05-11 23:47:43][House][INFO] Tick 5 elevator 1 Floor 2 open door
+[2025-05-11 23:47:43][House][INFO] Tick 6 elevator 1 Floor 2 disembarkation in
+[2025-05-11 23:47:43][House][INFO] Tick 6 elevator 2 Floor 2 up
+[2025-05-11 23:47:44][House][INFO] Tick 7 elevator 1 Floor 2 close door
+[2025-05-11 23:47:44][House][INFO] Tick 8 elevator 2 Floor 3 up
+[2025-05-11 23:47:44][House][INFO] Tick 9 elevator 1 Floor 3 up
+[2025-05-11 23:47:44][House][INFO] Tick 9 elevator 3 Floor 1 open door
+[2025-05-11 23:47:44][House][INFO] Tick 10 elevator 1 Floor 3 open door
+[2025-05-11 23:47:44][House][INFO] Tick 10 elevator 2 Floor 4 up
+[2025-05-11 23:47:44][House][INFO] Tick 10 elevator 3 Floor 1 disembarkation in
+[2025-05-11 23:47:44][House][INFO] Tick 11 elevator 1 Floor 3 disembarkation in
+[2025-05-11 23:47:44][House][INFO] Tick 11 elevator 3 Floor 1 close door
+[2025-05-11 23:47:45][House][INFO] Tick 12 elevator 1 Floor 3 close door
+[2025-05-11 23:47:45][House][INFO] Tick 12 elevator 2 Floor 5 up
+[2025-05-11 23:47:45][House][INFO] Tick 13 elevator 3 Floor 2 up
+[2025-05-11 23:47:45][House][INFO] Tick 14 elevator 1 Floor 4 up
+[2025-05-11 23:47:45][House][INFO] Tick 14 elevator 2 Floor 6 up
+[2025-05-11 23:47:45][House][INFO] Tick 15 elevator 2 Floor 6 open door
+[2025-05-11 23:47:45][House][INFO] Tick 15 elevator 3 Floor 3 up
+[2025-05-11 23:47:45][House][INFO] Tick 16 elevator 1 Floor 5 up
+[2025-05-11 23:47:45][House][INFO] Tick 16 elevator 3 Floor 3 open door
+[2025-05-11 23:47:45][House][INFO] Tick 16 elevator 2 Floor 6 disembarkation in
+[2025-05-11 23:47:45][House][INFO] Tick 16 elevator 2 Floor 6 disembarkation in
+[2025-05-11 23:47:46][House][INFO] Tick 17 elevator 2 Floor 6 close door
+[2025-05-11 23:47:46][House][INFO] Tick 17 elevator 3 Floor 3 disembarkation out
+[2025-05-11 23:47:46][House][INFO] Tick 18 elevator 1 Floor 6 up
+[2025-05-11 23:47:46][House][INFO] Tick 18 elevator 3 Floor 3 close door
+[2025-05-11 23:47:46][House][INFO] Tick 19 elevator 2 Floor 7 up
+[2025-05-11 23:47:46][House][INFO] Tick 20 elevator 2 Floor 7 open door
+[2025-05-11 23:47:46][House][INFO] Tick 20 elevator 1 Floor 7 up
+[2025-05-11 23:47:46][House][INFO] Tick 20 elevator 3 Floor 4 up
+[2025-05-11 23:47:46][House][INFO] Tick 21 elevator 1 Floor 7 open door
+[2025-05-11 23:47:46][House][INFO] Tick 21 elevator 2 Floor 7 disembarkation in
+[2025-05-11 23:47:46][House][INFO] Tick 21 elevator 2 Floor 7 disembarkation in
+[2025-05-11 23:47:47][House][INFO] Tick 22 elevator 2 Floor 7 close door
+[2025-05-11 23:47:47][House][INFO] Tick 22 elevator 3 Floor 5 up
+[2025-05-11 23:47:47][House][INFO] Tick 22 elevator 1 Floor 7 disembarkation out
+[2025-05-11 23:47:47][House][INFO] Tick 22 elevator 1 Floor 7 disembarkation in
+[2025-05-11 23:47:47][House][INFO] Tick 22 elevator 1 Floor 7 disembarkation in
+[2025-05-11 23:47:47][House][INFO] Tick 23 elevator 1 Floor 7 close door
+[2025-05-11 23:47:47][House][INFO] Tick 24 elevator 2 Floor 8 up
+[2025-05-11 23:47:47][House][INFO] Tick 24 elevator 3 Floor 6 up
+[2025-05-11 23:47:47][House][INFO] Tick 25 elevator 3 Floor 6 open door
+[2025-05-11 23:47:47][House][INFO] Tick 25 elevator 2 Floor 8 open door
+[2025-05-11 23:47:47][House][INFO] Tick 25 elevator 1 Floor 8 up
+[2025-05-11 23:47:47][House][INFO] Tick 26 elevator 2 Floor 8 disembarkation out
+[2025-05-11 23:47:47][House][INFO] Tick 26 elevator 2 Floor 8 disembarkation in
+[2025-05-11 23:47:47][House][INFO] Tick 26 elevator 3 Floor 6 disembarkation in
+[2025-05-11 23:47:48][House][INFO] Tick 27 elevator 2 Floor 8 close door
+[2025-05-11 23:47:48][House][INFO] Tick 27 elevator 1 Floor 9 up
+[2025-05-11 23:47:48][House][INFO] Tick 27 elevator 3 Floor 6 close door
+[2025-05-11 23:47:48][House][INFO] Tick 29 elevator 1 Floor 10 up
+[2025-05-11 23:47:48][House][INFO] Tick 29 elevator 3 Floor 7 up
+[2025-05-11 23:47:48][House][INFO] Tick 29 elevator 2 Floor 9 up
+[2025-05-11 23:47:48][House][INFO] Tick 30 elevator 1 Floor 10 open door
+[2025-05-11 23:47:48][House][INFO] Tick 30 elevator 2 Floor 9 open door
+[2025-05-11 23:47:48][House][INFO] Tick 31 elevator 1 Floor 10 disembarkation out
+[2025-05-11 23:47:48][House][INFO] Tick 31 elevator 3 Floor 8 up
+[2025-05-11 23:47:48][House][INFO] Tick 31 elevator 2 Floor 9 disembarkation out
+[2025-05-11 23:47:49][House][INFO] Tick 32 elevator 1 Floor 10 close door
+[2025-05-11 23:47:49][House][INFO] Tick 32 elevator 2 Floor 9 close door
+[2025-05-11 23:47:49][House][INFO] Tick 33 elevator 3 Floor 9 up
+[2025-05-11 23:47:49][House][INFO] Tick 34 elevator 2 Floor 10 up
+[2025-05-11 23:47:49][House][INFO] Tick 34 elevator 1 Floor 11 up
+[2025-05-11 23:47:49][House][INFO] Tick 34 elevator 3 Floor 9 open door
+[2025-05-11 23:47:49][House][INFO] Tick 35 elevator 3 Floor 9 disembarkation out
+[2025-05-11 23:47:49][House][INFO] Tick 36 elevator 1 Floor 12 up
+[2025-05-11 23:47:49][House][INFO] Tick 36 elevator 3 Floor 9 close door
+[2025-05-11 23:47:49][House][INFO] Tick 36 elevator 2 Floor 11 up
+[2025-05-11 23:47:50][House][INFO] Tick 37 elevator 2 Floor 11 open door
+[2025-05-11 23:47:50][House][INFO] Tick 37 elevator 1 Floor 12 open door
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 2 Floor 11 disembarkation out
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 2 Floor 11 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 2 Floor 11 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 1 Floor 12 disembarkation out
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 1 Floor 12 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 38 elevator 3 Floor 10 up
+[2025-05-11 23:47:50][House][INFO] Tick 39 elevator 2 Floor 11 close door
+[2025-05-11 23:47:50][House][INFO] Tick 39 elevator 1 Floor 12 close door
+[2025-05-11 23:47:50][House][INFO] Tick 39 elevator 3 Floor 10 open door
+[2025-05-11 23:47:50][House][INFO] Tick 40 elevator 3 Floor 10 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 40 elevator 3 Floor 10 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 40 elevator 3 Floor 10 disembarkation in
+[2025-05-11 23:47:50][House][INFO] Tick 41 elevator 1 Floor 12 down
+[2025-05-11 23:47:50][House][INFO] Tick 41 elevator 2 Floor 11 down
+[2025-05-11 23:47:50][House][INFO] Tick 41 elevator 3 Floor 10 close door
+[2025-05-11 23:47:51][House][INFO] Tick 42 elevator 2 Floor 10 open door
+[2025-05-11 23:47:51][House][INFO] Tick 43 elevator 2 Floor 10 disembarkation out
+[2025-05-11 23:47:51][House][INFO] Tick 43 elevator 1 Floor 11 down
+[2025-05-11 23:47:51][House][INFO] Tick 43 elevator 3 Floor 11 up
+[2025-05-11 23:47:51][House][INFO] Tick 44 elevator 3 Floor 11 open door
+[2025-05-11 23:47:51][House][INFO] Tick 44 elevator 2 Floor 10 close door
+[2025-05-11 23:47:51][House][INFO] Tick 45 elevator 1 Floor 10 down
+[2025-05-11 23:47:51][House][INFO] Tick 45 elevator 3 Floor 11 disembarkation in
+[2025-05-11 23:47:51][House][INFO] Tick 46 elevator 1 Floor 9 open door
+[2025-05-11 23:47:51][House][INFO] Tick 46 elevator 2 Floor 10 down
+[2025-05-11 23:47:51][House][INFO] Tick 46 elevator 3 Floor 11 close door
+[2025-05-11 23:47:52][House][INFO] Tick 47 elevator 1 Floor 9 disembarkation in
+[2025-05-11 23:47:52][House][INFO] Tick 47 elevator 2 Floor 9 open door
+[2025-05-11 23:47:52][House][INFO] Tick 48 elevator 1 Floor 9 close door
+[2025-05-11 23:47:52][House][INFO] Tick 48 elevator 2 Floor 9 disembarkation in
+[2025-05-11 23:47:52][House][INFO] Tick 48 elevator 3 Floor 12 up
+[2025-05-11 23:47:52][House][INFO] Tick 49 elevator 2 Floor 9 close door
+[2025-05-11 23:47:52][House][INFO] Tick 49 elevator 3 Floor 12 open door
+[2025-05-11 23:47:52][House][INFO] Tick 50 elevator 3 Floor 12 disembarkation out
+[2025-05-11 23:47:52][House][INFO] Tick 50 elevator 1 Floor 9 down
+[2025-05-11 23:47:52][House][INFO] Tick 51 elevator 2 Floor 9 down
+[2025-05-11 23:47:52][House][INFO] Tick 51 elevator 3 Floor 12 close door
+[2025-05-11 23:47:53][House][INFO] Tick 52 elevator 1 Floor 8 down
+[2025-05-11 23:47:53][House][INFO] Tick 53 elevator 2 Floor 8 down
+[2025-05-11 23:47:53][House][INFO] Tick 53 elevator 3 Floor 12 down
+[2025-05-11 23:47:53][House][INFO] Tick 54 elevator 1 Floor 7 down
+[2025-05-11 23:47:53][House][INFO] Tick 55 elevator 1 Floor 6 open door
+[2025-05-11 23:47:53][House][INFO] Tick 55 elevator 2 Floor 7 down
+[2025-05-11 23:47:53][House][INFO] Tick 55 elevator 3 Floor 11 down
+[2025-05-11 23:47:53][House][INFO] Tick 56 elevator 1 Floor 6 disembarkation out
+[2025-05-11 23:47:54][House][INFO] Tick 57 elevator 1 Floor 6 close door
+[2025-05-11 23:47:54][House][INFO] Tick 57 elevator 2 Floor 6 down
+[2025-05-11 23:47:54][House][INFO] Tick 57 elevator 3 Floor 10 down
+[2025-05-11 23:47:54][House][INFO] Tick 58 elevator 3 Floor 9 open door
+[2025-05-11 23:47:54][House][INFO] Tick 59 elevator 1 Floor 6 down
+[2025-05-11 23:47:54][House][INFO] Tick 59 elevator 3 Floor 9 disembarkation in
+[2025-05-11 23:47:54][House][INFO] Tick 59 elevator 2 Floor 5 down
+[2025-05-11 23:47:54][House][INFO] Tick 60 elevator 2 Floor 4 open door
+[2025-05-11 23:47:54][House][INFO] Tick 60 elevator 3 Floor 9 close door
+[2025-05-11 23:47:54][House][INFO] Tick 60 elevator 1 Floor 5 open door
+[2025-05-11 23:47:54][House][INFO] Tick 61 elevator 1 Floor 5 disembarkation in
+[2025-05-11 23:47:54][House][INFO] Tick 61 elevator 1 Floor 5 disembarkation in
+[2025-05-11 23:47:54][House][INFO] Tick 61 elevator 2 Floor 4 disembarkation out
+[2025-05-11 23:47:54][House][INFO] Tick 61 elevator 2 Floor 4 disembarkation in
+[2025-05-11 23:47:55][House][INFO] Tick 62 elevator 3 Floor 9 down
+[2025-05-11 23:47:55][House][INFO] Tick 62 elevator 1 Floor 5 close door
+[2025-05-11 23:47:55][House][INFO] Tick 62 elevator 2 Floor 4 close door
+[2025-05-11 23:47:55][House][INFO] Tick 63 elevator 3 Floor 8 open door
+[2025-05-11 23:47:55][House][INFO] Tick 64 elevator 1 Floor 5 down
+[2025-05-11 23:47:55][House][INFO] Tick 64 elevator 2 Floor 4 down
+[2025-05-11 23:47:55][House][INFO] Tick 64 elevator 3 Floor 8 disembarkation out
+[2025-05-11 23:47:55][House][INFO] Tick 65 elevator 3 Floor 8 close door
+[2025-05-11 23:47:55][House][INFO] Tick 65 elevator 1 Floor 4 open door
+[2025-05-11 23:47:55][House][INFO] Tick 66 elevator 1 Floor 4 disembarkation in
+[2025-05-11 23:47:55][House][INFO] Tick 66 elevator 2 Floor 3 down
+[2025-05-11 23:47:56][House][INFO] Tick 67 elevator 2 Floor 2 open door
+[2025-05-11 23:47:56][House][INFO] Tick 67 elevator 1 Floor 4 close door
+[2025-05-11 23:47:56][House][INFO] Tick 67 elevator 3 Floor 8 down
+[2025-05-11 23:47:56][House][INFO] Tick 68 elevator 2 Floor 2 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 68 elevator 2 Floor 2 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 69 elevator 3 Floor 7 down
+[2025-05-11 23:47:56][House][INFO] Tick 69 elevator 2 Floor 2 close door
+[2025-05-11 23:47:56][House][INFO] Tick 69 elevator 1 Floor 4 down
+[2025-05-11 23:47:56][House][INFO] Tick 70 elevator 1 Floor 3 open door
+[2025-05-11 23:47:56][House][INFO] Tick 70 elevator 3 Floor 6 open door
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 1 Floor 3 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 1 Floor 3 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 2 Floor 2 down
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 3 Floor 6 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 3 Floor 6 disembarkation out
+[2025-05-11 23:47:56][House][INFO] Tick 71 elevator 3 Floor 6 disembarkation in
+[2025-05-11 23:47:57][House][INFO] Tick 72 elevator 1 Floor 3 close door
+[2025-05-11 23:47:57][House][INFO] Tick 72 elevator 3 Floor 6 close door
+[2025-05-11 23:47:57][House][INFO] Tick 72 elevator 2 Floor 1 open door
+[2025-05-11 23:47:57][House][INFO] Tick 73 elevator 2 Floor 1 disembarkation out
+[2025-05-11 23:47:57][House][INFO] Tick 74 elevator 1 Floor 4 up
+[2025-05-11 23:47:57][House][INFO] Tick 74 elevator 3 Floor 6 down
+[2025-05-11 23:47:57][House][INFO] Tick 74 elevator 2 Floor 1 close door
+[2025-05-11 23:47:57][House][INFO] Tick 75 elevator 1 Floor 4 open door
+[2025-05-11 23:47:57][House][INFO] Tick 75 elevator 3 Floor 5 open door
+[2025-05-11 23:47:57][House][INFO] Tick 76 elevator 1 Floor 4 disembarkation in
+[2025-05-11 23:47:57][House][INFO] Tick 76 elevator 3 Floor 5 disembarkation out
+[2025-05-11 23:47:57][House][INFO] Tick 76 elevator 3 Floor 5 disembarkation in
+[2025-05-11 23:47:57][House][INFO] Tick 76 elevator 2 Floor 2 up
+[2025-05-11 23:47:58][House][INFO] Tick 77 elevator 1 Floor 4 close door
+[2025-05-11 23:47:58][House][INFO] Tick 77 elevator 3 Floor 5 close door
+[2025-05-11 23:47:58][House][INFO] Tick 78 elevator 2 Floor 3 up
+[2025-05-11 23:47:58][House][INFO] Tick 79 elevator 1 Floor 5 up
+[2025-05-11 23:47:58][House][INFO] Tick 79 elevator 3 Floor 5 down
+[2025-05-11 23:47:58][House][INFO] Tick 80 elevator 2 Floor 4 up
+[2025-05-11 23:47:58][House][INFO] Tick 81 elevator 2 Floor 4 open door
+[2025-05-11 23:47:58][House][INFO] Tick 81 elevator 3 Floor 4 down
+[2025-05-11 23:47:58][House][INFO] Tick 81 elevator 1 Floor 6 up
+[2025-05-11 23:47:59][House][INFO] Tick 82 elevator 1 Floor 6 open door
+[2025-05-11 23:47:59][House][INFO] Tick 82 elevator 3 Floor 3 open door
+[2025-05-11 23:47:59][House][INFO] Tick 82 elevator 2 Floor 4 disembarkation in
+[2025-05-11 23:47:59][House][INFO] Tick 83 elevator 1 Floor 6 disembarkation out
+[2025-05-11 23:47:59][House][INFO] Tick 83 elevator 1 Floor 6 disembarkation out
+[2025-05-11 23:47:59][House][INFO] Tick 83 elevator 2 Floor 4 close door
+[2025-05-11 23:47:59][House][INFO] Tick 83 elevator 3 Floor 3 disembarkation out
+[2025-05-11 23:47:59][House][INFO] Tick 83 elevator 3 Floor 3 disembarkation in
+[2025-05-11 23:47:59][House][INFO] Tick 84 elevator 3 Floor 3 close door
+[2025-05-11 23:47:59][House][INFO] Tick 84 elevator 1 Floor 6 close door
+[2025-05-11 23:47:59][House][INFO] Tick 85 elevator 2 Floor 5 up
+[2025-05-11 23:47:59][House][INFO] Tick 86 elevator 1 Floor 7 up
+[2025-05-11 23:47:59][House][INFO] Tick 86 elevator 3 Floor 4 up
+[2025-05-11 23:48:00][House][INFO] Tick 87 elevator 2 Floor 6 up
+[2025-05-11 23:48:00][House][INFO] Tick 88 elevator 1 Floor 8 up
+[2025-05-11 23:48:00][House][INFO] Tick 88 elevator 2 Floor 6 open door
+[2025-05-11 23:48:00][House][INFO] Tick 88 elevator 3 Floor 5 up
+[2025-05-11 23:48:00][House][INFO] Tick 89 elevator 1 Floor 8 open door
+[2025-05-11 23:48:00][House][INFO] Tick 89 elevator 2 Floor 6 disembarkation in
+[2025-05-11 23:48:00][House][INFO] Tick 90 elevator 3 Floor 6 up
+[2025-05-11 23:48:00][House][INFO] Tick 90 elevator 2 Floor 6 close door
+[2025-05-11 23:48:00][House][INFO] Tick 90 elevator 1 Floor 8 disembarkation out
+[2025-05-11 23:48:00][House][INFO] Tick 90 elevator 1 Floor 8 disembarkation in
+[2025-05-11 23:48:00][House][INFO] Tick 91 elevator 3 Floor 6 open door
+[2025-05-11 23:48:00][House][INFO] Tick 91 elevator 1 Floor 8 close door
+[2025-05-11 23:48:01][House][INFO] Tick 92 elevator 2 Floor 7 up
+[2025-05-11 23:48:01][House][INFO] Tick 92 elevator 3 Floor 6 disembarkation out
+[2025-05-11 23:48:01][House][INFO] Tick 93 elevator 3 Floor 6 close door
+[2025-05-11 23:48:01][House][INFO] Tick 93 elevator 2 Floor 7 open door
+[2025-05-11 23:48:01][House][INFO] Tick 93 elevator 1 Floor 9 up
+[2025-05-11 23:48:01][House][INFO] Tick 94 elevator 2 Floor 7 disembarkation out
+[2025-05-11 23:48:01][House][INFO] Tick 95 elevator 2 Floor 7 close door
+[2025-05-11 23:48:01][House][INFO] Tick 95 elevator 1 Floor 10 up
+[2025-05-11 23:48:01][House][INFO] Tick 95 elevator 3 Floor 7 up
+[2025-05-11 23:48:02][House][INFO] Tick 97 elevator 3 Floor 8 up
+[2025-05-11 23:48:02][House][INFO] Tick 97 elevator 1 Floor 11 up
+[2025-05-11 23:48:02][House][INFO] Tick 97 elevator 2 Floor 8 up
+[2025-05-11 23:48:02][House][INFO] Tick 98 elevator 1 Floor 11 open door
+[2025-05-11 23:48:02][House][INFO] Tick 98 elevator 3 Floor 8 open door
+[2025-05-11 23:48:02][House][INFO] Tick 99 elevator 3 Floor 8 disembarkation out
+[2025-05-11 23:48:02][House][INFO] Tick 99 elevator 3 Floor 8 disembarkation in
+[2025-05-11 23:48:02][House][INFO] Tick 99 elevator 1 Floor 11 disembarkation out
+[2025-05-11 23:48:02][House][INFO] Tick 99 elevator 2 Floor 9 up
+[2025-05-11 23:48:02][House][INFO] Tick 100 elevator 3 Floor 8 close door
+[2025-05-11 23:48:02][House][INFO] Tick 100 elevator 2 Floor 9 open door
+[2025-05-11 23:48:02][House][INFO] Tick 100 elevator 1 Floor 11 close door
+[2025-05-11 23:48:02][House][INFO] Tick 101 elevator 2 Floor 9 disembarkation out
+[2025-05-11 23:48:03][House][INFO] Tick 102 elevator 3 Floor 9 up
+[2025-05-11 23:48:03][House][INFO] Tick 102 elevator 1 Floor 11 down
+[2025-05-11 23:48:03][House][INFO] Tick 102 elevator 2 Floor 9 close door
+[2025-05-11 23:48:03][House][INFO] Tick 104 elevator 1 Floor 10 down
+[2025-05-11 23:48:03][House][INFO] Tick 104 elevator 2 Floor 10 up
+[2025-05-11 23:48:03][House][INFO] Tick 104 elevator 3 Floor 10 up
+[2025-05-11 23:48:03][House][INFO] Tick 105 elevator 2 Floor 10 open door
+[2025-05-11 23:48:03][House][INFO] Tick 105 elevator 3 Floor 10 open door
+[2025-05-11 23:48:03][House][INFO] Tick 106 elevator 3 Floor 10 disembarkation in
+[2025-05-11 23:48:03][House][INFO] Tick 106 elevator 2 Floor 10 disembarkation in
+[2025-05-11 23:48:03][House][INFO] Tick 106 elevator 2 Floor 10 disembarkation in
+[2025-05-11 23:48:03][House][INFO] Tick 106 elevator 1 Floor 9 down
+[2025-05-11 23:48:04][House][INFO] Tick 107 elevator 3 Floor 10 close door
+[2025-05-11 23:48:04][House][INFO] Tick 107 elevator 2 Floor 10 close door
+[2025-05-11 23:48:04][House][INFO] Tick 108 elevator 1 Floor 8 down
+[2025-05-11 23:48:04][House][INFO] Tick 109 elevator 3 Floor 11 up
+[2025-05-11 23:48:04][House][INFO] Tick 109 elevator 2 Floor 11 up
+[2025-05-11 23:48:04][House][INFO] Tick 110 elevator 1 Floor 7 down
+[2025-05-11 23:48:04][House][INFO] Tick 110 elevator 2 Floor 11 open door
+[2025-05-11 23:48:04][House][INFO] Tick 111 elevator 3 Floor 12 up
+[2025-05-11 23:48:04][House][INFO] Tick 111 elevator 2 Floor 11 disembarkation out
+[2025-05-11 23:48:04][House][INFO] Tick 111 elevator 2 Floor 11 disembarkation out
+[2025-05-11 23:48:05][House][INFO] Tick 112 elevator 1 Floor 6 down
+[2025-05-11 23:48:05][House][INFO] Tick 112 elevator 2 Floor 11 close door
+[2025-05-11 23:48:05][House][INFO] Tick 112 elevator 3 Floor 12 open door
+[2025-05-11 23:48:05][House][INFO] Tick 113 elevator 1 Floor 5 open door
+[2025-05-11 23:48:05][House][INFO] Tick 113 elevator 3 Floor 12 disembarkation out
+[2025-05-11 23:48:05][House][INFO] Tick 113 elevator 3 Floor 12 disembarkation out
+[2025-05-11 23:48:05][House][INFO] Tick 114 elevator 1 Floor 5 disembarkation in
+[2025-05-11 23:48:05][House][INFO] Tick 114 elevator 1 Floor 5 disembarkation in
+[2025-05-11 23:48:05][House][INFO] Tick 114 elevator 2 Floor 11 down
+[2025-05-11 23:48:05][House][INFO] Tick 114 elevator 3 Floor 12 close door
+[2025-05-11 23:48:05][House][INFO] Tick 115 elevator 1 Floor 5 close door
+[2025-05-11 23:48:05][House][INFO] Tick 116 elevator 3 Floor 12 down
+[2025-05-11 23:48:05][House][INFO] Tick 116 elevator 2 Floor 10 down
+[2025-05-11 23:48:06][House][INFO] Tick 117 elevator 1 Floor 5 down
+[2025-05-11 23:48:06][House][INFO] Tick 117 elevator 3 Floor 11 open door
+[2025-05-11 23:48:06][House][INFO] Tick 118 elevator 1 Floor 4 open door
+[2025-05-11 23:48:06][House][INFO] Tick 118 elevator 2 Floor 9 down
+[2025-05-11 23:48:06][House][INFO] Tick 118 elevator 3 Floor 11 disembarkation in
+[2025-05-11 23:48:06][House][INFO] Tick 119 elevator 1 Floor 4 disembarkation out
+[2025-05-11 23:48:06][House][INFO] Tick 119 elevator 3 Floor 11 close door
+[2025-05-11 23:48:06][House][INFO] Tick 120 elevator 2 Floor 8 down
+[2025-05-11 23:48:06][House][INFO] Tick 120 elevator 1 Floor 4 close door
+[2025-05-11 23:48:06][House][INFO] Tick 121 elevator 3 Floor 11 down
+[2025-05-11 23:48:07][House][INFO] Tick 122 elevator 3 Floor 10 open door
+[2025-05-11 23:48:07][House][INFO] Tick 122 elevator 2 Floor 7 down
+[2025-05-11 23:48:07][House][INFO] Tick 122 elevator 1 Floor 5 up
+[2025-05-11 23:48:07][House][INFO] Tick 123 elevator 2 Floor 6 open door
+[2025-05-11 23:48:07][House][INFO] Tick 123 elevator 3 Floor 10 disembarkation out
+[2025-05-11 23:48:07][House][INFO] Tick 124 elevator 3 Floor 10 close door
+[2025-05-11 23:48:07][House][INFO] Tick 124 elevator 2 Floor 6 disembarkation in
+[2025-05-11 23:48:07][House][INFO] Tick 124 elevator 1 Floor 6 up
+[2025-05-11 23:48:07][House][INFO] Tick 125 elevator 1 Floor 6 open door
+[2025-05-11 23:48:07][House][INFO] Tick 125 elevator 2 Floor 6 close door
+[2025-05-11 23:48:07][House][INFO] Tick 126 elevator 1 Floor 6 disembarkation out
+[2025-05-11 23:48:07][House][INFO] Tick 126 elevator 3 Floor 10 down
+[2025-05-11 23:48:08][House][INFO] Tick 127 elevator 1 Floor 6 close door
+[2025-05-11 23:48:08][House][INFO] Tick 127 elevator 2 Floor 6 down
+[2025-05-11 23:48:08][House][INFO] Tick 128 elevator 3 Floor 9 down
+[2025-05-11 23:48:08][House][INFO] Tick 128 elevator 2 Floor 5 open door
+[2025-05-11 23:48:08][House][INFO] Tick 129 elevator 1 Floor 7 up
+[2025-05-11 23:48:08][House][INFO] Tick 129 elevator 2 Floor 5 disembarkation in
+[2025-05-11 23:48:08][House][INFO] Tick 130 elevator 2 Floor 5 close door
+[2025-05-11 23:48:08][House][INFO] Tick 130 elevator 3 Floor 8 down
+[2025-05-11 23:48:08][House][INFO] Tick 131 elevator 3 Floor 7 open door
+[2025-05-11 23:48:08][House][INFO] Tick 131 elevator 1 Floor 8 up
+[2025-05-11 23:48:09][House][INFO] Tick 132 elevator 3 Floor 7 disembarkation in
+[2025-05-11 23:48:09][House][INFO] Tick 132 elevator 2 Floor 5 down
+[2025-05-11 23:48:09][House][INFO] Tick 133 elevator 2 Floor 4 open door
+[2025-05-11 23:48:09][House][INFO] Tick 133 elevator 1 Floor 9 up
+[2025-05-11 23:48:09][House][INFO] Tick 133 elevator 3 Floor 7 close door
+[2025-05-11 23:48:09][House][INFO] Tick 134 elevator 1 Floor 9 open door
+[2025-05-11 23:48:09][House][INFO] Tick 134 elevator 2 Floor 4 disembarkation in
+[2025-05-11 23:48:09][House][INFO] Tick 135 elevator 1 Floor 9 disembarkation out
+[2025-05-11 23:48:09][House][INFO] Tick 135 elevator 3 Floor 8 up
+[2025-05-11 23:48:09][House][INFO] Tick 135 elevator 2 Floor 4 close door
+[2025-05-11 23:48:09][House][INFO] Tick 136 elevator 1 Floor 9 close door
+[2025-05-11 23:48:10][House][INFO] Tick 137 elevator 2 Floor 4 down
+[2025-05-11 23:48:10][House][INFO] Tick 137 elevator 3 Floor 9 up
+[2025-05-11 23:48:10][House][INFO] Tick 138 elevator 1 Floor 9 down
+[2025-05-11 23:48:10][House][INFO] Tick 138 elevator 2 Floor 3 open door
+[2025-05-11 23:48:10][House][INFO] Tick 138 elevator 3 Floor 9 open door
+[2025-05-11 23:48:10][House][INFO] Tick 139 elevator 3 Floor 9 disembarkation out
+[2025-05-11 23:48:10][House][INFO] Tick 139 elevator 2 Floor 3 disembarkation in
+[2025-05-11 23:48:10][House][INFO] Tick 140 elevator 1 Floor 8 down
+[2025-05-11 23:48:10][House][INFO] Tick 140 elevator 3 Floor 9 close door
+[2025-05-11 23:48:10][House][INFO] Tick 140 elevator 2 Floor 3 close door

@@ -23,7 +23,7 @@ Client::~Client() {
 void Client::start() {
 
     while (true) {
-        std::system("clear");
+        std::cout << u8"\033[2J\033[1;1H";
         login.clear();
         password = 0;
         chats.clear();
@@ -72,7 +72,8 @@ void Client::start() {
 int Client::processing(SharedMemory *personal_memory) {
     std::string tmp;
     while (true) {
-        std::system("clear");
+        std::cout << u8"\033[2J\033[1;1H";
+        std::cout << login << std::endl;
         std::cout << "Dialogs:\n";
 
         update_info(personal_memory);
@@ -123,24 +124,24 @@ void Client::processing_dialog(SharedMemory *personal_shared_memory) {
     std::cin >> r_login;
     while (true) {
         update_info(personal_shared_memory);
-        std::system("clear");
+        std::cout << u8"\033[2J\033[1;1H";
         print_dialog(r_login);
-        std::string command;
-        std::getline(std::cin, command);
-        command = command.substr(0, 2048);
+        std::string c_command;
+        std::getline(std::cin, c_command);
+        c_command = c_command.substr(0, 2048);
 
-        if(command.empty()) {
+        if (c_command.empty()) {
             continue;
         }
-        if(command == "update"){
+        if (c_command == "update") {
             update_info(personal_shared_memory);
             continue;
         }
 
-        if (command == "exit") {
+        if (c_command == "exit") {
             return;
         }
-        command = command.substr(0, 2040);
+        c_command = c_command.substr(0, 2040);
         SharedMemory::Msg s{
                 .type = SharedMemory::Msg::SEND,
                 .count_pkgs = 1,
@@ -148,7 +149,7 @@ void Client::processing_dialog(SharedMemory *personal_shared_memory) {
         };
         std::memmove(s.login_sender, login.c_str(), login.size());
         std::memmove(s.login_recipient, r_login.c_str(), r_login.size());
-        std::memmove(s.data, command.c_str(), command.size());
+        std::memmove(s.data, c_command.c_str(), c_command.size());
         personal_shared_memory->send(&s);
         SharedMemory::Msg r{};
         personal_shared_memory->rcv(&r);
