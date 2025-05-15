@@ -8,7 +8,7 @@ namespace Tree {
 
 template <typename Key, typename Value, typename Comparator = std::less<Key>>
 class BSTree {
-   private:
+   protected:
 	size_t size_ = 0;
 
    public:
@@ -24,14 +24,14 @@ class BSTree {
 
 	BSTree() = default;
 	explicit BSTree(const Key& key, const Value& value);
-	~BSTree();
+	virtual ~BSTree();
 
 	[[nodiscard]] size_t size() const;
 
-	void add(const Key& key, const Value& value);
+	virtual void add(const Key& key, const Value& value);
 	Value* find(const Key& key) const;
 	bool contains(const Key& key) const;
-	void remove(const Key & key);
+	virtual void remove(const Key& key);
 
 	void inorder(CallBack call_back);
 	void preorder(CallBack call_back);
@@ -70,75 +70,59 @@ class BSTree {
 
 template <typename Key, typename Value, typename Comparator>
 void BSTree<Key, Value, Comparator>::remove(const Key& key) {
-	if(size_ == 0) {
+	if (size_ == 0) {
 		throw std::runtime_error("remove from empty bst");
 	}
-	Node* tmp = head;
-	Node* prev;
-	if(key == tmp->key) {
-		if(tmp->left) {
-			head = tmp->left;
-			Node *r = tmp->left;
-			Node * prev_r = nullptr;
-			while (r) {
-				prev_r = r;
-				r = r->right;
-			}
-			prev_r->right = tmp->right;
-		}
-		else if(tmp->right) {
-			head = tmp->right;
+
+	Node* parent = nullptr;
+	Node* current = head;
+
+	while (current != nullptr && current->key != key) {
+		parent = current;
+		if (Comparator()(key, current->key)) {
+			current = current->left;
 		} else {
-			head = nullptr;
+			current = current->right;
 		}
-		delete tmp;
-		size_ -= 1;
+	}
+
+	if (current == nullptr) {
 		return;
 	}
+	if (current->left != nullptr && current->right != nullptr) {
+		Node* successor_parent = current;
+		Node* successor = current->right;
+		while (successor->left != nullptr) {
+			successor_parent = successor;
+			successor = successor->left;
+		}
 
-	while (tmp) {
-		prev = tmp;
+		current->key = successor->key;
+		current->value = successor->value;
 
-		if (Comparator()(tmp->key, key)) {
-			tmp = tmp->right;
-			if(tmp == nullptr) {
-				return;
-			}
-			if(tmp->key == key) {
-				prev->right = tmp->left;
-				Node * r = tmp->left;
-				Node *prev_r = prev;
-				while (r) {
-					prev_r = r;
-					r = r->right;
-				}
-				prev_r->right = tmp->right;
-				delete tmp;
-				size_ -= 1;
-				return;
-			}
+		if (successor_parent == current) {
+			successor_parent->right = successor->right;
 		} else {
-			tmp = tmp->left;
-			if(tmp == nullptr) {
-				return;
-			}
-			if(tmp->key == key) {
-				prev->left = tmp->right;
-				Node * r = tmp->right;
-				Node *prev_r = prev;
-				while (r) {
-					prev_r = r;
-					r = r->left;
-				}
-				prev_r->left = tmp->left;
-				delete tmp;
-				size_ -= 1;
-				return;
+			successor_parent->left = successor->right;
+		}
+		delete successor;
+		size_--;
+	} else {
+		Node* child = (current->left != nullptr) ? current->left : current->right;
+
+		if (current == head) {
+			head = child;
+		} else {
+			if (parent->left == current) {
+				parent->left = child;
+			} else {
+				parent->right = child;
 			}
 		}
+		delete current;
+		size_--;
 	}
 }
-
 template <typename Key, typename Value, typename Comparator>
 bool BSTree<Key, Value, Comparator>::contains(const Key& key) const {
 	return find(key) != nullptr;

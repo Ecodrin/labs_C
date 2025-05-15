@@ -41,6 +41,8 @@ add_library(my_lib
         src/bst_tree.cpp
         src/my_map.cpp
         include/my_map.hpp
+        src/avl_tree.cpp
+        include/avl_tree.hpp
 )
 
 
@@ -57,7 +59,8 @@ target_link_options(my_lib PRIVATE
 
 add_executable(tests
         tests/test_bst_tree.cpp
-        tests/test_my_map.cpp)
+        tests/test_my_map.cpp
+        tests/test_avl_tree.cpp)
 target_link_libraries(tests PRIVATE my_lib GTest::gtest_main)
 target_compile_options(tests PRIVATE
         ${COMMON_FLAGS}
