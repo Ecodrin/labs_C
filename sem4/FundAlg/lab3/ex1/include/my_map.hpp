@@ -3,9 +3,10 @@
 #include <iostream>
 
 #include "bst_tree.hpp"
+#include "comporator.hpp"
 
 template <typename Key, typename Value, template <typename, typename, typename> class TreeType,
-          typename Comparator = std::less<Key>>
+          typename Comparator = DefaultComparator<Key>>
 class MyMap {
 	TreeType<Key, Value, Comparator> tree_;
 

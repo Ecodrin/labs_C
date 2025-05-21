@@ -1,0 +1,11 @@
+[2025-05-21 16:43:15][MainServer][INFO] main server init
+[2025-05-21 16:43:19][MainServer][INFO] client 1 connected
+[2025-05-21 16:43:20][MainServer][INFO] id: 1 started game
+[2025-05-21 16:43:26][MainServer][INFO] client 2 connected
+[2025-05-21 16:43:44][MainServer][INFO] file example.pdf compiled
+[2025-05-21 16:44:20][MainServer][INFO] file cc compiled
+[2025-05-21 16:45:10][MainServer][INFO] file cc compiled
+[2025-05-21 16:45:21][MainServer][INFO] client 2 disconnected
+[2025-05-21 16:45:22][MainServer][INFO] map: 2 clear
+[2025-05-21 16:45:24][MainServer][INFO] client 1 disconnected
+[2025-05-21 16:45:24][MainServer][INFO] main server stopped

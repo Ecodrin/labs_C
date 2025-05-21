@@ -18,7 +18,7 @@ class MyMapTest : public ::testing::Test {
 		map.insert(17, "seventeen");
 	}
 
-	MyMap<int, std::string, Tree::BSTree> map;
+	MyMap<int, std::string, Tree::BSTree, LessIntComparator> map;
 };
 
 TEST_F(MyMapTest, InsertAndFind) {

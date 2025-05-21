@@ -3,6 +3,8 @@
 #include <random>
 
 #include "../include/bst_tree.hpp"
+#include "../include/comporator.hpp"
+
 
 using namespace Tree;
 
@@ -17,7 +19,7 @@ class BSTreeTest : public ::testing::Test {
 		tree.add(6, "six");
 	}
 
-	BSTree<int, std::string> tree;
+	BSTree<int, std::string, LessIntComparator> tree;
 };
 
 TEST_F(BSTreeTest, DefaultConstructor) {
@@ -51,7 +53,7 @@ TEST_F(BSTreeTest, AddAndFind) {
 
 TEST_F(BSTreeTest, InOrderTraversal) {
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
 }
 
@@ -70,13 +72,13 @@ TEST_F(BSTreeTest, EmpyTreeTraversal) {
 
 TEST_F(BSTreeTest, PreOrderTraversal) {
 	std::vector<int> keys;
-	tree.preorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.preorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{5, 3, 1, 4, 7, 6}));
 }
 
 TEST_F(BSTreeTest, PostOrderTraversal) {
 	std::vector<int> keys;
-	tree.postorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.postorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 4, 3, 6, 7, 5}));
 }
 
@@ -169,7 +171,7 @@ TEST_F(BSTreeTest, RemoveLeafNode) {
 	tree.remove(1);
 	EXPECT_FALSE(tree.contains(1));
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{3, 4, 5, 6, 7}));
 }
 
@@ -177,7 +179,7 @@ TEST_F(BSTreeTest, RemoveNodeWithOneChild) {
 	tree.remove(7);
 	EXPECT_FALSE(tree.contains(7));
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6}));
 }
 
@@ -185,7 +187,7 @@ TEST_F(BSTreeTest, RemoveNodeWithTwoChildren) {
 	tree.remove(5);
 	EXPECT_FALSE(tree.contains(5));
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4, 6, 7}));
 }
 
@@ -194,14 +196,14 @@ TEST_F(BSTreeTest, RemoveRootMultipleTimes) {
 	tree.remove(6);
 	tree.remove(7);
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4}));
 }
 
 TEST_F(BSTreeTest, RemoveNonExistentKey) {
 	ASSERT_NO_THROW(tree.remove(100));
 	std::vector<int> keys;
-	tree.inorder([&keys](BSTree<int, std::string>::Node* node){ keys.push_back(node->key); });
+	tree.inorder([&keys](BSTree<int, std::string, LessIntComparator>::Node* node){ keys.push_back(node->key); });
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
 }
 

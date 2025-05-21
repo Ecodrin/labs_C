@@ -6,13 +6,13 @@ using namespace std;
 
 class AVLTreeTest : public ::testing::Test {
    protected:
-	Tree::AVLTree<int, int> avl;
+	Tree::AVLTree<int, int, LessIntComparator> avl;
 
 	void SetUp() override {}
 
 	void TearDown() override { avl.clear(); }
 
-	bool isBalanced(typename Tree::AVLTree<int, int>::Node* node) {
+	bool isBalanced(typename Tree::AVLTree<int, int, LessIntComparator>::Node* node) {
 		if (!node) return true;
 		auto heights = avl.get_height_subtrees(node);
 		int balance = heights.first - heights.second;

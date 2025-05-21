@@ -1,0 +1,6 @@
+[2025-05-21 16:43:08][Compiler][INFO] server init
+[2025-05-21 16:43:44][Compiler][INFO] compilation success: example.tex
+[2025-05-21 16:44:20][Compiler][INFO] compilation success: cc.cpp
+[2025-05-21 16:44:44][Compiler][ERROR] compilation error: cc.cpp
+[2025-05-21 16:45:10][Compiler][INFO] compilation success: cc.cpp
+[2025-05-21 16:45:22][Compiler][INFO] server stop

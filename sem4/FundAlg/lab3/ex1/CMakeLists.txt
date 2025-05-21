@@ -43,6 +43,8 @@ add_library(my_lib
         include/my_map.hpp
         src/avl_tree.cpp
         include/avl_tree.hpp
+        src/comporator.cpp
+        include/comporator.hpp
 )
 
 

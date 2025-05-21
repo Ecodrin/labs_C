@@ -2,10 +2,11 @@
 #pragma once
 
 #include "bst_tree.hpp"
+#include "comporator.hpp"
 
 namespace Tree {
 
-template <typename Key, typename Value, typename Comparator = std::less<Key>>
+template <typename Key, typename Value, typename Comparator = DefaultComparator<Key>>
 class AVLTree : public BSTree<Key, Value, Comparator> {
    public:
 	using Node = typename BSTree<Key, Value, Comparator>::Node;
@@ -22,6 +23,7 @@ class AVLTree : public BSTree<Key, Value, Comparator> {
    public:
 	AVLTree();
 	AVLTree(const Key& key, const Value& value);
+
 	void add(const Key& key, const Value& value) override;
 	void remove(const Key & key) override;
 

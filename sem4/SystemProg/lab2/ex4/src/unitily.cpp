@@ -321,10 +321,10 @@ void House::handler_driving_2(House::ThreadData *data, Elevator &elevator) {
 			elevator.location -= 1;
 
 		} else {
-			elevator.location += 1;
 			elevator.logger->LogInfo("Tick " + std::to_string(data->house->tick) + " elevator " +
-									 std::to_string(elevator.serial_number) + " Floor " +
-									 std::to_string(elevator.location) + " up");
+			                         std::to_string(elevator.serial_number) + " Floor " +
+			                         std::to_string(elevator.location) + " up");
+			elevator.location += 1;
 		}
 	}
 	if (elevator.location == 0 or elevator.location > data->house->numbers_floors) {

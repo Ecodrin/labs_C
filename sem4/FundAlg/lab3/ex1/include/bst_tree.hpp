@@ -3,10 +3,11 @@
 #include <functional>
 #include <iostream>
 #include <stack>
+#include "comporator.hpp"
 
 namespace Tree {
 
-template <typename Key, typename Value, typename Comparator = std::less<Key>>
+template <typename Key, typename Value, typename Comparator = DefaultComparator<int>>
 class BSTree {
    protected:
 	size_t size_ = 0;
@@ -43,9 +44,6 @@ class BSTree {
 
 	   public:
 		using value_type = Node*;
-		using difference_type = std::ptrdiff_t;
-		using iterator_category = std::forward_iterator_tag;
-
 		explicit iterator(Node* t);
 		iterator() = default;
 		~iterator() = default;

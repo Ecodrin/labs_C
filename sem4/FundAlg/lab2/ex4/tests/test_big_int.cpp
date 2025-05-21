@@ -695,9 +695,3 @@ TEST_F(BigIntTest, ModExpWithDefault) {
     BigInt b{45};
     EXPECT_EQ(BigInt::mod_exp(a, BigInt{1}, b), (a % b));
 }
-
-
-int main(int argc, char *argv[]) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
