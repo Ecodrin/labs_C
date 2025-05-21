@@ -14,7 +14,6 @@ StickGameManager::StickGameManager(const char *ftok_q_msg_input_file, int ftok_q
 
 StickGameManager::~StickGameManager() {
 	logger->LogInfo("stick game server stop");
-	std::lock_guard<std::mutex> lock(mutex);
 	for (auto &el : data) {
 		if (el.second.thread.joinable()) {
 			el.second.thread.join();

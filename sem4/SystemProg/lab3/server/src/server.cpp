@@ -133,6 +133,7 @@ void Server::client_handler(size_t id) {
 			{
 				std::lock_guard<std::mutex> lock(mutex);
 				if(socket_data.command != SocketData::INCORRECT_PASSWORD) {
+					logger->LogInfo("client " + std::to_string(id) + " stopped server");
 					disconnect_client(client_sockfd, socket_data, id);
 					break;
 				} else {
@@ -163,7 +164,7 @@ void Server::check_stop() {
 					if ((*it).second.thread.joinable()) {
 						(*it).second.thread.join();
 					}
-					logger->LogInfo("map: " + std::to_string((*it).second.id) + " clear");
+					logger->LogInfo("map: " + std::to_string((*it).first) + " clear");
 					it = data.erase(it);
 				} else {
 					++it;
@@ -237,10 +238,6 @@ void Server::compile(int client_sockfd, Server::SocketData socket_data) {
 }
 
 void Server::disconnect_client(int client_sockfd, Server::SocketData socket_data, size_t id) {
-	if (socket_data.command != SocketData::INCORRECT_PASSWORD) {
-		logger->LogInfo("client " + std::to_string(id) + " disconnected");
-		data[id].stop = true;
-	}
 
 	socket_data.size = htonl(sizeof(SocketData));
 	ServerTCP::send_message(client_sockfd, &socket_data);
@@ -248,6 +245,11 @@ void Server::disconnect_client(int client_sockfd, Server::SocketData socket_data
 	if (socket_data.command != SocketData::INCORRECT_PASSWORD) {
 		close(client_sockfd);
 	}
+	if (socket_data.command != SocketData::INCORRECT_PASSWORD) {
+		logger->LogInfo("client " + std::to_string(id) + " disconnected");
+		data[id].stop = true;
+	}
+
 }
 
 void Server::play_sticks(int sockfd, size_t id) {
@@ -270,6 +272,7 @@ void Server::play_sticks(int sockfd, size_t id) {
 	}
 	logger->LogInfo("id: " + std::to_string(id) + " started game");
 	while (true) {
+		std::cout << stop << "  " << id << std::endl;
 		ServerTCP::receive_message(sockfd, &socket_data);
 
 		data_queue_msg.move_sticks = socket_data.info;

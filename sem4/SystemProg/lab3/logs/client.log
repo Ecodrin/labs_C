@@ -1,10 +1,2 @@
-[2025-05-21 16:43:19][Client][INFO] client init
-[2025-05-21 16:43:54][Client][INFO] client write play sticks
-[2025-05-21 16:44:20][Client][INFO] get compiled file
-[2025-05-21 16:44:20][Client][INFO] client write compile
-[2025-05-21 16:44:44][Client][INFO] client write compile
-[2025-05-21 16:45:10][Client][INFO] get compiled file
-[2025-05-21 16:45:10][Client][INFO] client write compile
-[2025-05-21 16:45:24][Client][ERROR] get error status: 6 in connect to stick game
-[2025-05-21 16:45:24][Client][INFO] client write play sticks
-[2025-05-21 16:45:24][Client][INFO] client stopped
+[2025-05-21 17:05:47][Client][INFO] client init
+[2025-05-21 17:07:18][Client][INFO] client stopped

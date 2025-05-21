@@ -59,6 +59,7 @@ void Client::work() {
 	std::string input;
 	while (true) {
 		if (stop) {
+			std::cout << "server not available" << std::endl;
 			break;
 		}
 		std::cout << "You can:\n1. Compile file(.cpp, .tex)\n2. Play stick game.\n3. exit" << std::endl;
