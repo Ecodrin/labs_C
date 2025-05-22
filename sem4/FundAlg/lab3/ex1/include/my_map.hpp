@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "bst_tree.hpp"
-#include "comporator.hpp"
+#include "comparator.hpp"
 
 template <typename Key, typename Value, template <typename, typename, typename> class TreeType,
           typename Comparator = DefaultComparator<Key>>
@@ -13,7 +13,7 @@ class MyMap {
    public:
 	MyMap() = default;
 	void insert(const Key& key, const Value& value);
-	Value * find(const Key & key);
+	TreeType<Key, Value, Comparator>::iterator find(const Key & key);
 	bool contains(const Key & key);
 	void remove(const Key & key);
 
@@ -80,7 +80,7 @@ void MyMap<Key, Value, TreeType, Comparator>::clear() {
 }
 
 template <typename Key, typename Value, template <typename, typename, typename> class TreeType, typename Comparator>
-Value* MyMap<Key, Value, TreeType, Comparator>::find(const Key& key) {
+TreeType<Key, Value, Comparator>::iterator MyMap<Key, Value, TreeType, Comparator>::find(const Key& key) {
 	return tree_.find(key);
 }
 

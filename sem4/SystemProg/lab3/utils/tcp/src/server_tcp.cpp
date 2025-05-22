@@ -90,9 +90,9 @@ ServerTCP::ServerTCP(in_port_t port) {
 int ServerTCP::accept_connection() const {
 	sockaddr_in address{};
 	socklen_t addrlen = sizeof(address);
-	int new_socket = accept(sockfd, (sockaddr*)&address, &addrlen);
+	int new_socketfd = accept(sockfd, (sockaddr*)&address, &addrlen);
 
-	if (new_socket < 0) {
+	if (new_socketfd < 0) {
 		if (errno == EWOULDBLOCK || errno == EAGAIN ) {
 			return -1;
 		} else {
@@ -100,7 +100,7 @@ int ServerTCP::accept_connection() const {
 			throw ConnectError("accept failed");
 		}
 	}
-	return new_socket;
+	return new_socketfd;
 }
 int ServerTCP::set_nonblocking(int fd) {
 	int flags = fcntl(fd, F_GETFL, 0);

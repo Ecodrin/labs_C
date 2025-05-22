@@ -3,7 +3,8 @@
 #include <functional>
 #include <iostream>
 #include <stack>
-#include "comporator.hpp"
+
+#include "comparator.hpp"
 
 namespace Tree {
 
@@ -25,18 +26,14 @@ class BSTree {
 
 	BSTree() = default;
 	explicit BSTree(const Key& key, const Value& value);
+	BSTree(const BSTree& other);
+	BSTree(BSTree&& other) noexcept;
+	BSTree& operator=(const BSTree& other);
+	BSTree& operator=(BSTree&& other) noexcept;
+
 	virtual ~BSTree();
 
 	[[nodiscard]] size_t size() const;
-
-	virtual void add(const Key& key, const Value& value);
-	Value* find(const Key& key) const;
-	bool contains(const Key& key) const;
-	virtual void remove(const Key& key);
-
-	void inorder(CallBack call_back);
-	void preorder(CallBack call_back);
-	void postorder(CallBack call_back);
 
 	class iterator {
 	   private:
@@ -44,7 +41,7 @@ class BSTree {
 
 	   public:
 		using value_type = Node*;
-		explicit iterator(Node* t);
+		explicit iterator(Node* t, bool init_stack = true);
 		iterator() = default;
 		~iterator() = default;
 		value_type operator*();
@@ -56,6 +53,15 @@ class BSTree {
 		bool operator!=(const BSTree::iterator& other) const;
 	};
 
+	virtual void add(const Key& key, const Value& value);
+	virtual iterator find(const Key& key) const;
+	bool contains(const Key& key) const;
+	virtual void remove(const Key& key);
+
+	void inorder(CallBack call_back);
+	void preorder(CallBack call_back);
+	void postorder(CallBack call_back);
+
 	iterator begin() noexcept;
 	iterator begin() const noexcept;
 	iterator cbegin() const noexcept;
@@ -64,7 +70,58 @@ class BSTree {
 	iterator cend() const noexcept;
 
 	void clear();
+
+   private:
+	Node* copy_nodes_recursive(Node* other_node);
 };
+
+template <typename Key, typename Value, typename Comparator>
+BSTree<Key, Value, Comparator>& BSTree<Key, Value, Comparator>::operator=(BSTree&& other) noexcept {
+	if (this == &other) {
+		return *this;
+	}
+	clear();
+
+	head = other.head;
+	size_ = other.size_;
+
+	other.head = nullptr;
+	other.size_ = 0;
+
+	return *this;
+}
+
+template <typename Key, typename Value, typename Comparator>
+BSTree<Key, Value, Comparator>& BSTree<Key, Value, Comparator>::operator=(const BSTree& other) {
+	if (this == &other) {
+		return *this;
+	}
+	clear();
+	head = copy_nodes_recursive(other.head);
+	size_ = other.size_;
+	return *this;
+}
+
+template <typename Key, typename Value, typename Comparator>
+BSTree<Key, Value, Comparator>::BSTree(BSTree&& other) noexcept : size_(other.size_), head(other.head) {
+	other.head = nullptr;
+	other.size_ = 0;
+}
+
+template <typename Key, typename Value, typename Comparator>
+BSTree<Key, Value, Comparator>::BSTree(const BSTree& other) : size_(other.size_) {
+	head = copy_nodes_recursive(other.head);
+}
+template <typename Key, typename Value, typename Comparator>
+BSTree<Key, Value, Comparator>::Node* BSTree<Key, Value, Comparator>::copy_nodes_recursive(BSTree::Node* other_node) {
+	if (!other_node) {
+		return nullptr;
+	}
+	Node* new_node = new Node{other_node->key, other_node->value};
+	new_node->left = copy_nodes_recursive(other_node->left);
+	new_node->right = copy_nodes_recursive(other_node->right);
+	return new_node;
+}
 
 template <typename Key, typename Value, typename Comparator>
 void BSTree<Key, Value, Comparator>::remove(const Key& key) {
@@ -123,7 +180,7 @@ void BSTree<Key, Value, Comparator>::remove(const Key& key) {
 }
 template <typename Key, typename Value, typename Comparator>
 bool BSTree<Key, Value, Comparator>::contains(const Key& key) const {
-	return find(key) != nullptr;
+	return find(key) != end();
 }
 
 template <typename Key, typename Value, typename Comparator>
@@ -156,10 +213,14 @@ BSTree<Key, Value, Comparator>::iterator::value_type Tree::BSTree<Key, Value, Co
 }
 
 template <typename Key, typename Value, typename Comparator>
-BSTree<Key, Value, Comparator>::iterator::iterator(Tree::BSTree<Key, Value, Comparator>::Node* t) {
-	while (t) {
+BSTree<Key, Value, Comparator>::iterator::iterator(Tree::BSTree<Key, Value, Comparator>::Node* t, bool init_stack) {
+	if (init_stack) {
+		while (t) {
+			s.push(t);
+			t = t->left;
+		}
+	} else if (t != nullptr) {
 		s.push(t);
-		t = t->left;
 	}
 }
 
@@ -180,7 +241,7 @@ BSTree<Key, Value, Comparator>::iterator Tree::BSTree<Key, Value, Comparator>::i
 	BSTree::iterator iterator1 = *this;
 	++(*this);
 	return iterator1;
-} //LCOV_EXCL_LINE
+}
 
 template <typename Key, typename Value, typename Comparator>
 BSTree<Key, Value, Comparator>::iterator BSTree<Key, Value, Comparator>::end() const noexcept {
@@ -273,11 +334,11 @@ void BSTree<Key, Value, Comparator>::inorder(BSTree::CallBack call_back) {
 }
 
 template <typename Key, typename Value, typename Comparator>
-Value* BSTree<Key, Value, Comparator>::find(const Key& key) const {
+BSTree<Key, Value, Comparator>::iterator BSTree<Key, Value, Comparator>::find(const Key& key) const {
 	Node* tmp = head;
 	while (tmp) {
 		if (tmp->key == key) {
-			return &tmp->value;
+			return iterator{tmp, false};
 		}
 		if (Comparator()(tmp->key, key)) {
 			tmp = tmp->right;
@@ -285,7 +346,7 @@ Value* BSTree<Key, Value, Comparator>::find(const Key& key) const {
 			tmp = tmp->left;
 		}
 	}
-	return nullptr;
+	return end();
 }
 
 template <typename Key, typename Value, typename Comparator>

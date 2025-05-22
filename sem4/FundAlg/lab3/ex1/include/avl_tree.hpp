@@ -2,7 +2,7 @@
 #pragma once
 
 #include "bst_tree.hpp"
-#include "comporator.hpp"
+#include "comparator.hpp"
 
 namespace Tree {
 
@@ -24,12 +24,37 @@ class AVLTree : public BSTree<Key, Value, Comparator> {
 	AVLTree();
 	AVLTree(const Key& key, const Value& value);
 
+	AVLTree(const AVLTree& other);
+	AVLTree(AVLTree&& other) noexcept;
+	AVLTree& operator=(const AVLTree& other);
+	AVLTree& operator=(AVLTree&& other) noexcept;
+
 	void add(const Key& key, const Value& value) override;
 	void remove(const Key & key) override;
 
 	std::pair<size_t, size_t> get_height_subtrees(Node* node);
 	size_t get_height(Node* node);
 };
+template <typename Key, typename Value, typename Comparator>
+AVLTree<Key, Value, Comparator>& AVLTree<Key, Value, Comparator>::operator=(const AVLTree& other) {
+	if (this != &other) {
+		BSTree<Key, Value, Comparator>::operator=(other);
+	}
+	return *this;
+}
+
+template <typename Key, typename Value, typename Comparator>
+AVLTree<Key, Value, Comparator>& AVLTree<Key, Value, Comparator>::operator=(AVLTree&& other) noexcept {
+	if (this != &other) {
+		BSTree<Key, Value, Comparator>::operator=(std::move(other));
+	}
+	return *this;
+}
+
+template <typename Key, typename Value, typename Comparator>
+AVLTree<Key, Value, Comparator>::AVLTree(AVLTree&& other) noexcept : BSTree<Key, Value, Comparator>{std::move(other)} {}
+template <typename Key, typename Value, typename Comparator>
+AVLTree<Key, Value, Comparator>::AVLTree(const AVLTree& other) : BSTree<Key, Value, Comparator>{other} {}
 
 template <typename Key, typename Value, typename Comparator>
 void AVLTree<Key, Value, Comparator>::balance(std::stack<Node*>& stack) {
@@ -67,6 +92,7 @@ void AVLTree<Key, Value, Comparator>::balance(std::stack<Node*>& stack) {
 			BSTree<Key, Value, Comparator>::head = t;
 		}
 	}
+
 }
 template <typename Key, typename Value, typename Comparator>
 void AVLTree<Key, Value, Comparator>::remove(const Key& key) {

@@ -22,11 +22,11 @@ class MyMapTest : public ::testing::Test {
 };
 
 TEST_F(MyMapTest, InsertAndFind) {
-	auto* val = map.find(10);
-	ASSERT_NE(val, nullptr);
-	EXPECT_EQ(*val, "ten");
+	auto val = map.find(10);
+	ASSERT_NE(val, map.end());
+	EXPECT_EQ((*val)->value, "ten");
 
-	EXPECT_EQ(map.find(100), nullptr);
+	EXPECT_EQ(map.find(100), map.end());
 }
 
 TEST_F(MyMapTest, Contains) {

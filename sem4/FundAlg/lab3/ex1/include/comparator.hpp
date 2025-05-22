@@ -14,3 +14,10 @@ class LessIntComparator : public DefaultComparator<int>{
 		return lhs < rhs;
 	}
 };
+
+class GreaterIntComparator : public DefaultComparator<int>{
+   public:
+	bool operator()(const int & lhs, const int & rhs)const override {
+		return lhs > rhs;
+	}
+};

@@ -7,6 +7,8 @@ using namespace std;
 class AVLTreeTest : public ::testing::Test {
    protected:
 	Tree::AVLTree<int, int, LessIntComparator> avl;
+	Tree::AVLTree<int, int, LessIntComparator> avl2{12, 13};
+
 
 	void SetUp() override {}
 
@@ -56,6 +58,8 @@ TEST_F(AVLTreeTest, BigRightRotation) {
 	EXPECT_EQ(avl.head->left->key, 20);
 	EXPECT_EQ(avl.head->right->key, 30);
 	EXPECT_TRUE(isBalanced(avl.head));
+
+	EXPECT_EQ((*avl2.begin())->value, 13);
 }
 
 TEST_F(AVLTreeTest, ComplexRemoval) {
@@ -143,3 +147,67 @@ TEST_F(AVLTreeTest, RemoveNotExistElement) {
 	avl.remove(-134);
 	EXPECT_EQ(avl.size(), 1);
 }
+
+TEST_F(AVLTreeTest, CopyConstructor) {
+	avl.add(1, 1);
+	avl.add(4, 1);
+	avl.add(3, 1);
+	avl.add(5, 1);
+	avl.add(6, 1);
+	avl.add(7, 1);
+	Tree::AVLTree<int, int, LessIntComparator> new_t{avl};
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(AVLTreeTest, MoveConstructor) {
+	avl.add(1, 1);
+	avl.add(4, 1);
+	avl.add(3, 1);
+	avl.add(5, 1);
+	avl.add(6, 1);
+	avl.add(7, 1);
+	Tree::AVLTree<int, int, LessIntComparator> new_t{std::move(avl)};
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(AVLTreeTest, CopyOperatorEq) {
+	avl.add(1, 1);
+	avl.add(4, 1);
+	avl.add(3, 1);
+	avl.add(5, 1);
+	avl.add(6, 1);
+	avl.add(7, 1);
+	Tree::AVLTree<int, int, LessIntComparator> new_t;
+	new_t = avl;
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(AVLTreeTest, MoveOperatorEq) {
+	avl.add(1, 1);
+	avl.add(4, 1);
+	avl.add(3, 1);
+	avl.add(5, 1);
+	avl.add(6, 1);
+	avl.add(7, 1);
+	Tree::AVLTree<int, int, LessIntComparator> new_t;
+	new_t = std::move(avl);
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+

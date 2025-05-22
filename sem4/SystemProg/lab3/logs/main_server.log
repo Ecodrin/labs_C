@@ -1,13 +1,13 @@
-[2025-05-21 17:15:54][MainServer][INFO] main server init
-[2025-05-21 17:15:58][MainServer][INFO] client 1 connected
-[2025-05-21 17:16:06][MainServer][INFO] client 2 connected
-[2025-05-21 17:16:09][MainServer][INFO] client 3 connected
-[2025-05-21 17:16:10][MainServer][INFO] id: 1 started game
-[2025-05-21 17:16:13][MainServer][INFO] id: 2 started game
-[2025-05-21 17:16:15][MainServer][INFO] id: 3 started game
-[2025-05-21 17:16:25][MainServer][INFO] client 1 stopped server
-[2025-05-21 17:16:25][MainServer][INFO] client 1 disconnected
-[2025-05-21 17:16:26][MainServer][INFO] map: 1 clear
-[2025-05-21 17:16:36][MainServer][INFO] client 2 disconnected
-[2025-05-21 17:16:45][MainServer][INFO] client 3 disconnected
-[2025-05-21 17:16:45][MainServer][INFO] main server stopped
+[2025-05-21 17:32:15][MainServer][INFO] main server init
+[2025-05-21 17:32:42][MainServer][INFO] client 1 connected
+[2025-05-21 17:32:45][MainServer][INFO] client 2 connected
+[2025-05-21 17:32:47][MainServer][INFO] client 3 connected
+[2025-05-21 17:32:48][MainServer][INFO] id: 1 started game
+[2025-05-21 17:32:54][MainServer][INFO] id: 2 started game
+[2025-05-21 17:32:59][MainServer][INFO] id: 3 started game
+[2025-05-21 17:33:07][MainServer][INFO] client 1 stopped server
+[2025-05-21 17:33:07][MainServer][INFO] client 1 disconnected
+[2025-05-21 17:33:08][MainServer][INFO] map: 1 clear
+[2025-05-21 17:33:15][MainServer][INFO] client 2 disconnected
+[2025-05-21 17:34:16][MainServer][INFO] client 3 disconnected
+[2025-05-21 17:34:16][MainServer][INFO] main server stopped

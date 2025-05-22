@@ -3,8 +3,7 @@
 #include <random>
 
 #include "../include/bst_tree.hpp"
-#include "../include/comporator.hpp"
-
+#include "../include/comparator.hpp"
 
 using namespace Tree;
 
@@ -25,30 +24,30 @@ class BSTreeTest : public ::testing::Test {
 TEST_F(BSTreeTest, DefaultConstructor) {
 	BSTree<int, std::string> t;
 	auto d = t.find(0);
-	EXPECT_EQ(d, nullptr);
+	EXPECT_EQ(d, t.end());
 }
 
 TEST_F(BSTreeTest, KeyValueConstructor) {
 	BSTree<int, std::string> t(10, "ten");
-	auto* value = t.find(10);
-	ASSERT_NE(value, nullptr);
-	EXPECT_EQ(*value, "ten");
+	auto value = t.find(10);
+	ASSERT_NE(value, t.end());
+	EXPECT_EQ((*value)->value, "ten");
 }
 
 TEST_F(BSTreeTest, AddAndFind) {
-	auto* value = tree.find(5);
-	ASSERT_NE(value, nullptr);
-	EXPECT_EQ(*value, "five");
+	auto value = tree.find(5);
+	ASSERT_NE(value, tree.end());
+	EXPECT_EQ((*value)->value, "five");
 
 	value = tree.find(3);
-	ASSERT_NE(value, nullptr);
-	EXPECT_EQ(*value, "three");
+	ASSERT_NE(value, tree.end());
+	EXPECT_EQ((*value)->value, "three");
 
 	value = tree.find(7);
-	ASSERT_NE(value, nullptr);
-	EXPECT_EQ(*value, "seven");
+	ASSERT_NE(value, tree.end());
+	EXPECT_EQ((*value)->value, "seven");
 
-	EXPECT_EQ(tree.find(0), nullptr);
+	EXPECT_EQ(tree.find(0), tree.end());
 }
 
 TEST_F(BSTreeTest, InOrderTraversal) {
@@ -88,6 +87,11 @@ TEST_F(BSTreeTest, Iterator) {
 		keys.push_back((*it)->key);
 	}
 	ASSERT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+
+	for (auto el : tree) {
+		std::cout << el << " ";
+	}
+	std::cout << std::endl;
 }
 
 TEST_F(BSTreeTest, ConstIterator) {
@@ -116,10 +120,7 @@ TEST_F(BSTreeTest, IteratorIncrement) {
 	EXPECT_EQ((*it)->key, 4);
 }
 
-
-TEST_F(BSTreeTest, FindNonExistentKey) {
-	EXPECT_EQ(tree.find(100), nullptr);
-}
+TEST_F(BSTreeTest, FindNonExistentKey) { EXPECT_EQ(tree.find(100), tree.end()); }
 
 TEST_F(BSTreeTest, PostOrderEdgeCase) {
 	BSTree<int, std::string> t;
@@ -277,4 +278,57 @@ TEST_F(BSTreeTest, LargeTreeRandomRemoval) {
 		EXPECT_TRUE(std::is_sorted(modifiedInorder.begin(), modifiedInorder.end()));
 		EXPECT_EQ(modifiedInorder.size(), 67);
 	}
+}
+
+TEST_F(BSTreeTest, CopyConstructor) {
+	Tree::BSTree<int, std::string, LessIntComparator> new_t{tree};
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(BSTreeTest, MoveConstructor) {
+	Tree::BSTree<int, std::string, LessIntComparator> new_t{std::move(tree)};
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	ASSERT_EQ(tree.size(), 0);
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(BSTreeTest, CopyOperatorEq) {
+	Tree::BSTree<int, std::string, LessIntComparator> new_t = tree;
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST_F(BSTreeTest, MoveOperatorEq) {
+	Tree::BSTree<int, std::string, LessIntComparator> new_t = std::move(tree);
+	std::vector<int> keys;
+	for (auto it = new_t.begin(); it != new_t.end(); ++it) {
+		keys.push_back((*it)->key);
+	}
+	ASSERT_EQ(tree.size(), 0);
+	EXPECT_EQ(keys, (std::vector<int>{1, 3, 4, 5, 6, 7}));
+}
+
+TEST(ComporatorTest, DefaultComporatorT) {
+	bool res = DefaultComparator<int>()(12, 13);
+	EXPECT_EQ(res, true);
+}
+
+TEST(ComporatorTest, LessComporatorT) {
+	bool res = LessIntComparator()(12, 13);
+	EXPECT_EQ(res, true);
+}
+
+TEST(ComporatorTest, GreaterComporatorT) {
+	bool res = GreaterIntComparator()(14, 13);
+	EXPECT_EQ(res, true);
 }
