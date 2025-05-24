@@ -41,6 +41,7 @@ class BSTree {
 
 	   public:
 		using value_type = Node*;
+
 		explicit iterator(Node* t, bool init_stack = true);
 		iterator() = default;
 		~iterator() = default;

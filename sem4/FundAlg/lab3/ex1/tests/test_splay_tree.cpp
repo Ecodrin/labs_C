@@ -2,36 +2,6 @@
 #include <gtest/gtest.h>
 
 
-//int main() {
-//	Tree::SplayTree<int, int, LessIntComparator> tree;
-//	tree.add(12, 13);
-//	tree.add(15, 13);
-//	tree.add(11, 13);
-//	tree.add(13, 13);
-//	tree.add(14, 13);
-//	tree.add(10, 13);
-//
-//
-//	size_t h_h = tree.get_height(tree.head);
-//	tree.inorder([&](Tree::SplayTree<int, int, LessIntComparator>::Node * node) {
-//		size_t h = tree.get_height(node);
-//		for (size_t i = 0; i < h_h - h; ++i) {
-//			std::cout << "\t";
-//		}
-//		std::cout << node->key << std::endl;
-//	});
-//
-//	std::cout << "----------------------------------------------\n";
-//	tree.remove(13);
-//	h_h = tree.get_height(tree.head);
-//	tree.inorder([&](Tree::SplayTree<int, int, LessIntComparator>::Node * node) {
-//		size_t h = tree.get_height(node);
-//		for (size_t i = 0; i < h_h - h; ++i) {
-//			std::cout << "\t";
-//		}
-//		std::cout << node->key << std::endl;
-//	});
-//}
 
 #include <gtest/gtest.h>
 #include "splay_tree.hpp"

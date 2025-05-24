@@ -47,6 +47,8 @@ add_library(my_lib
         include/comparator.hpp
         src/splay_tree.cpp
         include/splay_tree.hpp
+        include/red_black_tree.hpp
+        src/red_black_tree.cpp
 )
 
 
@@ -65,7 +67,8 @@ add_executable(tests
         tests/test_bst_tree.cpp
         tests/test_my_map.cpp
         tests/test_avl_tree.cpp
-        tests/test_splay_tree.cpp)
+        tests/test_splay_tree.cpp
+        tests/test_red_black_tree.cpp)
 target_link_libraries(tests PRIVATE my_lib GTest::gtest_main)
 target_compile_options(tests PRIVATE
         ${COMMON_FLAGS}
