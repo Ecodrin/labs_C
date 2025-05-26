@@ -15,6 +15,7 @@ private:
     bool is_negative = false;
 
     void remove_leading_zeros();
+    static void remove_leading_zeros(std::vector<long long > & vector);
     static bool is_correct_string(const std::string &str);
 
     static std::vector<std::complex<long double>> fft_transform(const std::vector<unsigned long long>& input, size_t n);
@@ -22,8 +23,16 @@ private:
 
     void shift_left(int k);
 
-    static std::pair<BigInt, BigInt> divide(const BigInt & lhs, const BigInt & rhs);
+    static std::vector<long long> big_int_to_polynomial(const BigInt &f);
+
+    static BigInt polynomial_to_big_int(const std::vector<long long> &f, size_t base);
+
+    static std::vector<long long> polynomial_multiply(const std::vector<long long>& f, const std::vector<long long>& g);
+    static std::vector<long long> polynomial_subtract(const std::vector<long long>& f, const std::vector<long long>& g);
+
+
 public:
+    static std::pair<BigInt, BigInt> divide(const BigInt &lhs, const BigInt &rhs);
     BigInt();
     BigInt(const BigInt &other);
     BigInt(BigInt &&other) noexcept;
@@ -83,8 +92,15 @@ public:
     static std::vector<std::complex<long double>> fft(size_t n, std::vector<std::complex<long double>> f, std::complex<long double> w);
     static std::vector<unsigned long long > nnt(size_t n, std::vector<unsigned long long > f, unsigned long long w, unsigned long long m);
 
-    BigInt karatsuba_multiply(const BigInt& a) const;
+    [[nodiscard]] BigInt karatsuba_multiply(const BigInt &a) const;
     static BigInt karatsuba(BigInt f, BigInt g);
+
+
+    static std::vector<long long > newton_reverse(std::vector<long long > f, size_t l);
+    static std::pair<BigInt, BigInt> newton_divide(const BigInt &lhs, const BigInt &rhs);
+    static std::vector<long long > reverse(std::vector<long long > f, size_t R);
+
+
 };
 
 

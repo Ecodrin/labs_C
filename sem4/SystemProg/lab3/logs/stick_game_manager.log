@@ -1,5 +1,4 @@
-[2025-05-23 12:41:04][StickGameManager][INFO] stick game server init
-[2025-05-23 12:41:21][StickGameManager][INFO] user: 1 connected
-[2025-05-23 12:41:24][StickGameManager][INFO] user: 2 connected
-[2025-05-23 12:41:29][StickGameManager][INFO] user: 2 disconnected
-[2025-05-23 12:41:56][StickGameManager][INFO] stick game server stop
+[2025-05-24 18:33:13][StickGameManager][INFO] stick game server init
+[2025-05-24 18:33:55][StickGameManager][INFO] user: 1 connected
+[2025-05-24 18:33:59][StickGameManager][INFO] user: 1 disconnected
+[2025-05-24 18:34:15][StickGameManager][INFO] stick game server stop

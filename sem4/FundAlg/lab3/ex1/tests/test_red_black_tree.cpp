@@ -214,7 +214,6 @@ TEST_F(RedBlackTreeIntTest, InsertAndDeleteRandomElements) {
 	for (int key : keys_to_delete) {
 //		std::cout << key << std::endl;
 		ASSERT_NO_THROW(tree.remove(key));
-//		print(tree);
 		ValidateTree();
 	}
 

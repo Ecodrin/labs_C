@@ -695,3 +695,24 @@ TEST_F(BigIntTest, ModExpWithDefault) {
     BigInt b{45};
     EXPECT_EQ(BigInt::mod_exp(a, BigInt{1}, b), (a % b));
 }
+
+
+int main() {
+    BigInt a{3333333333};
+    BigInt b{12345};
+    a.change_base(10);
+    auto res = BigInt::newton_divide(a, b);
+    std::cout << res.first << " " << res.second << std::endl;
+//
+//    auto res2 = BigInt::divide(a, b);
+//    std::cout << res2.first << " " << res2.second << std::endl;
+
+
+
+//    std::vector<long long> a = {1, 2, 3};
+//    auto ress = BigInt::newton_reverse(a, 3);
+//    for (size_t i = 0; i < ress.size(); ++i) {
+//        std::cout << ress[i] << " ";
+//    }
+    return 0;
+}

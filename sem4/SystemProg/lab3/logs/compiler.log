@@ -1,3 +1,4 @@
-[2025-05-23 12:41:07][Compiler][INFO] server init
-[2025-05-23 12:41:40][Compiler][INFO] compilation success: example.tex
-[2025-05-23 12:41:47][Compiler][INFO] server stop
+[2025-05-24 18:33:16][Compiler][INFO] server init
+[2025-05-24 18:33:37][Compiler][INFO] compilation success: example.tex
+[2025-05-24 18:33:52][Compiler][ERROR] compilation error: cc.cpp
+[2025-05-24 18:34:06][Compiler][INFO] server stop
