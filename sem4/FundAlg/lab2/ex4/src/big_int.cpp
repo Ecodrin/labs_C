@@ -827,13 +827,13 @@ std::pair<BigInt, BigInt> BigInt::newton_divide(const BigInt &a, const BigInt &b
         return {BigInt{0}, BigInt{a}};
     }
 
-    [[maybe_unused]]bool res_is_negative = a.is_negative ^ b.is_negative;
+    bool res_is_negative = a.is_negative ^ b.is_negative;
     BigInt dividend{a};
     BigInt divisor{b};
     divisor.change_base(dividend.base);
 
-    std::vector<long long> a_p = big_int_to_polynomial(dividend);
-    std::vector<long long> b_p = big_int_to_polynomial(divisor);
+    std::vector<long double> a_p = big_int_to_polynomial(dividend);
+    std::vector<long double> b_p = big_int_to_polynomial(divisor);
 
     size_t m = a_p.size() - b_p.size();
     auto h = newton_reverse(reverse(b_p, b_p.size()), m + 1);
@@ -867,10 +867,10 @@ std::pair<BigInt, BigInt> BigInt::newton_divide(const BigInt &a, const BigInt &b
     return {big_q, big_r};
 }
 
-std::vector<long long> BigInt::newton_reverse(std::vector<long long> f, size_t l) {
-    std::vector<long long> g;
+std::vector<long double> BigInt::newton_reverse(std::vector<long double> f, size_t l) {
+    std::vector<long double> g;
     g.clear();
-    g.push_back(1);
+    g.push_back(1 / f.front());
 
     size_t k = (size_t) std::ceil(std::log2(l));
     size_t q = 1;
@@ -884,7 +884,7 @@ std::vector<long long> BigInt::newton_reverse(std::vector<long long> f, size_t l
     return g;
 }
 
-std::vector<long long> BigInt::reverse(std::vector<long long> f, size_t R) {
+std::vector<long double> BigInt::reverse(std::vector<long double> f, size_t R) {
     if (R < f.size()) {
         return f;
     }
@@ -894,109 +894,36 @@ std::vector<long long> BigInt::reverse(std::vector<long long> f, size_t R) {
 }
 
 
-BigInt BigInt::polynomial_to_big_int(const std::vector<long long> &f, size_t base) {
+BigInt BigInt::polynomial_to_big_int(const std::vector<long double> &f, unsigned long long int base) {
     BigInt result;
     result.change_base(base);
-    result.data.clear();
-    if (f.empty()) return result;
-
-    std::vector<long long> temp = f;
-    bool changed;
-
-    // Нормализация коэффициентов
-    do {
-        changed = false;
-        for (size_t i = 0; i < temp.size(); ++i) {
-            // Обработка отрицательных значений
-            while (temp[i] < 0) {
-                long long borrow = (-temp[i] + base - 1) / base;
-                temp[i] += borrow * base;
-                if (i + 1 < temp.size()) {
-                    temp[i + 1] -= borrow;
-                } else {
-                    temp.push_back(-borrow);
-                }
-                changed = true;
-            }
-            // Обработка переполнения
-            while (temp[i] >= static_cast<long long>(base)) {
-                long long carry = temp[i] / base;
-                temp[i] %= base;
-                if (i + 1 < temp.size()) {
-                    temp[i + 1] += carry;
-                } else {
-                    temp.push_back(carry);
-                }
-                changed = true;
-            }
-        }
-    } while (changed);
-
-    // Удаление ведущих нулей (справа)
-    while (!temp.empty() && temp.back() == 0) temp.pop_back();
-    if (temp.empty()) {
-        result.is_negative = false;
-        return result;
+    std::vector<long double> b{f};
+    std::reverse(b.begin(), b.end());
+    for (auto coeff : b) {
+        BigInt t1{static_cast<long long>(base)};
+        t1.change_base(base);
+        BigInt t2{static_cast<long long>(coeff)};
+        t2.change_base(base);
+        result = result * t1 + t2;
     }
-
-    // Определение знака
-    result.is_negative = temp.back() < 0;
-    if (result.is_negative) {
-        for (auto& coeff : temp) coeff = -coeff;
-        // Повторная нормализация
-        do {
-            changed = false;
-            for (size_t i = 0; i < temp.size(); ++i) {
-                while (temp[i] < 0) {
-                    long long borrow = (-temp[i] + base - 1) / base;
-                    temp[i] += borrow * base;
-                    if (i + 1 < temp.size()) {
-                        temp[i + 1] -= borrow;
-                    } else {
-                        temp.push_back(-borrow);
-                    }
-                    changed = true;
-                }
-                while (temp[i] >= static_cast<long long>(base)) {
-                    long long carry = temp[i] / base;
-                    temp[i] %= base;
-                    if (i + 1 < temp.size()) {
-                        temp[i + 1] += carry;
-                    } else {
-                        temp.push_back(carry);
-                    }
-                    changed = true;
-                }
-            }
-        } while (changed);
-        // Удаление нулей после инверсии
-        while (!temp.empty() && temp.back() == 0) temp.pop_back();
-    }
-
-    // Проверка и конвертация
-    for (long long coeff : temp) {
-        if (coeff < 0) throw std::runtime_error("Ошибка: отрицательный коэффициент");
-        result.data.push_back(static_cast<unsigned long long>(coeff));
-    }
-
     return result;
 }
 
-std::vector<long long> BigInt::big_int_to_polynomial(const BigInt &f) {
-    std::vector<long long> p;
+std::vector<long double> BigInt::big_int_to_polynomial(const BigInt &f) {
+    std::vector<long double> p;
     for (auto el: f.data) {
         p.push_back(el);
     }
     return p;
 }
 
-std::vector<long long>
-BigInt::polynomial_multiply(const std::vector<long long int> &f, const std::vector<long long int> &g) {
+std::vector<long double>
+BigInt::polynomial_multiply(const std::vector<long double> &f, const std::vector<long double> &g) {
     if (f.empty() || g.empty()) {
         return {};
     }
 
-    std::vector<long long> result(f.size() + g.size() - 1, 0);
+    std::vector<long double> result(f.size() + g.size() - 1, 0);
 
     for (size_t i = 0; i < f.size(); ++i) {
         for (size_t j = 0; j < g.size(); ++j) {
@@ -1007,21 +934,21 @@ BigInt::polynomial_multiply(const std::vector<long long int> &f, const std::vect
     return result;
 }
 
-std::vector<long long>
-BigInt::polynomial_subtract(const std::vector<long long int> &f, const std::vector<long long int> &g) {
+std::vector<long double>
+BigInt::polynomial_subtract(const std::vector<long double> &f, const std::vector<long double> &g) {
     size_t result_size = std::max(f.size(), g.size());
-    std::vector<long long> result(result_size, 0);
+    std::vector<long double> result(result_size, 0);
 
     for (size_t i = 0; i < result_size; ++i) {
-        long long f_coeff = (i < f.size()) ? f[i] : 0;
-        long long g_coeff = (i < g.size()) ? g[i] : 0;
+        long double f_coeff = (i < f.size()) ? f[i] : 0;
+        long double g_coeff = (i < g.size()) ? g[i] : 0;
         result[i] = f_coeff - g_coeff;
     }
 
     return result;
 }
 
-void BigInt::remove_leading_zeros(std::vector<long long int> &vector) {
+void BigInt::remove_leading_zeros(std::vector<long double> &vector) {
     while (!vector.empty() and vector.back() == 0) {
         vector.pop_back();
     }

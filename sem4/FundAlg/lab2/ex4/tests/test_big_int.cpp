@@ -69,6 +69,23 @@ protected:
     }
 };
 
+class NewtonDivideTest: public ::testing::Test {
+protected:
+    BigInt num1{"12312312323423423432423423423423423423432341231231"};
+    BigInt num2{"-9878238423423423423423423422323423423423423424823"};
+    BigInt large1;
+    BigInt large2;
+    NewtonDivideTest() {
+        std::ifstream a("../tests/num1");
+        std::ifstream b("../tests/num2");
+        a >> large1;
+        b >> large2;
+        a.close();
+        b.close();
+    }
+};
+
+
 TEST_F(BigIntTest, DefaultConstructor) {
     BigInt num;
     EXPECT_EQ(num.to_string(), "0");
@@ -696,23 +713,26 @@ TEST_F(BigIntTest, ModExpWithDefault) {
     EXPECT_EQ(BigInt::mod_exp(a, BigInt{1}, b), (a % b));
 }
 
+TEST_F(NewtonDivideTest, SmallNumber) {
+    BigInt a{12222563098};
+    BigInt b{124312122};
+    a.change_base(100);
+    auto res1 = BigInt::newton_divide(a, b);
+    auto res2 = BigInt::divide(a, b);
+    EXPECT_EQ(res1, res2);
+}
 
-int main() {
-    BigInt a{3333333333};
-    BigInt b{12345};
-    a.change_base(10);
-    auto res = BigInt::newton_divide(a, b);
-    std::cout << res.first << " " << res.second << std::endl;
-//
-//    auto res2 = BigInt::divide(a, b);
-//    std::cout << res2.first << " " << res2.second << std::endl;
+TEST_F(NewtonDivideTest, BigNumber) {
+    auto res1 = BigInt::newton_divide(num1, num2);
+    EXPECT_EQ(res1.first, BigInt{-1});
+}
 
+TEST_F(NewtonDivideTest, IncorrectDevisor) {
+    EXPECT_THROW(BigInt::newton_divide(num1, BigInt{0}), std::invalid_argument);
+}
 
-
-//    std::vector<long long> a = {1, 2, 3};
-//    auto ress = BigInt::newton_reverse(a, 3);
-//    for (size_t i = 0; i < ress.size(); ++i) {
-//        std::cout << ress[i] << " ";
-//    }
-    return 0;
+TEST_F(NewtonDivideTest, SmallNumver) {
+    auto res1 = BigInt::newton_divide(BigInt{2}, BigInt{4});
+    EXPECT_EQ(res1.first, BigInt{0});
+    EXPECT_EQ(res1.second, BigInt{2});
 }
